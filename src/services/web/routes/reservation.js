@@ -1,3 +1,7 @@
+import express from 'express';
+
+const router = express.Router();
+
 /*
 
 GET RESERVATION BY FILTER
@@ -13,3 +17,5 @@ CHANGE STATUS OF RESERVATION (PUT)
 DELETE RESERVATION
 
 */
+
+export default router;
