@@ -42,7 +42,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addressInsert`(
 BEGIN
 	
 	INSERT INTO address
-		(province, city, barangay, room_number, bldg_number, zip, landmark, date_created)
+		(province, city, barangay, room_number, bldg_number, zip, landmark, created_date)
 	VALUES 
 		(_province, _city, _barangay, _room_number, _bldg_number, _zip, _landmark, NOW());
 
