@@ -1,33 +1,6 @@
-// import config from './config';
-// import mysql from './services/web/mysql';
-// // const obj = new ConnectionString(process.env.MYSQL_URL, { user: 'root' });
-// // console.log(obj);
-// console.log(config.MYSQL);
-// mysql.connect((err) => {
-//   if (err) {
-//     console.error(`error connecting: ${err.stack}`);
-//     return;
-//   }
+export const combineWhere = (where1, where2, separator) => `${where1} ${separator} ${where2.replace('WHERE', '')}`;
 
-//   console.log(`connected as id ${mysql.threadId}`);
-// });
-
-// mysql.query('SELECT * FROM user', (error, results) => {
-//   if (error) throw error;
-//   // connected!
-//   console.log(results[0].firstname);
-// });
-
-// mysql.end((err) => {
-//   if (err) throw err;
-
-//   console.log('connection ended');
-// });
-
-
-const combineWhere = (where1, where2, separator) => `${where1} ${separator} ${where2.replace('WHERE', '')}`;
-
-const getWhere = (queryObject) => {
+export const getWhere = (queryObject) => {
   const conditions = Object.keys(queryObject);
   if (conditions.length < 1) return '';
 
@@ -78,7 +51,3 @@ const getWhere = (queryObject) => {
 
   return output;
 };
-
-const s = getWhere({ age: { lte: 3 }, name: { lk: 'haha' }, q: 'sdf' });
-const y = getWhere({ age: { gt: 5 } });
-console.log(combineWhere(s, y, 'AND'));
