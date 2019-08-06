@@ -9,7 +9,8 @@
 
 import { boomify, isBoom } from 'boom';
 
-const errorHandler = () => (err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+const errorHandler = () => (err, req, res, next) => {
   let _err = err;
   if (!isBoom(_err)) _err = boomify(err);
 
