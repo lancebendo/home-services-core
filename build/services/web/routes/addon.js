@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var _mysql = _interopRequireDefault(require("../mysql"));
+var _mysql = require("../mysql");
 
 var _helpers = require("../helpers");
 
@@ -18,11 +18,12 @@ var router = _express["default"].Router(); // GET /addon?{filter}/ (get active a
 
 router.get('/', function (req, res, next) {
   var queryString = "SELECT * FROM USER ".concat((0, _helpers.getWhere)(req.query), " ORDER BY CREATED_DATE DESC");
-  var connection = (0, _mysql["default"])();
+  var connection = (0, _mysql.createConnection)(true);
   connection.connect(function (err) {
     if (err) next(err);
   });
   console.log(req.query);
+  console.log(queryString);
   connection.query(queryString, function (err, results) {
     if (err) next(err);
     res.status(200).json({

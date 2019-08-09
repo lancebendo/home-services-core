@@ -1,6 +1,6 @@
 import express from 'express';
 
-import mysql from '../mysql';
+import { createConnection } from '../mysql';
 import { getWhere } from '../helpers';
 
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 // GET /addon?{filter}/ (get active addons by filter. PUBLIC)
 router.get('/', (req, res, next) => {
   const queryString = `SELECT * FROM USER ${getWhere(req.query)} ORDER BY CREATED_DATE DESC`;
-  const connection = mysql();
+  const connection = createConnection(true);
   connection.connect((err) => {
     if (err) next(err);
   });

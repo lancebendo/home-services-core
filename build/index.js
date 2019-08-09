@@ -27,7 +27,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 //   if (err) throw err;
 //   console.log('connection ended');
 // });
-// // const combineWhere = (where1, where2, separator) => `${where1} ${separator} ${where2.replace('WHERE', '')}`;
+// // const combineWhere = (where1, where2, separator) => `${where1} ${separator}
+// // ${where2.replace('WHERE', '')}`;
 // // const getWhere = (queryObject) => {
 // //   const conditions = Object.keys(queryObject);
 // //   if (conditions.length < 1) return '';
@@ -40,7 +41,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // //       output = output.concat(' AND ');
 // //     }
 // //     if (typeof queryObject[condition] === 'string') {
-// //       const value = `${typeof queryObject[condition] === 'string' ? `'${queryObject[condition]}'` : `${queryObject[condition]}`}`;
+// //       const value = `${typeof queryObject[condition]
+// //       === 'string' ? `'${queryObject[condition]}'`
+// //       : `${queryObject[condition]}`}`;
 // //       output = output.concat(` ${condition} = ${value}`);
 // //     } else {
 // //       const subCondition = Object.keys(queryObject[condition])[0];
@@ -58,7 +61,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // //           output = output.concat(` ${condition} <= ${queryObject[condition][subCondition]} `);
 // //           break;
 // //         case 'lk':
-// //           output = output.concat(` ${condition} LIKE '${queryObject[condition][subCondition]}' `);
+// //           output = output.concat(` ${condition} LIKE
+// //           '${queryObject[condition][subCondition]}' `);
 // //           break;
 // //         default:
 // //           throw new Error('Invalid condition in query.');

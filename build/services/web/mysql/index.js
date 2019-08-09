@@ -3,6 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "createConnection", {
+  enumerable: true,
+  get: function get() {
+    return _createConnection["default"];
+  }
+});
 Object.defineProperty(exports, "procedures", {
   enumerable: true,
   get: function get() {
@@ -15,15 +21,11 @@ Object.defineProperty(exports, "views", {
     return _views["default"];
   }
 });
-exports["default"] = void 0;
 
-var _connection = _interopRequireDefault(require("./connection"));
+var _createConnection = _interopRequireDefault(require("./createConnection"));
 
 var _procedures = _interopRequireDefault(require("./procedures"));
 
 var _views = _interopRequireDefault(require("./views"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var _default = _connection["default"];
-exports["default"] = _default;

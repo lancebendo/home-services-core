@@ -1,7 +1,5 @@
-import connection from './connection';
+import createConnection from './createConnection';
 import procedures from './procedures';
 import views from './views';
 
-export default connection;
-
-export { procedures, views };
+export { createConnection, procedures, views };
