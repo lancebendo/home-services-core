@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/babel src -d build",
-    "start": "npm run build && node build"
+    "start": "npm run build && node build",
+    "nodemon": "nodemon build"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0"
+    "eslint-plugin-import": "^2.18.0",
+    "nodemon": "^1.19.1"
   }
 }

@@ -1,9 +1,8 @@
 // setup dependencies
 import express from 'express';
 
-// setup app
-const app = express();
-const PORT = process.env.PORT || 3000;
+// routes
+import { addon } from './routes';
 
 // setup database
 
@@ -17,8 +16,12 @@ const PORT = process.env.PORT || 3000;
 // setup api key
 
 
-// routes
+// setup app
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+// routes setup
+app.route('/addon', addon);
 
 // graceful shutdown function
 

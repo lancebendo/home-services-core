@@ -1,5 +1,9 @@
 import express from 'express';
 
+// validate
+// process args
+// execute
+
 const router = express.Router();
 
 // GET /user?{filter} (get users by filter. ADMIN ONLY)

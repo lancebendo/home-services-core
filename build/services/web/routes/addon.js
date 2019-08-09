@@ -7,13 +7,32 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
+var _mysql = _interopRequireDefault(require("../mysql"));
+
+var _helpers = require("../helpers");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var router = _express["default"].Router(); // GET /addon?{filter}/ (get active addons by filter. PUBLIC)
 
 
 router.get('/', function (req, res, next) {
-  next();
+  var queryString = "SELECT * FROM USER ".concat((0, _helpers.getWhere)(req.query), " ORDER BY CREATED_DATE DESC");
+  var connection = (0, _mysql["default"])();
+  connection.connect(function (err) {
+    if (err) next(err);
+  });
+  console.log(req.query);
+  connection.query(queryString, function (err, results) {
+    if (err) next(err);
+    res.status(200).json({
+      status: 'success',
+      data: results
+    });
+  });
+  connection.end(function (err) {
+    if (err) next(err);
+  });
 }); // GET /addon/{id} (get addon by id. PUBLIC)
 
 router.get('/:id', function (req, res, next) {

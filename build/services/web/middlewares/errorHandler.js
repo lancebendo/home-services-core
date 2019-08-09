@@ -15,8 +15,9 @@ var _boom = require("boom");
  defining different errors like when your API can't connect to your database,
  when the user's request didn't match your schema, and when an external API failed.
 */
+// eslint-disable-next-line no-unused-vars
 var errorHandler = function errorHandler() {
-  return function (err, req, res) {
+  return function (err, req, res, next) {
     var _err = err;
     if (!(0, _boom.isBoom)(_err)) _err = (0, _boom.boomify)(err); // if (process.env.NODE_ENV === 'production') {
     //   if (err.isServer) logger.error(err.message);

@@ -12,10 +12,10 @@
 //   console.log(`connected as id ${mysql.threadId}`);
 // });
 
-// mysql.query('SELECT * FROM user', (error, results) => {
+// mysql.query('SELECT * FROM addon', (error, results) => {
 //   if (error) throw error;
 //   // connected!
-//   console.log(results[0].firstname);
+//   console.log(results);
 // });
 
 // mysql.end((err) => {
@@ -25,60 +25,95 @@
 // });
 
 
-const combineWhere = (where1, where2, separator) => `${where1} ${separator} ${where2.replace('WHERE', '')}`;
+// // const combineWhere = (where1, where2, separator) => `${where1} ${separator}
+// // ${where2.replace('WHERE', '')}`;
 
-const getWhere = (queryObject) => {
-  const conditions = Object.keys(queryObject);
-  if (conditions.length < 1) return '';
+// // const getWhere = (queryObject) => {
+// //   const conditions = Object.keys(queryObject);
+// //   if (conditions.length < 1) return '';
 
-  let output = ' WHERE (';
-  let isFirst = true;
+// //   let output = ' WHERE (';
+// //   let isFirst = true;
 
-  conditions.forEach((condition) => {
-    if (isFirst) {
-      isFirst = false;
-    } else {
-      output = output.concat(' AND ');
-    }
+// //   conditions.forEach((condition) => {
+// //     if (isFirst) {
+// //       isFirst = false;
+// //     } else {
+// //       output = output.concat(' AND ');
+// //     }
 
-    if (typeof queryObject[condition] === 'string') {
-      const value = `${typeof queryObject[condition] === 'string' ? `'${queryObject[condition]}'` : `${queryObject[condition]}`}`;
-      output = output.concat(` ${condition} = ${value}`);
-    } else {
-      const subCondition = Object.keys(queryObject[condition])[0];
+// //     if (typeof queryObject[condition] === 'string') {
+// //       const value = `${typeof queryObject[condition]
+// //       === 'string' ? `'${queryObject[condition]}'`
+// //       : `${queryObject[condition]}`}`;
+// //       output = output.concat(` ${condition} = ${value}`);
+// //     } else {
+// //       const subCondition = Object.keys(queryObject[condition])[0];
 
-      switch (subCondition) {
-        case 'gt':
-          output = output.concat(` ${condition} > ${queryObject[condition][subCondition]} `);
-          break;
+// //       switch (subCondition) {
+// //         case 'gt':
+// //           output = output.concat(` ${condition} > ${queryObject[condition][subCondition]} `);
+// //           break;
 
-        case 'gte':
-          output = output.concat(` ${condition} >= ${queryObject[condition][subCondition]} `);
-          break;
+// //         case 'gte':
+// //           output = output.concat(` ${condition} >= ${queryObject[condition][subCondition]} `);
+// //           break;
 
-        case 'lt':
-          output = output.concat(` ${condition} < ${queryObject[condition][subCondition]} `);
-          break;
+// //         case 'lt':
+// //           output = output.concat(` ${condition} < ${queryObject[condition][subCondition]} `);
+// //           break;
 
-        case 'lte':
-          output = output.concat(` ${condition} <= ${queryObject[condition][subCondition]} `);
-          break;
+// //         case 'lte':
+// //           output = output.concat(` ${condition} <= ${queryObject[condition][subCondition]} `);
+// //           break;
 
-        case 'lk':
-          output = output.concat(` ${condition} LIKE '${queryObject[condition][subCondition]}' `);
-          break;
+// //         case 'lk':
+// //           output = output.concat(` ${condition} LIKE
+// //           '${queryObject[condition][subCondition]}' `);
+// //           break;
 
-        default:
-          throw new Error('Invalid condition in query.');
-      }
-    }
-  });
+// //         default:
+// //           throw new Error('Invalid condition in query.');
+// //       }
+// //     }
+// //   });
 
-  output = output.concat(' ) ');
+// //   output = output.concat(' ) ');
 
-  return output;
-};
+// //   return output;
+// // };
 
-const s = getWhere({ age: { lte: 3 }, name: { lk: 'haha' }, q: 'sdf' });
-const y = getWhere({ age: { gt: 5 } });
-console.log(combineWhere(s, y, 'AND'));
+// // const s = getWhere({ age: { lte: 3 }, name: { lk: 'haha' }, q: 'sdf' });
+// // const y = getWhere({ age: { gt: 5 } });
+// // console.log(combineWhere(s, y, 'AND'));
+
+// setup dependencies
+import express from 'express';
+
+// routes
+import { addon } from './services/web/routes';
+
+// setup database
+
+
+// setup cors
+
+
+// setup passport
+
+
+// setup api key
+
+
+// setup app
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// routes setup
+app.use('/addon', addon);
+
+// graceful shutdown function
+
+
+// start app
+app.listen(PORT, () => console.log(`Listening to PORT #: ${PORT}.`));

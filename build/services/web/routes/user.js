@@ -9,6 +9,9 @@ var _express = _interopRequireDefault(require("express"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+// validate
+// process args
+// execute
 var router = _express["default"].Router(); // GET /user?{filter} (get users by filter. ADMIN ONLY)
 
 /* {FILTERS ON GET}

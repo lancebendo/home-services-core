@@ -1,10 +1,28 @@
 import express from 'express';
 
+import mysql from '../mysql';
+import { getWhere } from '../helpers';
+
 const router = express.Router();
 
 // GET /addon?{filter}/ (get active addons by filter. PUBLIC)
 router.get('/', (req, res, next) => {
-  next();
+  const queryString = `SELECT * FROM USER ${getWhere(req.query)} ORDER BY CREATED_DATE DESC`;
+  const connection = mysql();
+  connection.connect((err) => {
+    if (err) next(err);
+  });
+  console.log(req.query);
+  console.log(queryString);
+
+  connection.query(queryString, (err, results) => {
+    if (err) next(err);
+    res.status(200).json({ status: 'success', data: results });
+  });
+
+  connection.end((err) => {
+    if (err) next(err);
+  });
 });
 
 // GET /addon/{id} (get addon by id. PUBLIC)
