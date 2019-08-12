@@ -16,7 +16,7 @@ const addressDomainParamValues = (queryNumber, id, province, city, barangay, roo
     @bldgNumber_${queryNumber} = '${bldgNumber}', 
     @zip_${queryNumber} = '${zip}', 
     @landmark_${queryNumber} = '${landmark}'
-    ; $$`;
+    ;`;
 
 exports.addressDomainParamValues = addressDomainParamValues;
 
@@ -29,7 +29,7 @@ const addressInsert = queryNumber => ` CALL addressInsert(
     @bldgNumber_${queryNumber}, 
     @zip_${queryNumber}, 
     @landmark_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.addressInsert = addressInsert;
 
@@ -42,7 +42,7 @@ const addressUpdate = queryNumber => ` CALL addressUpdate(
     @bldgNumber_${queryNumber}, 
     @zip_${queryNumber}, 
     @landmark_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////////////////////////
+    ); `; // ////////////////////////////////////////////////////////////
 
 
 exports.addressUpdate = addressUpdate;
@@ -51,7 +51,7 @@ const completedSessionAddonParamValues = (queryNumber, id, serviceId, addonId) =
       @completedSessionId_${queryNumber} = ${id}, 
       @serviceId_${queryNumber} = ${serviceId}, 
       @addonId_${queryNumber} = ${addonId}
-      ; $$`;
+      ;`;
 
 exports.completedSessionAddonParamValues = completedSessionAddonParamValues;
 
@@ -59,7 +59,7 @@ const completedSessionAddonDelete = queryNumber => ` CALL completedSessionAddonD
     @completedSessionId_${queryNumber}, 
     @serviceId_${queryNumber}, 
     @addonId_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.completedSessionAddonDelete = completedSessionAddonDelete;
 
@@ -67,7 +67,7 @@ const completedSessionServiceAddonInsert = queryNumber => ` CALL completedSessio
     @completedSessionId_${queryNumber}, 
     @serviceId_${queryNumber},
     @addonId_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////////////////////
+    ); `; // ////////////////////////////////////////////////////////
 
 
 exports.completedSessionServiceAddonInsert = completedSessionServiceAddonInsert;
@@ -78,7 +78,7 @@ const completedSessionParamValues = (queryNumber, id, reservationId, recurrencyN
       @recurrencyNumber_${queryNumber} = '${recurrencyNumber}', 
       @completedSessionDate_${queryNumber} = '${completedSessionDate}',
       @completedSessionNote_${queryNumber} = '${completedSessionNote}'
-      ; $$`;
+      ;`;
 
 exports.completedSessionParamValues = completedSessionParamValues;
 
@@ -88,7 +88,7 @@ const completedSessionInsert = queryNumber => ` CALL completedSessionInsert(
     @recurrencyNumber_${queryNumber}, 
     @completedSessionDate_${queryNumber},
     @completedSessionNote_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////////////////
+    ); `; // ////////////////////////////////////////////////////
 
 
 exports.completedSessionInsert = completedSessionInsert;
@@ -96,14 +96,14 @@ exports.completedSessionInsert = completedSessionInsert;
 const completedSessionNoteParamValues = (queryNumber, id, completedSessionNote) => `SET 
       @completedSessionId_${queryNumber} = ${id}, 
       @completedSessionNote_${queryNumber} = '${completedSessionNote}'
-      ; $$`;
+      ;`;
 
 exports.completedSessionNoteParamValues = completedSessionNoteParamValues;
 
 const completedSessionUpdateNote = queryNumber => ` CALL completedSessionUpdateNote(
     @completedSessionId_${queryNumber}, 
     @completedSessionNote_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////////////
+    ); `; // ////////////////////////////////////////////////
 
 
 exports.completedSessionUpdateNote = completedSessionUpdateNote;
@@ -111,8 +111,8 @@ exports.completedSessionUpdateNote = completedSessionUpdateNote;
 const isActiveParamValues = (queryNumber, domainType, domainId, isActive) => `SET 
       @domain_${queryNumber} = '${domainType}', 
       @domainId_${queryNumber} = ${domainId},
-      @domainIsActive_${queryNumber} = ${isActive},
-      ; $$`;
+      @domainIsActive_${queryNumber} = ${isActive}
+      ;`;
 
 exports.isActiveParamValues = isActiveParamValues;
 
@@ -120,7 +120,7 @@ const isActiveUpdate = queryNumber => ` CALL isActiveUpdate(
     @domain_${queryNumber}, 
     @domainId_${queryNumber},
     @domainIsActive_${queryNumber}
-    ); $$ `; // /////////////////////////////////////////////
+    ); `; // /////////////////////////////////////////////
 
 
 exports.isActiveUpdate = isActiveUpdate;
@@ -148,7 +148,7 @@ const managementDomainUpdate = queryNumber => ` CALL managementDomainUpdate(
     @managementDomainType_${queryNumber},
     @managementDomainName_${queryNumber},
     @managementDomainDescription_${queryNumber}
-    ); $$ `; // //////////////////////////////////////////
+    ); `; // //////////////////////////////////////////
 
 
 exports.managementDomainUpdate = managementDomainUpdate;
@@ -160,7 +160,7 @@ const managementDomainRateParamValues = (queryNumber, id, domainId, domainType, 
       @managementDomainRate_${queryNumber} = ${rate},
       @managementDomainRateOperator_${queryNumber} = ${rateOperator},
       @mangementDomainRateByPercentage_${queryNumber} = ${byPercentage}
-      ; $$`;
+      ;`;
 
 exports.managementDomainRateParamValues = managementDomainRateParamValues;
 
@@ -171,7 +171,7 @@ const managementDomainRateInsert = queryNumber => ` CALL managementDomainRateIns
     @managementDomainRate_${queryNumber},
     @managementDomainRateOperator_${queryNumber},
     @mangementDomainRateByPercentage_${queryNumber}
-    ); $$ `; // //////////////////////////////////////////////////////
+    ); `; // //////////////////////////////////////////////////////
 
 
 exports.managementDomainRateInsert = managementDomainRateInsert;
@@ -183,7 +183,7 @@ const promoApplyParamValues = (queryNumber, id, domainType, domainId, promoId, s
       @promoId_${queryNumber} = ${promoId},
       @promoStartDate_${queryNumber} = '${startDate}',
       @promoEndDate_${queryNumber} = '${endDate}'
-      ; $$`;
+      ;`;
 
 exports.promoApplyParamValues = promoApplyParamValues;
 
@@ -194,7 +194,7 @@ const promoApply = queryNumber => ` CALL promoApply(
     @promoId_${queryNumber},
     @promoStartDate_${queryNumber},
     @promoEndDate_${queryNumber}
-    ); $$ `; // ///////////////////////////////////////////////////
+    ); `; // ///////////////////////////////////////////////////
 
 
 exports.promoApply = promoApply;
@@ -202,14 +202,14 @@ exports.promoApply = promoApply;
 const promoDeleteParamValues = (queryNumber, id, domainId) => `SET 
       @appliedPromoId_${queryNumber} = ${id},
       @promoDomainId_${queryNumber} = ${domainId}
-      ; $$`;
+      ;`;
 
 exports.promoDeleteParamValues = promoDeleteParamValues;
 
 const promoDelete = queryNumber => ` CALL promoDelete(
     @appliedPromoId_${queryNumber}, 
     @promoDomainId_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////
+    ); `; // ////////////////////////////////////////
 
 
 exports.promoDelete = promoDelete;
@@ -219,7 +219,7 @@ const promoUpdateParamValues = (queryNumber, id, domainType, startDate, endDate)
       @promoDomainType_${queryNumber} = '${domainType}',
       @promoStartDate_${queryNumber} = '${startDate}',
       @promoEndDate_${queryNumber} = '${endDate}'
-      ; $$`;
+      ;`;
 
 exports.promoUpdateParamValues = promoUpdateParamValues;
 
@@ -228,7 +228,7 @@ const promoUpdate = queryNumber => ` CALL promoUpdate(
     @promoDomainType_${queryNumber},
     @promoStartDate_${queryNumber},
     @promoEndDate_${queryNumber}
-    ); $$ `; // //////////////////////////////////////
+    ); `; // //////////////////////////////////////
 
 
 exports.promoUpdate = promoUpdate;
@@ -237,7 +237,7 @@ const reservationAddonParamValues = (queryNumber, reservationId, serviceId, addo
       @reservationId_${queryNumber} = ${reservationId}, 
       @serviceId_${queryNumber} = ${serviceId},
       @addonId_${queryNumber} = ${addonId}
-      ); $$ `;
+      ); `;
 
 exports.reservationAddonParamValues = reservationAddonParamValues;
 
@@ -245,7 +245,7 @@ const reservationAddonDelete = queryNumber => ` CALL reservationAddonDelete(
     @reservationId_${queryNumber}, 
     @serviceId_${queryNumber},
     @addonId_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.reservationAddonDelete = reservationAddonDelete;
 
@@ -253,7 +253,7 @@ const reservationAddonInsert = queryNumber => ` CALL reservationAddonInsert(
     @reservationId_${queryNumber}, 
     @serviceId_${queryNumber},
     @addonId_${queryNumber}
-    ); $$ `; // /////////////////////////////////////////
+    ); `; // /////////////////////////////////////////
 
 
 exports.reservationAddonInsert = reservationAddonInsert;
@@ -265,7 +265,7 @@ const reservationParamValues = (queryNumber, id, userId, addressId, status, init
       @reservationStatus_${queryNumber} = ${status},
       @reservationInitialDate_${queryNumber} = '${initialDate}',
       @reservationAdditionalNote_${queryNumber} = '${additionalNote}'
-      ; $$`;
+      ;`;
 
 exports.reservationParamValues = reservationParamValues;
 
@@ -276,7 +276,7 @@ const reservationInsert = queryNumber => ` CALL reservationInsert(
     @reservationStatus_${queryNumber},
     @reservationInitialDate_${queryNumber},
     @reservationAdditionalNote_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.reservationInsert = reservationInsert;
 
@@ -286,7 +286,7 @@ const reservationUpdate = queryNumber => ` CALL reservationUpdate(
     @reservationStatus_${queryNumber},
     @reservationInitialDate_${queryNumber},
     @reservationAdditionalNote_${queryNumber}
-    ); $$ `; // /////////////////////////////////
+    ); `; // /////////////////////////////////
 
 
 exports.reservationUpdate = reservationUpdate;
@@ -294,14 +294,14 @@ exports.reservationUpdate = reservationUpdate;
 const serviceAddonParamValues = (queryNumber, serviceId, addonId) => `SET 
       @serviceId_${queryNumber} = ${serviceId},
       @addonId_${queryNumber} = ${addonId}
-      ; $$`;
+      ;`;
 
 exports.serviceAddonParamValues = serviceAddonParamValues;
 
 const serviceAddonDelete = queryNumber => ` CALL serviceAddonDelete(
     @serviceId_${queryNumber},
     @addonId_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////////
+    ); `; // ////////////////////////////////////////////
 
 
 exports.serviceAddonDelete = serviceAddonDelete;
@@ -311,7 +311,7 @@ const userAccessLevelParamValues = (queryNumber, userId, userAccessLevelIsBasic,
       @userAccessLevelIsBasic_${queryNumber} = ${userAccessLevelIsBasic},
       @userAccessLevelIsProvider_${queryNumber} = ${userAccessLevelIsProvider},
       @userAccessLevelIsAdmin_${queryNumber} = ${userAccessLevelIsAdmin}
-      ); $$ `;
+      ); `;
 
 exports.userAccessLevelParamValues = userAccessLevelParamValues;
 
@@ -320,7 +320,7 @@ const userAccessLevelUpdate = queryNumber => ` CALL userAccessLevelUpdate(
     @userAccessLevelIsBasic_${queryNumber},
     @userAccessLevelIsProvider_${queryNumber},
     @userAccessLevelIsAdmin_${queryNumber}
-    ); $$ `; // ///////////////////////////////
+    ); `; // ///////////////////////////////
 
 
 exports.userAccessLevelUpdate = userAccessLevelUpdate;
@@ -329,14 +329,14 @@ const userAddressParamValues = (queryNumber, id, reservationId, recurrencyNumber
       @userId_${queryNumber} = ${id},
       @addressId_${queryNumber} = ${reservationId},
       @userAddressIsDefault_${queryNumber} = ${recurrencyNumber}
-      ; $$`;
+      ;`;
 
 exports.userAddressParamValues = userAddressParamValues;
 
 const userAddressDelete = queryNumber => ` CALL userAddressDelete(
     @userId_${queryNumber},
     @addressId_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.userAddressDelete = userAddressDelete;
 
@@ -344,7 +344,7 @@ const userAddressInsertOrUpdate = queryNumber => ` CALL userAddressInsertOrUpdat
     @userId_${queryNumber},
     @addressId_${queryNumber},
     @userAddressIsDefault_${queryNumber}
-    ); $$ `; // ////////////////////////////////////////////////////////
+    ); `; // ////////////////////////////////////////////////////////
 
 
 exports.userAddressInsertOrUpdate = userAddressInsertOrUpdate;
@@ -353,7 +353,7 @@ const userProviderAssignmentParamValues = (queryNumber, id, reservationId, recur
       @userProviderId_${queryNumber} = ${id},
       @reservationId_${queryNumber} = ${reservationId},
       @recurrencyNumber_${queryNumber} = ${recurrencyNumber}
-      ; $$`;
+      ;`;
 
 exports.userProviderAssignmentParamValues = userProviderAssignmentParamValues;
 
@@ -361,7 +361,7 @@ const userProviderAssignmentDelete = queryNumber => ` CALL userProviderAssignmen
     @userProviderId_${queryNumber},
     @reservationId_${queryNumber},
     @recurrencyNumber_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.userProviderAssignmentDelete = userProviderAssignmentDelete;
 
@@ -369,7 +369,7 @@ const userProviderAssignmentInsert = queryNumber => ` CALL userProviderAssignmen
     @userProviderId_${queryNumber},
     @reservationId_${queryNumber},
     @recurrencyNumber_${queryNumber}
-    ); $$ `; // /////////////////////////////////////////////////////
+    ); `; // /////////////////////////////////////////////////////
 
 
 exports.userProviderAssignmentInsert = userProviderAssignmentInsert;
@@ -382,7 +382,7 @@ const userDomainParamValues = (queryNumber, id, firstname, lastname, dateOfBirth
     @gender_${queryNumber} = '${gender}', 
     @email_${queryNumber} = '${email}', 
     @contactNumber_${queryNumber} = '${contactNumber}'
-    ; $$`;
+    ;`;
 
 exports.userDomainParamValues = userDomainParamValues;
 
@@ -394,7 +394,7 @@ const userInsert = queryNumber => ` CALL userInsert(
     @gender_${queryNumber},
     @email_${queryNumber},
     @contactNumber_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.userInsert = userInsert;
 
@@ -406,6 +406,6 @@ const userUpdate = queryNumber => ` CALL userUpdate(
     @gender_${queryNumber},
     @email_${queryNumber},
     @contactNumber_${queryNumber}
-    ); $$ `;
+    ); `;
 
 exports.userUpdate = userUpdate;

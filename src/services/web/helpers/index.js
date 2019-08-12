@@ -14,7 +14,7 @@ export const getWhere = (queryObject) => {
       output = output.concat(' AND ');
     }
 
-    if (typeof queryObject[condition] === 'string') {
+    if (typeof queryObject[condition] !== 'object') {
       const value = `${typeof queryObject[condition] === 'string' ? `'${queryObject[condition]}'` : `${queryObject[condition]}`}`;
       output = output.concat(` ${condition} = ${value}`);
     } else {
