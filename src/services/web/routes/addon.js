@@ -31,9 +31,9 @@ router.post('/', (req, res, next) => {
   const queryString = `${managementDomainParamValues(1, 0, 'addon', req.body.name, req.body.description)} 
   ${managementDomainInsert(1)}`;
 
-  connectWrapper(next, queryWrapper(queryString, (results) => {
-    res.status(201).json({ status: 'success', data: results[1].insertId });
-  }), { isReadOnlyConnection: false, multipleStatements: true });
+  connectWrapper(next, queryWrapper(queryString, () => queryWrapper('SELECT LAST_INSERT_ID() id', (idResult) => {
+    res.status(201).json({ status: 'success', data: idResult[0] });
+  })), { isReadOnlyConnection: false, multipleStatements: true });
 });
 
 // PUT /addon/{id} (update addon. ADMIN ONLY)

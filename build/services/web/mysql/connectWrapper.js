@@ -32,8 +32,7 @@ const connectWrapper = (errHandler, query, {
     user: isReadOnlyConnection ? process.env.MYSQL_READONLY || 'readonly_hs_user' : process.env.MYSQL_WRITER || 'writer_hs_user',
     password: process.env.MYSQL_PASSWORD || 'password',
     database: process.env.MYSQL_DATABASE || 'home_services',
-    multipleStatements,
-    supportBigNumbers: true
+    multipleStatements
   }); // error handlers
 
 
@@ -54,17 +53,31 @@ const connectWrapper = (errHandler, query, {
       connectionError(err);
     }
   });
-  query(connection, queryError, isTransaction);
-
-  if (isAutoEnd) {
-    connection.end(err => {
-      if (err) {
-        console.log(err);
-        console.log('Unable to close the connection to the database');
+  query(connection, queryError, {
+    isAutoEnd,
+    isTransaction
+  }, connectionToEnd => {
+    if (isAutoEnd) {
+      if (isTransaction) {
+        connectionToEnd.commit(null, err => {
+          if (err) connection.rollback();
+          connectionToEnd.end(_err => {
+            if (_err) {
+              console.log(_err);
+              console.log('Unable to close the connection to the database');
+            }
+          });
+        });
+      } else {
+        connectionToEnd.end(err => {
+          if (err) {
+            console.log(err);
+            console.log('Unable to close the connection to the database');
+          }
+        });
       }
-    });
-  }
-
+    }
+  });
   return connection;
 };
 

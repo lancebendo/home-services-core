@@ -45,12 +45,12 @@ router.get('/:id(\\d+)', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const queryString = `${(0, _procedures.managementDomainParamValues)(1, 0, 'addon', req.body.name, req.body.description)} 
   ${(0, _procedures.managementDomainInsert)(1)}`;
-  (0, _mysql.connectWrapper)(next, (0, _mysql.queryWrapper)(queryString, results => {
+  (0, _mysql.connectWrapper)(next, (0, _mysql.queryWrapper)(queryString, () => (0, _mysql.queryWrapper)('SELECT LAST_INSERT_ID() id', idResult => {
     res.status(201).json({
       status: 'success',
-      data: results[1].insertId
+      data: idResult[0]
     });
-  }), {
+  })), {
     isReadOnlyConnection: false,
     multipleStatements: true
   });

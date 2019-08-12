@@ -48,29 +48,35 @@ const connectWrapper = (
     }
   });
 
-  query(connection, queryError, isTransaction);
+  query(
+    connection,
+    queryError,
+    { isAutoEnd, isTransaction },
+    (connectionToEnd) => {
+      if (isAutoEnd) {
+        if (isTransaction) {
+          connectionToEnd.commit(null, (err) => {
+            if (err) connection.rollback();
 
-  if (isAutoEnd) {
-    if (isTransaction) {
-      connection.commit(null, (err) => {
-        if (err) connection.rollback();
-
-        connection.end((_err) => {
-          if (_err) {
-            console.log(_err);
-            console.log('Unable to close the connection to the database');
-          }
-        });
-      });
-    } else {
-      connection.end((err) => {
-        if (err) {
-          console.log(err);
-          console.log('Unable to close the connection to the database');
+            connectionToEnd.end((_err) => {
+              if (_err) {
+                console.log(_err);
+                console.log('Unable to close the connection to the database');
+              }
+            });
+          });
+        } else {
+          connectionToEnd.end((err) => {
+            if (err) {
+              console.log(err);
+              console.log('Unable to close the connection to the database');
+            }
+          });
         }
-      });
-    }
-  }
+      }
+    },
+  );
+
 
   return connection;
 };
