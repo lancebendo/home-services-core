@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _boom = require("boom");
 
@@ -16,20 +16,19 @@ var _boom = require("boom");
  when the user's request didn't match your schema, and when an external API failed.
 */
 // eslint-disable-next-line no-unused-vars
-var errorHandler = function errorHandler() {
-  return function (err, req, res, next) {
-    var _err = err;
-    if (!(0, _boom.isBoom)(_err)) _err = (0, _boom.boomify)(err); // if (process.env.NODE_ENV === 'production') {
-    //   if (err.isServer) logger.error(err.message);
-    //   else logger.debug(err.output.payload.message);
-    // } else logger.error(err.message);
+const errorHandler = () => (err, req, res, next) => {
+  console.log(err);
+  let _err = err;
+  if (!(0, _boom.isBoom)(_err)) _err = (0, _boom.boomify)(err); // if (process.env.NODE_ENV === 'production') {
+  //   if (err.isServer) logger.error(err.message);
+  //   else logger.debug(err.output.payload.message);
+  // } else logger.error(err.message);
 
-    res.status(_err.output.statusCode).json({
-      success: false,
-      payload: _err.output.payload
-    });
-  };
+  res.status(_err.output.statusCode).json({
+    success: false,
+    data: _err.output.payload
+  });
 };
 
 var _default = errorHandler;
-exports["default"] = _default;
+exports.default = _default;

@@ -7,271 +7,405 @@ exports.userUpdate = exports.userInsert = exports.userDomainParamValues = export
 
 /* eslint-disable no-tabs prefer-default-export */
 // /////////////////////////////////////////////
-var addressDomainParamValues = function addressDomainParamValues(queryNumber, id, province, city, barangay, roomNumber, bldgNumber, zip, landmark) {
-  return "SET \n    @addressId_".concat(queryNumber, " = ").concat(id, ", \n    @province_").concat(queryNumber, " = '").concat(province, "', \n    @city_").concat(queryNumber, " = '").concat(city, "', \n    @barangay_").concat(queryNumber, " = '").concat(barangay, "', \n    @roomNumber_").concat(queryNumber, " = '").concat(roomNumber, "', \n    @bldgNumber_").concat(queryNumber, " = '").concat(bldgNumber, "', \n    @zip_").concat(queryNumber, " = '").concat(zip, "', \n    @landmark_").concat(queryNumber, " = '").concat(landmark, "'\n    ; $$");
-};
+const addressDomainParamValues = (queryNumber, id, province, city, barangay, roomNumber, bldgNumber, zip, landmark) => `SET 
+    @addressId_${queryNumber} = ${id}, 
+    @province_${queryNumber} = '${province}', 
+    @city_${queryNumber} = '${city}', 
+    @barangay_${queryNumber} = '${barangay}', 
+    @roomNumber_${queryNumber} = '${roomNumber}', 
+    @bldgNumber_${queryNumber} = '${bldgNumber}', 
+    @zip_${queryNumber} = '${zip}', 
+    @landmark_${queryNumber} = '${landmark}'
+    ; $$`;
 
 exports.addressDomainParamValues = addressDomainParamValues;
 
-var addressInsert = function addressInsert(queryNumber) {
-  return " CALL addressInsert(\n    @addressId_".concat(queryNumber, ", \n    @province_").concat(queryNumber, ", \n    @city_").concat(queryNumber, ", \n    @barangay_").concat(queryNumber, ", \n    @roomNumber_").concat(queryNumber, ", \n    @bldgNumber_").concat(queryNumber, ", \n    @zip_").concat(queryNumber, ", \n    @landmark_").concat(queryNumber, "\n    ); $$ ");
-};
+const addressInsert = queryNumber => ` CALL addressInsert(
+    @addressId_${queryNumber}, 
+    @province_${queryNumber}, 
+    @city_${queryNumber}, 
+    @barangay_${queryNumber}, 
+    @roomNumber_${queryNumber}, 
+    @bldgNumber_${queryNumber}, 
+    @zip_${queryNumber}, 
+    @landmark_${queryNumber}
+    ); $$ `;
 
 exports.addressInsert = addressInsert;
 
-var addressUpdate = function addressUpdate(queryNumber) {
-  return " CALL addressUpdate(\n    @addressId_".concat(queryNumber, ", \n    @province_").concat(queryNumber, ", \n    @city_").concat(queryNumber, ", \n    @barangay_").concat(queryNumber, ", \n    @roomNumber_").concat(queryNumber, ", \n    @bldgNumber_").concat(queryNumber, ", \n    @zip_").concat(queryNumber, ", \n    @landmark_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////////////////////////
+const addressUpdate = queryNumber => ` CALL addressUpdate(
+    @addressId_${queryNumber}, 
+    @province_${queryNumber}, 
+    @city_${queryNumber}, 
+    @barangay_${queryNumber}, 
+    @roomNumber_${queryNumber}, 
+    @bldgNumber_${queryNumber}, 
+    @zip_${queryNumber}, 
+    @landmark_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////////////////////////
 
 
 exports.addressUpdate = addressUpdate;
 
-var completedSessionAddonParamValues = function completedSessionAddonParamValues(queryNumber, id, serviceId, addonId) {
-  return "SET \n      @completedSessionId_".concat(queryNumber, " = ").concat(id, ", \n      @serviceId_").concat(queryNumber, " = ").concat(serviceId, ", \n      @addonId_").concat(queryNumber, " = ").concat(addonId, "\n      ; $$");
-};
+const completedSessionAddonParamValues = (queryNumber, id, serviceId, addonId) => `SET 
+      @completedSessionId_${queryNumber} = ${id}, 
+      @serviceId_${queryNumber} = ${serviceId}, 
+      @addonId_${queryNumber} = ${addonId}
+      ; $$`;
 
 exports.completedSessionAddonParamValues = completedSessionAddonParamValues;
 
-var completedSessionAddonDelete = function completedSessionAddonDelete(queryNumber) {
-  return " CALL completedSessionAddonDelete(\n    @completedSessionId_".concat(queryNumber, ", \n    @serviceId_").concat(queryNumber, ", \n    @addonId_").concat(queryNumber, "\n    ); $$ ");
-};
+const completedSessionAddonDelete = queryNumber => ` CALL completedSessionAddonDelete(
+    @completedSessionId_${queryNumber}, 
+    @serviceId_${queryNumber}, 
+    @addonId_${queryNumber}
+    ); $$ `;
 
 exports.completedSessionAddonDelete = completedSessionAddonDelete;
 
-var completedSessionServiceAddonInsert = function completedSessionServiceAddonInsert(queryNumber) {
-  return " CALL completedSessionServiceAddonInsert(\n    @completedSessionId_".concat(queryNumber, ", \n    @serviceId_").concat(queryNumber, ",\n    @addonId_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////////////////////
+const completedSessionServiceAddonInsert = queryNumber => ` CALL completedSessionServiceAddonInsert(
+    @completedSessionId_${queryNumber}, 
+    @serviceId_${queryNumber},
+    @addonId_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////////////////////
 
 
 exports.completedSessionServiceAddonInsert = completedSessionServiceAddonInsert;
 
-var completedSessionParamValues = function completedSessionParamValues(queryNumber, id, reservationId, recurrencyNumber, completedSessionDate, completedSessionNote) {
-  return "SET \n      @completedSessionId_".concat(queryNumber, " = ").concat(id, ", \n      @reservationId_").concat(queryNumber, " = ").concat(reservationId, ",\n      @recurrencyNumber_").concat(queryNumber, " = '").concat(recurrencyNumber, "', \n      @completedSessionDate_").concat(queryNumber, " = '").concat(completedSessionDate, "',\n      @completedSessionNote_").concat(queryNumber, " = '").concat(completedSessionNote, "'\n      ; $$");
-};
+const completedSessionParamValues = (queryNumber, id, reservationId, recurrencyNumber, completedSessionDate, completedSessionNote) => `SET 
+      @completedSessionId_${queryNumber} = ${id}, 
+      @reservationId_${queryNumber} = ${reservationId},
+      @recurrencyNumber_${queryNumber} = '${recurrencyNumber}', 
+      @completedSessionDate_${queryNumber} = '${completedSessionDate}',
+      @completedSessionNote_${queryNumber} = '${completedSessionNote}'
+      ; $$`;
 
 exports.completedSessionParamValues = completedSessionParamValues;
 
-var completedSessionInsert = function completedSessionInsert(queryNumber) {
-  return " CALL completedSessionInsert(\n    @completedSessionId_".concat(queryNumber, ", \n    @reservationId_").concat(queryNumber, ",\n    @recurrencyNumber_").concat(queryNumber, ", \n    @completedSessionDate_").concat(queryNumber, ",\n    @completedSessionNote_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////////////////
+const completedSessionInsert = queryNumber => ` CALL completedSessionInsert(
+    @completedSessionId_${queryNumber}, 
+    @reservationId_${queryNumber},
+    @recurrencyNumber_${queryNumber}, 
+    @completedSessionDate_${queryNumber},
+    @completedSessionNote_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////////////////
 
 
 exports.completedSessionInsert = completedSessionInsert;
 
-var completedSessionNoteParamValues = function completedSessionNoteParamValues(queryNumber, id, completedSessionNote) {
-  return "SET \n      @completedSessionId_".concat(queryNumber, " = ").concat(id, ", \n      @completedSessionNote_").concat(queryNumber, " = '").concat(completedSessionNote, "'\n      ; $$");
-};
+const completedSessionNoteParamValues = (queryNumber, id, completedSessionNote) => `SET 
+      @completedSessionId_${queryNumber} = ${id}, 
+      @completedSessionNote_${queryNumber} = '${completedSessionNote}'
+      ; $$`;
 
 exports.completedSessionNoteParamValues = completedSessionNoteParamValues;
 
-var completedSessionUpdateNote = function completedSessionUpdateNote(queryNumber) {
-  return " CALL completedSessionUpdateNote(\n    @completedSessionId_".concat(queryNumber, ", \n    @completedSessionNote_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////////////
+const completedSessionUpdateNote = queryNumber => ` CALL completedSessionUpdateNote(
+    @completedSessionId_${queryNumber}, 
+    @completedSessionNote_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////////////
 
 
 exports.completedSessionUpdateNote = completedSessionUpdateNote;
 
-var isActiveParamValues = function isActiveParamValues(queryNumber, domainType, domainId, isActive) {
-  return "SET \n      @domain_".concat(queryNumber, " = '").concat(domainType, "', \n      @domainId_").concat(queryNumber, " = ").concat(domainId, ",\n      @domainIsActive_").concat(queryNumber, " = ").concat(isActive, ",\n      ; $$");
-};
+const isActiveParamValues = (queryNumber, domainType, domainId, isActive) => `SET 
+      @domain_${queryNumber} = '${domainType}', 
+      @domainId_${queryNumber} = ${domainId},
+      @domainIsActive_${queryNumber} = ${isActive},
+      ; $$`;
 
 exports.isActiveParamValues = isActiveParamValues;
 
-var isActiveUpdate = function isActiveUpdate(queryNumber) {
-  return " CALL isActiveUpdate(\n    @domain_".concat(queryNumber, ", \n    @domainId_").concat(queryNumber, ",\n    @domainIsActive_").concat(queryNumber, "\n    ); $$ ");
-}; // /////////////////////////////////////////////
+const isActiveUpdate = queryNumber => ` CALL isActiveUpdate(
+    @domain_${queryNumber}, 
+    @domainId_${queryNumber},
+    @domainIsActive_${queryNumber}
+    ); $$ `; // /////////////////////////////////////////////
 
 
 exports.isActiveUpdate = isActiveUpdate;
 
-var managementDomainParamValues = function managementDomainParamValues(queryNumber, id, domainType, domainName, description) {
-  return "SET \n      @managementDomainId_".concat(queryNumber, " = ").concat(id, ", \n      @managementDomainType_").concat(queryNumber, " = '").concat(domainType, "',\n      @managementDomainName_").concat(queryNumber, " = '").concat(domainName, "',\n      @managementDomainDescription_").concat(queryNumber, " = '").concat(description, "'\n      ; $$");
-};
+const managementDomainParamValues = (queryNumber, id, domainType, domainName, description) => `SET 
+      @managementDomainId_${queryNumber} = ${id}, 
+      @managementDomainType_${queryNumber} = '${domainType}',
+      @managementDomainName_${queryNumber} = '${domainName}',
+      @managementDomainDescription_${queryNumber} = '${description}'
+      ;`;
 
 exports.managementDomainParamValues = managementDomainParamValues;
 
-var managementDomainInsert = function managementDomainInsert(queryNumber) {
-  return " CALL managementDomainInsert(\n    @managementDomainId_".concat(queryNumber, ", \n    @managementDomainType_").concat(queryNumber, ",\n    @managementDomainName_").concat(queryNumber, ",\n    @managementDomainDescription_").concat(queryNumber, "\n    ); $$ ");
-};
+const managementDomainInsert = queryNumber => ` CALL managementDomainInsert(
+    @managementDomainId_${queryNumber}, 
+    @managementDomainType_${queryNumber},
+    @managementDomainName_${queryNumber},
+    @managementDomainDescription_${queryNumber}
+    );`;
 
 exports.managementDomainInsert = managementDomainInsert;
 
-var managementDomainUpdate = function managementDomainUpdate(queryNumber) {
-  return " CALL managementDomainUpdate(\n    @managementDomainId_".concat(queryNumber, ", \n    @managementDomainType_").concat(queryNumber, ",\n    @managementDomainName_").concat(queryNumber, ",\n    @managementDomainDescription_").concat(queryNumber, "\n    ); $$ ");
-}; // //////////////////////////////////////////
+const managementDomainUpdate = queryNumber => ` CALL managementDomainUpdate(
+    @managementDomainId_${queryNumber}, 
+    @managementDomainType_${queryNumber},
+    @managementDomainName_${queryNumber},
+    @managementDomainDescription_${queryNumber}
+    ); $$ `; // //////////////////////////////////////////
 
 
 exports.managementDomainUpdate = managementDomainUpdate;
 
-var managementDomainRateParamValues = function managementDomainRateParamValues(queryNumber, id, domainId, domainType, rate, rateOperator, byPercentage) {
-  return "SET \n      @managementDomainRateId_".concat(queryNumber, " = ").concat(id, ",\n      @managementDomainId_").concat(queryNumber, " = ").concat(domainId, ", \n      @managementDomainType_").concat(queryNumber, " = '").concat(domainType, "',\n      @managementDomainRate_").concat(queryNumber, " = ").concat(rate, ",\n      @managementDomainRateOperator_").concat(queryNumber, " = ").concat(rateOperator, ",\n      @mangementDomainRateByPercentage_").concat(queryNumber, " = ").concat(byPercentage, "\n      ; $$");
-};
+const managementDomainRateParamValues = (queryNumber, id, domainId, domainType, rate, rateOperator, byPercentage) => `SET 
+      @managementDomainRateId_${queryNumber} = ${id},
+      @managementDomainId_${queryNumber} = ${domainId}, 
+      @managementDomainType_${queryNumber} = '${domainType}',
+      @managementDomainRate_${queryNumber} = ${rate},
+      @managementDomainRateOperator_${queryNumber} = ${rateOperator},
+      @mangementDomainRateByPercentage_${queryNumber} = ${byPercentage}
+      ; $$`;
 
 exports.managementDomainRateParamValues = managementDomainRateParamValues;
 
-var managementDomainRateInsert = function managementDomainRateInsert(queryNumber) {
-  return " CALL managementDomainRateInsert(\n    @managementDomainRateId_".concat(queryNumber, ", \n    @managementDomainId_").concat(queryNumber, ", \n    @managementDomainType_").concat(queryNumber, ",\n    @managementDomainRate_").concat(queryNumber, ",\n    @managementDomainRateOperator_").concat(queryNumber, ",\n    @mangementDomainRateByPercentage_").concat(queryNumber, "\n    ); $$ ");
-}; // //////////////////////////////////////////////////////
+const managementDomainRateInsert = queryNumber => ` CALL managementDomainRateInsert(
+    @managementDomainRateId_${queryNumber}, 
+    @managementDomainId_${queryNumber}, 
+    @managementDomainType_${queryNumber},
+    @managementDomainRate_${queryNumber},
+    @managementDomainRateOperator_${queryNumber},
+    @mangementDomainRateByPercentage_${queryNumber}
+    ); $$ `; // //////////////////////////////////////////////////////
 
 
 exports.managementDomainRateInsert = managementDomainRateInsert;
 
-var promoApplyParamValues = function promoApplyParamValues(queryNumber, id, domainType, domainId, promoId, startDate, endDate) {
-  return "SET \n      @appliedPromoId_".concat(queryNumber, " = ").concat(id, ", \n      @promoDomainType_").concat(queryNumber, " = '").concat(domainType, "',\n      @promoDomainId_").concat(queryNumber, " = ").concat(domainId, ",\n      @promoId_").concat(queryNumber, " = ").concat(promoId, ",\n      @promoStartDate_").concat(queryNumber, " = '").concat(startDate, "',\n      @promoEndDate_").concat(queryNumber, " = '").concat(endDate, "'\n      ; $$");
-};
+const promoApplyParamValues = (queryNumber, id, domainType, domainId, promoId, startDate, endDate) => `SET 
+      @appliedPromoId_${queryNumber} = ${id}, 
+      @promoDomainType_${queryNumber} = '${domainType}',
+      @promoDomainId_${queryNumber} = ${domainId},
+      @promoId_${queryNumber} = ${promoId},
+      @promoStartDate_${queryNumber} = '${startDate}',
+      @promoEndDate_${queryNumber} = '${endDate}'
+      ; $$`;
 
 exports.promoApplyParamValues = promoApplyParamValues;
 
-var promoApply = function promoApply(queryNumber) {
-  return " CALL promoApply(\n    @appliedPromoId_".concat(queryNumber, ", \n    @promoDomainType_").concat(queryNumber, ",\n    @promoDomainId_").concat(queryNumber, ",\n    @promoId_").concat(queryNumber, ",\n    @promoStartDate_").concat(queryNumber, ",\n    @promoEndDate_").concat(queryNumber, "\n    ); $$ ");
-}; // ///////////////////////////////////////////////////
+const promoApply = queryNumber => ` CALL promoApply(
+    @appliedPromoId_${queryNumber}, 
+    @promoDomainType_${queryNumber},
+    @promoDomainId_${queryNumber},
+    @promoId_${queryNumber},
+    @promoStartDate_${queryNumber},
+    @promoEndDate_${queryNumber}
+    ); $$ `; // ///////////////////////////////////////////////////
 
 
 exports.promoApply = promoApply;
 
-var promoDeleteParamValues = function promoDeleteParamValues(queryNumber, id, domainId) {
-  return "SET \n      @appliedPromoId_".concat(queryNumber, " = ").concat(id, ",\n      @promoDomainId_").concat(queryNumber, " = ").concat(domainId, "\n      ; $$");
-};
+const promoDeleteParamValues = (queryNumber, id, domainId) => `SET 
+      @appliedPromoId_${queryNumber} = ${id},
+      @promoDomainId_${queryNumber} = ${domainId}
+      ; $$`;
 
 exports.promoDeleteParamValues = promoDeleteParamValues;
 
-var promoDelete = function promoDelete(queryNumber) {
-  return " CALL promoDelete(\n    @appliedPromoId_".concat(queryNumber, ", \n    @promoDomainId_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////
+const promoDelete = queryNumber => ` CALL promoDelete(
+    @appliedPromoId_${queryNumber}, 
+    @promoDomainId_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////
 
 
 exports.promoDelete = promoDelete;
 
-var promoUpdateParamValues = function promoUpdateParamValues(queryNumber, id, domainType, startDate, endDate) {
-  return "SET \n      @appliedPromoId_".concat(queryNumber, " = ").concat(id, ", \n      @promoDomainType_").concat(queryNumber, " = '").concat(domainType, "',\n      @promoStartDate_").concat(queryNumber, " = '").concat(startDate, "',\n      @promoEndDate_").concat(queryNumber, " = '").concat(endDate, "'\n      ; $$");
-};
+const promoUpdateParamValues = (queryNumber, id, domainType, startDate, endDate) => `SET 
+      @appliedPromoId_${queryNumber} = ${id}, 
+      @promoDomainType_${queryNumber} = '${domainType}',
+      @promoStartDate_${queryNumber} = '${startDate}',
+      @promoEndDate_${queryNumber} = '${endDate}'
+      ; $$`;
 
 exports.promoUpdateParamValues = promoUpdateParamValues;
 
-var promoUpdate = function promoUpdate(queryNumber) {
-  return " CALL promoUpdate(\n    @appliedPromoId_".concat(queryNumber, ", \n    @promoDomainType_").concat(queryNumber, ",\n    @promoStartDate_").concat(queryNumber, ",\n    @promoEndDate_").concat(queryNumber, "\n    ); $$ ");
-}; // //////////////////////////////////////
+const promoUpdate = queryNumber => ` CALL promoUpdate(
+    @appliedPromoId_${queryNumber}, 
+    @promoDomainType_${queryNumber},
+    @promoStartDate_${queryNumber},
+    @promoEndDate_${queryNumber}
+    ); $$ `; // //////////////////////////////////////
 
 
 exports.promoUpdate = promoUpdate;
 
-var reservationAddonParamValues = function reservationAddonParamValues(queryNumber, reservationId, serviceId, addonId) {
-  return "SET \n      @reservationId_".concat(queryNumber, " = ").concat(reservationId, ", \n      @serviceId_").concat(queryNumber, " = ").concat(serviceId, ",\n      @addonId_").concat(queryNumber, " = ").concat(addonId, "\n      ); $$ ");
-};
+const reservationAddonParamValues = (queryNumber, reservationId, serviceId, addonId) => `SET 
+      @reservationId_${queryNumber} = ${reservationId}, 
+      @serviceId_${queryNumber} = ${serviceId},
+      @addonId_${queryNumber} = ${addonId}
+      ); $$ `;
 
 exports.reservationAddonParamValues = reservationAddonParamValues;
 
-var reservationAddonDelete = function reservationAddonDelete(queryNumber) {
-  return " CALL reservationAddonDelete(\n    @reservationId_".concat(queryNumber, ", \n    @serviceId_").concat(queryNumber, ",\n    @addonId_").concat(queryNumber, "\n    ); $$ ");
-};
+const reservationAddonDelete = queryNumber => ` CALL reservationAddonDelete(
+    @reservationId_${queryNumber}, 
+    @serviceId_${queryNumber},
+    @addonId_${queryNumber}
+    ); $$ `;
 
 exports.reservationAddonDelete = reservationAddonDelete;
 
-var reservationAddonInsert = function reservationAddonInsert(queryNumber) {
-  return " CALL reservationAddonInsert(\n    @reservationId_".concat(queryNumber, ", \n    @serviceId_").concat(queryNumber, ",\n    @addonId_").concat(queryNumber, "\n    ); $$ ");
-}; // /////////////////////////////////////////
+const reservationAddonInsert = queryNumber => ` CALL reservationAddonInsert(
+    @reservationId_${queryNumber}, 
+    @serviceId_${queryNumber},
+    @addonId_${queryNumber}
+    ); $$ `; // /////////////////////////////////////////
 
 
 exports.reservationAddonInsert = reservationAddonInsert;
 
-var reservationParamValues = function reservationParamValues(queryNumber, id, userId, addressId, status, initialDate, additionalNote) {
-  return "SET \n      @reservationId_".concat(queryNumber, " = ").concat(id, ",\n      @userId_").concat(queryNumber, " = ").concat(userId, ",\n      @addressId_").concat(queryNumber, " = ").concat(addressId, ",\n      @reservationStatus_").concat(queryNumber, " = ").concat(status, ",\n      @reservationInitialDate_").concat(queryNumber, " = '").concat(initialDate, "',\n      @reservationAdditionalNote_").concat(queryNumber, " = '").concat(additionalNote, "'\n      ; $$");
-};
+const reservationParamValues = (queryNumber, id, userId, addressId, status, initialDate, additionalNote) => `SET 
+      @reservationId_${queryNumber} = ${id},
+      @userId_${queryNumber} = ${userId},
+      @addressId_${queryNumber} = ${addressId},
+      @reservationStatus_${queryNumber} = ${status},
+      @reservationInitialDate_${queryNumber} = '${initialDate}',
+      @reservationAdditionalNote_${queryNumber} = '${additionalNote}'
+      ; $$`;
 
 exports.reservationParamValues = reservationParamValues;
 
-var reservationInsert = function reservationInsert(queryNumber) {
-  return " CALL reservationInsert(\n    @reservationId_".concat(queryNumber, ", \n    @userId_").concat(queryNumber, ",\n    @addressId_").concat(queryNumber, ",\n    @reservationStatus_").concat(queryNumber, ",\n    @reservationInitialDate_").concat(queryNumber, ",\n    @reservationAdditionalNote_").concat(queryNumber, "\n    ); $$ ");
-};
+const reservationInsert = queryNumber => ` CALL reservationInsert(
+    @reservationId_${queryNumber}, 
+    @userId_${queryNumber},
+    @addressId_${queryNumber},
+    @reservationStatus_${queryNumber},
+    @reservationInitialDate_${queryNumber},
+    @reservationAdditionalNote_${queryNumber}
+    ); $$ `;
 
 exports.reservationInsert = reservationInsert;
 
-var reservationUpdate = function reservationUpdate(queryNumber) {
-  return " CALL reservationUpdate(\n    @reservationId_".concat(queryNumber, ",\n    @addressId_").concat(queryNumber, ",\n    @reservationStatus_").concat(queryNumber, ",\n    @reservationInitialDate_").concat(queryNumber, ",\n    @reservationAdditionalNote_").concat(queryNumber, "\n    ); $$ ");
-}; // /////////////////////////////////
+const reservationUpdate = queryNumber => ` CALL reservationUpdate(
+    @reservationId_${queryNumber},
+    @addressId_${queryNumber},
+    @reservationStatus_${queryNumber},
+    @reservationInitialDate_${queryNumber},
+    @reservationAdditionalNote_${queryNumber}
+    ); $$ `; // /////////////////////////////////
 
 
 exports.reservationUpdate = reservationUpdate;
 
-var serviceAddonParamValues = function serviceAddonParamValues(queryNumber, serviceId, addonId) {
-  return "SET \n      @serviceId_".concat(queryNumber, " = ").concat(serviceId, ",\n      @addonId_").concat(queryNumber, " = ").concat(addonId, "\n      ; $$");
-};
+const serviceAddonParamValues = (queryNumber, serviceId, addonId) => `SET 
+      @serviceId_${queryNumber} = ${serviceId},
+      @addonId_${queryNumber} = ${addonId}
+      ; $$`;
 
 exports.serviceAddonParamValues = serviceAddonParamValues;
 
-var serviceAddonDelete = function serviceAddonDelete(queryNumber) {
-  return " CALL serviceAddonDelete(\n    @serviceId_".concat(queryNumber, ",\n    @addonId_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////////
+const serviceAddonDelete = queryNumber => ` CALL serviceAddonDelete(
+    @serviceId_${queryNumber},
+    @addonId_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////////
 
 
 exports.serviceAddonDelete = serviceAddonDelete;
 
-var userAccessLevelParamValues = function userAccessLevelParamValues(queryNumber, userId, userAccessLevelIsBasic, userAccessLevelIsProvider, userAccessLevelIsAdmin) {
-  return "SET \n      @userId_".concat(queryNumber, " = ").concat(userId, ",\n      @userAccessLevelIsBasic_").concat(queryNumber, " = ").concat(userAccessLevelIsBasic, ",\n      @userAccessLevelIsProvider_").concat(queryNumber, " = ").concat(userAccessLevelIsProvider, ",\n      @userAccessLevelIsAdmin_").concat(queryNumber, " = ").concat(userAccessLevelIsAdmin, "\n      ); $$ ");
-};
+const userAccessLevelParamValues = (queryNumber, userId, userAccessLevelIsBasic, userAccessLevelIsProvider, userAccessLevelIsAdmin) => `SET 
+      @userId_${queryNumber} = ${userId},
+      @userAccessLevelIsBasic_${queryNumber} = ${userAccessLevelIsBasic},
+      @userAccessLevelIsProvider_${queryNumber} = ${userAccessLevelIsProvider},
+      @userAccessLevelIsAdmin_${queryNumber} = ${userAccessLevelIsAdmin}
+      ); $$ `;
 
 exports.userAccessLevelParamValues = userAccessLevelParamValues;
 
-var userAccessLevelUpdate = function userAccessLevelUpdate(queryNumber) {
-  return " CALL userAccessLevelUpdate(\n    @userId_".concat(queryNumber, ",\n    @userAccessLevelIsBasic_").concat(queryNumber, ",\n    @userAccessLevelIsProvider_").concat(queryNumber, ",\n    @userAccessLevelIsAdmin_").concat(queryNumber, "\n    ); $$ ");
-}; // ///////////////////////////////
+const userAccessLevelUpdate = queryNumber => ` CALL userAccessLevelUpdate(
+    @userId_${queryNumber},
+    @userAccessLevelIsBasic_${queryNumber},
+    @userAccessLevelIsProvider_${queryNumber},
+    @userAccessLevelIsAdmin_${queryNumber}
+    ); $$ `; // ///////////////////////////////
 
 
 exports.userAccessLevelUpdate = userAccessLevelUpdate;
 
-var userAddressParamValues = function userAddressParamValues(queryNumber, id, reservationId) {
-  var recurrencyNumber = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'NULL';
-  return "SET \n      @userId_".concat(queryNumber, " = ").concat(id, ",\n      @addressId_").concat(queryNumber, " = ").concat(reservationId, ",\n      @userAddressIsDefault_").concat(queryNumber, " = ").concat(recurrencyNumber, "\n      ; $$");
-};
+const userAddressParamValues = (queryNumber, id, reservationId, recurrencyNumber = 'NULL') => `SET 
+      @userId_${queryNumber} = ${id},
+      @addressId_${queryNumber} = ${reservationId},
+      @userAddressIsDefault_${queryNumber} = ${recurrencyNumber}
+      ; $$`;
 
 exports.userAddressParamValues = userAddressParamValues;
 
-var userAddressDelete = function userAddressDelete(queryNumber) {
-  return " CALL userAddressDelete(\n    @userId_".concat(queryNumber, ",\n    @addressId_").concat(queryNumber, "\n    ); $$ ");
-};
+const userAddressDelete = queryNumber => ` CALL userAddressDelete(
+    @userId_${queryNumber},
+    @addressId_${queryNumber}
+    ); $$ `;
 
 exports.userAddressDelete = userAddressDelete;
 
-var userAddressInsertOrUpdate = function userAddressInsertOrUpdate(queryNumber) {
-  return " CALL userAddressInsertOrUpdate(\n    @userId_".concat(queryNumber, ",\n    @addressId_").concat(queryNumber, ",\n    @userAddressIsDefault_").concat(queryNumber, "\n    ); $$ ");
-}; // ////////////////////////////////////////////////////////
+const userAddressInsertOrUpdate = queryNumber => ` CALL userAddressInsertOrUpdate(
+    @userId_${queryNumber},
+    @addressId_${queryNumber},
+    @userAddressIsDefault_${queryNumber}
+    ); $$ `; // ////////////////////////////////////////////////////////
 
 
 exports.userAddressInsertOrUpdate = userAddressInsertOrUpdate;
 
-var userProviderAssignmentParamValues = function userProviderAssignmentParamValues(queryNumber, id, reservationId, recurrencyNumber) {
-  return "SET \n      @userProviderId_".concat(queryNumber, " = ").concat(id, ",\n      @reservationId_").concat(queryNumber, " = ").concat(reservationId, ",\n      @recurrencyNumber_").concat(queryNumber, " = ").concat(recurrencyNumber, "\n      ; $$");
-};
+const userProviderAssignmentParamValues = (queryNumber, id, reservationId, recurrencyNumber) => `SET 
+      @userProviderId_${queryNumber} = ${id},
+      @reservationId_${queryNumber} = ${reservationId},
+      @recurrencyNumber_${queryNumber} = ${recurrencyNumber}
+      ; $$`;
 
 exports.userProviderAssignmentParamValues = userProviderAssignmentParamValues;
 
-var userProviderAssignmentDelete = function userProviderAssignmentDelete(queryNumber) {
-  return " CALL userProviderAssignmentDelete(\n    @userProviderId_".concat(queryNumber, ",\n    @reservationId_").concat(queryNumber, ",\n    @recurrencyNumber_").concat(queryNumber, "\n    ); $$ ");
-};
+const userProviderAssignmentDelete = queryNumber => ` CALL userProviderAssignmentDelete(
+    @userProviderId_${queryNumber},
+    @reservationId_${queryNumber},
+    @recurrencyNumber_${queryNumber}
+    ); $$ `;
 
 exports.userProviderAssignmentDelete = userProviderAssignmentDelete;
 
-var userProviderAssignmentInsert = function userProviderAssignmentInsert(queryNumber) {
-  return " CALL userProviderAssignmentInsert(\n    @userProviderId_".concat(queryNumber, ",\n    @reservationId_").concat(queryNumber, ",\n    @recurrencyNumber_").concat(queryNumber, "\n    ); $$ ");
-}; // /////////////////////////////////////////////////////
+const userProviderAssignmentInsert = queryNumber => ` CALL userProviderAssignmentInsert(
+    @userProviderId_${queryNumber},
+    @reservationId_${queryNumber},
+    @recurrencyNumber_${queryNumber}
+    ); $$ `; // /////////////////////////////////////////////////////
 
 
 exports.userProviderAssignmentInsert = userProviderAssignmentInsert;
 
-var userDomainParamValues = function userDomainParamValues(queryNumber, id, firstname, lastname, dateOfBirth, gender, email, contactNumber) {
-  return "SET \n    @userId_".concat(queryNumber, " = ").concat(id, ", \n    @firstname_").concat(queryNumber, " = '").concat(firstname, "', \n    @lastname_").concat(queryNumber, " = '").concat(lastname, "', \n    @dateOfBirth_").concat(queryNumber, " = '").concat(dateOfBirth, "', \n    @gender_").concat(queryNumber, " = '").concat(gender, "', \n    @email_").concat(queryNumber, " = '").concat(email, "', \n    @contactNumber_").concat(queryNumber, " = '").concat(contactNumber, "'\n    ; $$");
-};
+const userDomainParamValues = (queryNumber, id, firstname, lastname, dateOfBirth, gender, email, contactNumber) => `SET 
+    @userId_${queryNumber} = ${id}, 
+    @firstname_${queryNumber} = '${firstname}', 
+    @lastname_${queryNumber} = '${lastname}', 
+    @dateOfBirth_${queryNumber} = '${dateOfBirth}', 
+    @gender_${queryNumber} = '${gender}', 
+    @email_${queryNumber} = '${email}', 
+    @contactNumber_${queryNumber} = '${contactNumber}'
+    ; $$`;
 
 exports.userDomainParamValues = userDomainParamValues;
 
-var userInsert = function userInsert(queryNumber) {
-  return " CALL userInsert(\n    @userId_".concat(queryNumber, ",\n    @firstname_").concat(queryNumber, ",\n    @lastname_").concat(queryNumber, ",\n    @dateOfBirth_").concat(queryNumber, ",\n    @gender_").concat(queryNumber, ",\n    @email_").concat(queryNumber, ",\n    @contactNumber_").concat(queryNumber, "\n    ); $$ ");
-};
+const userInsert = queryNumber => ` CALL userInsert(
+    @userId_${queryNumber},
+    @firstname_${queryNumber},
+    @lastname_${queryNumber},
+    @dateOfBirth_${queryNumber},
+    @gender_${queryNumber},
+    @email_${queryNumber},
+    @contactNumber_${queryNumber}
+    ); $$ `;
 
 exports.userInsert = userInsert;
 
-var userUpdate = function userUpdate(queryNumber) {
-  return " CALL userUpdate(\n    @userId_".concat(queryNumber, ",\n    @firstname_").concat(queryNumber, ",\n    @lastname_").concat(queryNumber, ",\n    @dateOfBirth_").concat(queryNumber, ",\n    @gender_").concat(queryNumber, ",\n    @email_").concat(queryNumber, ",\n    @contactNumber_").concat(queryNumber, "\n    ); $$ ");
-};
+const userUpdate = queryNumber => ` CALL userUpdate(
+    @userId_${queryNumber},
+    @firstname_${queryNumber},
+    @lastname_${queryNumber},
+    @dateOfBirth_${queryNumber},
+    @gender_${queryNumber},
+    @email_${queryNumber},
+    @contactNumber_${queryNumber}
+    ); $$ `;
 
 exports.userUpdate = userUpdate;

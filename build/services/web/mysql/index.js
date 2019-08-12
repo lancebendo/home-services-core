@@ -3,29 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "createConnection", {
+Object.defineProperty(exports, "connectWrapper", {
   enumerable: true,
-  get: function get() {
-    return _createConnection["default"];
+  get: function () {
+    return _connectWrapper.default;
   }
 });
-Object.defineProperty(exports, "procedures", {
+Object.defineProperty(exports, "queryWrapper", {
   enumerable: true,
-  get: function get() {
-    return _procedures["default"];
-  }
-});
-Object.defineProperty(exports, "views", {
-  enumerable: true,
-  get: function get() {
-    return _views["default"];
+  get: function () {
+    return _queryWrapper.default;
   }
 });
 
-var _createConnection = _interopRequireDefault(require("./createConnection"));
+var _connectWrapper = _interopRequireDefault(require("./connectWrapper"));
 
-var _procedures = _interopRequireDefault(require("./procedures"));
+var _queryWrapper = _interopRequireDefault(require("./queryWrapper"));
 
-var _views = _interopRequireDefault(require("./views"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

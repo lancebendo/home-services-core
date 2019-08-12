@@ -5,38 +5,38 @@ Object.defineProperty(exports, "__esModule", {
 });
 Object.defineProperty(exports, "addon", {
   enumerable: true,
-  get: function get() {
-    return _addon["default"];
+  get: function () {
+    return _addon.default;
   }
 });
 Object.defineProperty(exports, "completed", {
   enumerable: true,
-  get: function get() {
-    return _completed["default"];
+  get: function () {
+    return _completed.default;
   }
 });
 Object.defineProperty(exports, "promo", {
   enumerable: true,
-  get: function get() {
-    return _promo["default"];
+  get: function () {
+    return _promo.default;
   }
 });
 Object.defineProperty(exports, "reservation", {
   enumerable: true,
-  get: function get() {
-    return _reservation["default"];
+  get: function () {
+    return _reservation.default;
   }
 });
 Object.defineProperty(exports, "service", {
   enumerable: true,
-  get: function get() {
-    return _service["default"];
+  get: function () {
+    return _service.default;
   }
 });
 Object.defineProperty(exports, "user", {
   enumerable: true,
-  get: function get() {
-    return _user["default"];
+  get: function () {
+    return _user.default;
   }
 });
 
@@ -52,4 +52,4 @@ var _service = _interopRequireDefault(require("./service"));
 
 var _user = _interopRequireDefault(require("./user"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

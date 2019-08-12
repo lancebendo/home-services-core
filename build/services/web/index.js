@@ -2,9 +2,11 @@
 
 var _express = _interopRequireDefault(require("express"));
 
-var _routes = require("./routes");
+var _errorHandler = _interopRequireDefault(require("./middlewares/errorHandler"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _urlNotFoundHandler = _interopRequireDefault(require("./middlewares/urlNotFoundHandler"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // setup dependencies
 // routes
@@ -13,12 +15,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // setup passport
 // setup api key
 // setup app
-var app = (0, _express["default"])();
-var PORT = process.env.PORT || 3000; // routes setup
-
-app.route('/addon', _routes.addon); // graceful shutdown function
+const app = (0, _express.default)();
+const PORT = process.env.PORT || 3000;
+app.use((0, _urlNotFoundHandler.default)());
+app.use((0, _errorHandler.default)()); // graceful shutdown function
 // start app
 
-app.listen(PORT, function () {
-  return console.log("Listening to PORT #: ".concat(PORT, "."));
-});
+app.listen(PORT, () => console.log(`Listening to PORT #: ${PORT}.`));

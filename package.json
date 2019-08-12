@@ -4,8 +4,10 @@
   "description": "Back-end microservices for home-services app",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -r build && mkdir build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/babel src -d build",
+    "build-server": "./node_modules/.bin/babel src -d build",
+    "build": "npm run clean && npm run build-server",
     "start": "npm run build && node build",
     "nodemon": "nodemon build"
   },
@@ -25,6 +27,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
+    "body-parser": "^1.19.0",
     "boom": "^7.3.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",

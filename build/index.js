@@ -2,9 +2,15 @@
 
 var _express = _interopRequireDefault(require("express"));
 
+var _bodyParser = _interopRequireDefault(require("body-parser"));
+
 var _routes = require("./services/web/routes");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _errorHandler = _interopRequireDefault(require("./services/web/middlewares/errorHandler"));
+
+var _urlNotFoundHandler = _interopRequireDefault(require("./services/web/middlewares/urlNotFoundHandler"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import config from './config';
 // import mysql from './services/web/mysql';
@@ -82,12 +88,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // setup passport
 // setup api key
 // setup app
-var app = (0, _express["default"])();
-var PORT = process.env.PORT || 3000; // routes setup
+const app = (0, _express.default)();
+const PORT = process.env.PORT || 3000; // not sure kung false dapat yung extended.
 
-app.use('/addon', _routes.addon); // graceful shutdown function
+app.use(_bodyParser.default.urlencoded({
+  extended: false
+})); // routes setup
+
+app.use('/addon', _routes.addon);
+app.use((0, _urlNotFoundHandler.default)());
+app.use((0, _errorHandler.default)()); // graceful shutdown function
 // start app
 
-app.listen(PORT, function () {
-  return console.log("Listening to PORT #: ".concat(PORT, "."));
-});
+app.listen(PORT, () => console.log(`Listening to PORT #: ${PORT}.`));

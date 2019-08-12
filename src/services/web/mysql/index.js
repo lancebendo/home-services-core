@@ -1,5 +1,7 @@
-import createConnection from './createConnection';
-import procedures from './procedures';
-import views from './views';
+import connectWrapper from './connectWrapper';
+import queryWrapper from './queryWrapper';
 
-export { createConnection, procedures, views };
+
+export {
+  connectWrapper, queryWrapper,
+};

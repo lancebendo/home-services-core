@@ -2,8 +2,9 @@
 import express from 'express';
 
 // routes
-import { addon } from './routes';
 
+import errorHandler from './middlewares/errorHandler';
+import urlNotFoundHandler from './middlewares/urlNotFoundHandler';
 // setup database
 
 
@@ -20,8 +21,9 @@ import { addon } from './routes';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// routes setup
-app.route('/addon', addon);
+
+app.use(urlNotFoundHandler());
+app.use(errorHandler());
 
 // graceful shutdown function
 

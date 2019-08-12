@@ -11,6 +11,7 @@ import { boomify, isBoom } from 'boom';
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = () => (err, req, res, next) => {
+  console.log(err);
   let _err = err;
   if (!isBoom(_err)) _err = boomify(err);
 
@@ -19,7 +20,7 @@ const errorHandler = () => (err, req, res, next) => {
   //   else logger.debug(err.output.payload.message);
   // } else logger.error(err.message);
 
-  res.status(_err.output.statusCode).json({ success: false, payload: _err.output.payload });
+  res.status(_err.output.statusCode).json({ success: false, data: _err.output.payload });
 };
 
 export default errorHandler;

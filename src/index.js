@@ -89,10 +89,12 @@
 
 // setup dependencies
 import express from 'express';
+import bodyParser from 'body-parser';
 
 // routes
 import { addon } from './services/web/routes';
-
+import errorHandler from './services/web/middlewares/errorHandler';
+import urlNotFoundHandler from './services/web/middlewares/urlNotFoundHandler';
 // setup database
 
 
@@ -109,8 +111,15 @@ import { addon } from './services/web/routes';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// not sure kung false dapat yung extended.
+app.use(bodyParser.urlencoded({ extended: false }));
+
 // routes setup
 app.use('/addon', addon);
+
+app.use(urlNotFoundHandler());
+app.use(errorHandler());
+
 
 // graceful shutdown function
 

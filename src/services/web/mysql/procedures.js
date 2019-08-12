@@ -154,14 +154,14 @@ export const managementDomainParamValues = (
       @managementDomainType_${queryNumber} = '${domainType}',
       @managementDomainName_${queryNumber} = '${domainName}',
       @managementDomainDescription_${queryNumber} = '${description}'
-      ; $$`;
+      ;`;
 
 export const managementDomainInsert = queryNumber => ` CALL managementDomainInsert(
     @managementDomainId_${queryNumber}, 
     @managementDomainType_${queryNumber},
     @managementDomainName_${queryNumber},
     @managementDomainDescription_${queryNumber}
-    ); $$ `;
+    );`;
 
 export const managementDomainUpdate = queryNumber => ` CALL managementDomainUpdate(
     @managementDomainId_${queryNumber}, 
