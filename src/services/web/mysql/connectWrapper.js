@@ -1,5 +1,6 @@
 import mysql from 'mysql';
 import boom from 'boom';
+import { Promise } from 'bluebird';
 
 /*
 
@@ -10,6 +11,37 @@ import boom from 'boom';
   accept configuration if isreadonly, isautoend, etc.
 
 */
+
+// return queryWrapper(insertQuery(sdfwwfw), connection);
+
+
+export const connectWrapper2 = ({
+  isReadOnlyConnection = true,
+  isTransaction = false,
+  multipleStatements = false,
+}) => new Promise((resolve, reject) => {
+// create connection via env
+  const connection = mysql.createConnection({
+    host: process.env.MYSQL_HOST || 'localhost',
+    user: isReadOnlyConnection ? process.env.MYSQL_READONLY || 'readonly_hs_user' : process.env.MYSQL_WRITER || 'writer_hs_user',
+    password: process.env.MYSQL_PASSWORD || 'password',
+    database: process.env.MYSQL_DATABASE || 'home_services',
+    multipleStatements,
+  });
+
+  // bind error handler
+  connection.on('error', (err) => {
+    if (isTransaction) connection.rollback();
+    reject(err, connection);
+  });
+
+  connection.connect((err) => {
+    if (err) {
+      if (isTransaction) connection.rollback();
+      reject(err, connection);
+    } else resolve(connection);
+  });
+});
 
 const connectWrapper = (
   errHandler,

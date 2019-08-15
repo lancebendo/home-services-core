@@ -1,3 +1,15 @@
+import { Promise } from 'bluebird';
+
+
+export const queryWrapper2 = (connection, queryString) => new Promise((resolve, reject) => {
+  connection.query(queryString, (err, result) => {
+    if (err) reject(err, connection);
+    else {
+      resolve(connection, result);
+    }
+  });
+});
+
 const queryWrapper = (
   queryString,
   callback,

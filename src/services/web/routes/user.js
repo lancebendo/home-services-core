@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { dbConnect } from '../mysql';
+import { queryWrapper } from '../mysql';
 import { getWhere } from '../helpers';
 
 const router = express.Router();
@@ -12,28 +12,13 @@ const router = express.Router();
   LASTNAME = like or wildcard
   EMAIL = like or wildcard
   IS_ACTIVE = true or false */
-router.get('/', (req, res, next) => {
-  const response = {
-    status: 'failed',
-    data: [],
-  };
-
+router.get('/', (req, res) => {
   const queryString = `SELECT * FROM ADDON 
                     ${getWhere(req.query)} 
                     ORDER BY CREATED_DATE DESC`;
 
-  try {
-    dbConnect((connection) => {
-      connection.query(queryString, (err, results) => {
-        if (err) throw err;
-        response.data = results;
-      });
-    }, true, true);
-  } catch (err) {
-    next(err);
-  }
 
-  res.status(200).json(response);
+  res.status(200).json(queryString);
 });
 
 // GET /user/{id} (get user by id. doable to ADMIN or the user itself.)
