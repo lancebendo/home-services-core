@@ -61,56 +61,56 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `home_services`.`addon`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`addon` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(50) NULL DEFAULT NULL,
-  `description` VARCHAR(255) NULL DEFAULT NULL,
-  `is_active` TINYINT(3) UNSIGNED NOT NULL DEFAULT '1',
-  `created_date` DATETIME NULL DEFAULT NULL,
-  `last_updated_date` DATETIME NULL DEFAULT NULL,
-  `deleted_date` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- CREATE TABLE IF NOT EXISTS `home_services`.`addon` (
+--   `id` INT(11) NOT NULL AUTO_INCREMENT,
+--   `name` VARCHAR(50) NULL DEFAULT NULL,
+--   `description` VARCHAR(255) NULL DEFAULT NULL,
+--   `is_active` TINYINT(3) UNSIGNED NOT NULL DEFAULT '1',
+--   `created_date` DATETIME NULL DEFAULT NULL,
+--   `last_updated_date` DATETIME NULL DEFAULT NULL,
+--   `deleted_date` DATETIME NULL DEFAULT NULL,
+--   PRIMARY KEY (`id`))
+-- ENGINE = InnoDB
+-- DEFAULT CHARACTER SET = utf8mb4
+-- COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `home_services`.`addon_launch`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`addon_launch` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `addon_id` INT(11) NULL DEFAULT NULL,
-  `date` DATE NULL DEFAULT NULL,
-  `is_ended` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  INDEX `fkIdx_166` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_addon_launch`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- CREATE TABLE IF NOT EXISTS `home_services`.`addon_launch` (
+--   `id` INT(11) NOT NULL AUTO_INCREMENT,
+--   `addon_id` INT(11) NULL DEFAULT NULL,
+--   `date` DATE NULL DEFAULT NULL,
+--   `is_ended` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+--   PRIMARY KEY (`id`),
+--   INDEX `fkIdx_166` (`addon_id` ASC) VISIBLE,
+--   CONSTRAINT `FK_addon_addon_launch`
+--     FOREIGN KEY (`addon_id`)
+--     REFERENCES `home_services`.`addon` (`id`)
+--     ON DELETE CASCADE)
+-- ENGINE = InnoDB
+-- DEFAULT CHARACTER SET = utf8mb4
+-- COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `home_services`.`addon_log`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`addon_log` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `addon_id` INT(11) NULL DEFAULT NULL,
-  `date_time` DATETIME NULL DEFAULT NULL,
-  `info` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fkIdx_159` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_addon_log`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
-    ON DELETE SET NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- CREATE TABLE IF NOT EXISTS `home_services`.`addon_log` (
+--   `id` INT(11) NOT NULL AUTO_INCREMENT,
+--   `addon_id` INT(11) NULL DEFAULT NULL,
+--   `date_time` DATETIME NULL DEFAULT NULL,
+--   `info` VARCHAR(255) NULL DEFAULT NULL,
+--   PRIMARY KEY (`id`),
+--   INDEX `fkIdx_159` (`addon_id` ASC) VISIBLE,
+--   CONSTRAINT `FK_addon_addon_log`
+--     FOREIGN KEY (`addon_id`)
+--     REFERENCES `home_services`.`addon` (`id`)
+--     ON DELETE SET NULL)
+-- ENGINE = InnoDB
+-- DEFAULT CHARACTER SET = utf8mb4
+-- COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -133,46 +133,46 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `home_services`.`addon_promo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`addon_promo` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `addon_id` INT(11) NULL DEFAULT NULL,
-  `promo_id` INT(11) NULL DEFAULT NULL,
-  `start_date` DATE NULL DEFAULT NULL,
-  `end_date` DATE NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fkIdx_187` (`promo_id` ASC) VISIBLE,
-  INDEX `fkIdx_193` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_addon_promo`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
-    ON DELETE CASCADE,
-  CONSTRAINT `FK_promo_addon_promo`
-    FOREIGN KEY (`promo_id`)
-    REFERENCES `home_services`.`promo` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- CREATE TABLE IF NOT EXISTS `home_services`.`addon_promo` (
+--   `id` INT(11) NOT NULL AUTO_INCREMENT,
+--   `addon_id` INT(11) NULL DEFAULT NULL,
+--   `promo_id` INT(11) NULL DEFAULT NULL,
+--   `start_date` DATE NULL DEFAULT NULL,
+--   `end_date` DATE NULL DEFAULT NULL,
+--   PRIMARY KEY (`id`),
+--   INDEX `fkIdx_187` (`promo_id` ASC) VISIBLE,
+--   INDEX `fkIdx_193` (`addon_id` ASC) VISIBLE,
+--   CONSTRAINT `FK_addon_addon_promo`
+--     FOREIGN KEY (`addon_id`)
+--     REFERENCES `home_services`.`addon` (`id`)
+--     ON DELETE CASCADE,
+--   CONSTRAINT `FK_promo_addon_promo`
+--     FOREIGN KEY (`promo_id`)
+--     REFERENCES `home_services`.`promo` (`id`)
+--     ON DELETE CASCADE)
+-- ENGINE = InnoDB
+-- DEFAULT CHARACTER SET = utf8mb4
+-- COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `home_services`.`addon_rate`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`addon_rate` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `addon_id` INT(11) NULL DEFAULT NULL,
-  `set_date` DATE NULL DEFAULT NULL,
-  `last_date` DATE NULL DEFAULT NULL,
-  `rate` DECIMAL(10,2) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fkIdx_152` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_addon_rate`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- CREATE TABLE IF NOT EXISTS `home_services`.`addon_rate` (
+--   `id` INT(11) NOT NULL AUTO_INCREMENT,
+--   `addon_id` INT(11) NULL DEFAULT NULL,
+--   `set_date` DATE NULL DEFAULT NULL,
+--   `last_date` DATE NULL DEFAULT NULL,
+--   `rate` DECIMAL(10,2) NULL DEFAULT NULL,
+--   PRIMARY KEY (`id`),
+--   INDEX `fkIdx_152` (`addon_id` ASC) VISIBLE,
+--   CONSTRAINT `FK_addon_addon_rate`
+--     FOREIGN KEY (`addon_id`)
+--     REFERENCES `home_services`.`addon` (`id`)
+--     ON DELETE CASCADE)
+-- ENGINE = InnoDB
+-- DEFAULT CHARACTER SET = utf8mb4
+-- COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -296,6 +296,7 @@ CREATE TABLE IF NOT EXISTS `home_services`.`service` (
   `id` INT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NULL DEFAULT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
+  `is_subservice` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
   `is_active` TINYINT(3) UNSIGNED NOT NULL DEFAULT '1',
   `created_date` DATETIME NULL DEFAULT NULL,
   `last_updated_date` DATETIME NULL DEFAULT NULL,
@@ -307,27 +308,47 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `home_services`.`completed_session_service_addon`
+-- Table `home_services`.`service_subservice`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`completed_session_service_addon` (
-  `completed_session_id` INT(11) NOT NULL,
-  `service_id` INT(11) NOT NULL,
-  `addon_id` INT(11) NOT NULL,
-  PRIMARY KEY (`completed_session_id`, `service_id`, `addon_id`),
-  INDEX `fkIdx_263` (`completed_session_id` ASC) VISIBLE,
-  INDEX `fkIdx_267` (`service_id` ASC) VISIBLE,
-  INDEX `fkIdx_270` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_completed_session_service_addon`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
+CREATE TABLE IF NOT EXISTS `home_services`.`service_subservice` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `parent_service_id` INT(11) NULL DEFAULT NULL,
+  `subservice_id` INT(11) NULL DEFAULT NULL,
+  `applied_date` DATETIME NULL DEFAULT NULL,
+  `deleted_date` DATETIME NULL DEFAULT NULL,
+  `is_active` TINYINT(3) UNSIGNED NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  INDEX `fkIdx_1000` (`parent_service_id` ASC) VISIBLE,
+  INDEX `fkIdx_1001` (`subservice_id` ASC) VISIBLE,
+  CONSTRAINT `FK_parent_service`
+    FOREIGN KEY (`parent_service_id`)
+    REFERENCES `home_services`.`service` (`id`)
     ON DELETE CASCADE,
-  CONSTRAINT `FK_completed_session_completed_session_service_addon`
+  CONSTRAINT `FK_subservice`
+    FOREIGN KEY (`subservice_id`)
+    REFERENCES `home_services`.`service` (`id`)
+    ON DELETE CASCADE)  
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `home_services`.`completed_session_service`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `home_services`.`completed_session_service` (
+  `completed_session_id` INT(11) NOT NULL,
+  `service_subservice_id` INT(11) NOT NULL,
+  PRIMARY KEY (`completed_session_id`, `service_subservice_id`),
+  INDEX `fkIdx_263` (`completed_session_id` ASC) VISIBLE,
+  INDEX `fkIdx_267` (`service_subservice_id` ASC) VISIBLE,
+  CONSTRAINT `FK_completed_session_completed_session_service`
     FOREIGN KEY (`completed_session_id`)
     REFERENCES `home_services`.`completed_session` (`id`)
     ON DELETE CASCADE,
-  CONSTRAINT `FK_service_completed_session_service_addon`
-    FOREIGN KEY (`service_id`)
-    REFERENCES `home_services`.`service` (`id`)
+  CONSTRAINT `FK_service_completed_session_service`
+    FOREIGN KEY (`service_subservice_id`)
+    REFERENCES `home_services`.`service_subservice` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -408,27 +429,21 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `home_services`.`reservation_service_addon`
+-- Table `home_services`.`reservation_service`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`reservation_service_addon` (
+CREATE TABLE IF NOT EXISTS `home_services`.`reservation_service` (
   `reservation_id` INT(11) NOT NULL,
-  `service_id` INT(11) NOT NULL,
-  `addon_id` INT(11) NOT NULL,
-  PRIMARY KEY (`reservation_id`, `service_id`, `addon_id`),
+  `service_subservice_id` INT(11) NOT NULL,
+  PRIMARY KEY (`reservation_id`, `service_subservice_id`),
   INDEX `fkIdx_236` (`reservation_id` ASC) VISIBLE,
-  INDEX `fkIdx_240` (`service_id` ASC) VISIBLE,
-  INDEX `fkIdx_243` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_reservation_service_addon`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
-    ON DELETE CASCADE,
-  CONSTRAINT `FK_reservation_reservation_service_addon`
+  INDEX `fkIdx_240` (`service_subservice_id` ASC) VISIBLE,
+  CONSTRAINT `FK_reservation_service_addon`
     FOREIGN KEY (`reservation_id`)
     REFERENCES `home_services`.`reservation` (`id`)
     ON DELETE CASCADE,
-  CONSTRAINT `FK_service_reservation_service_addon`
-    FOREIGN KEY (`service_id`)
-    REFERENCES `home_services`.`service` (`id`)
+  CONSTRAINT `FK_reservation_service_subservice`
+    FOREIGN KEY (`service_subservice_id`)
+    REFERENCES `home_services`.`service_subservice` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -438,23 +453,23 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `home_services`.`service_addon`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `home_services`.`service_addon` (
-  `service_id` INT(11) NOT NULL,
-  `addon_id` INT(11) NOT NULL,
-  PRIMARY KEY (`service_id`, `addon_id`),
-  INDEX `fkIdx_203` (`service_id` ASC) VISIBLE,
-  INDEX `fkIdx_210` (`addon_id` ASC) VISIBLE,
-  CONSTRAINT `FK_addon_service_addon`
-    FOREIGN KEY (`addon_id`)
-    REFERENCES `home_services`.`addon` (`id`)
-    ON DELETE CASCADE,
-  CONSTRAINT `FK_service_addon_service`
-    FOREIGN KEY (`service_id`)
-    REFERENCES `home_services`.`service` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- CREATE TABLE IF NOT EXISTS `home_services`.`service_addon` (
+--   `service_id` INT(11) NOT NULL,
+--   `addon_id` INT(11) NOT NULL,
+--   PRIMARY KEY (`service_id`, `addon_id`),
+--   INDEX `fkIdx_203` (`service_id` ASC) VISIBLE,
+--   INDEX `fkIdx_210` (`addon_id` ASC) VISIBLE,
+--   CONSTRAINT `FK_addon_service_addon`
+--     FOREIGN KEY (`addon_id`)
+--     REFERENCES `home_services`.`addon` (`id`)
+--     ON DELETE CASCADE,
+--   CONSTRAINT `FK_service_addon_service`
+--     FOREIGN KEY (`service_id`)
+--     REFERENCES `home_services`.`service` (`id`)
+--     ON DELETE CASCADE)
+-- ENGINE = InnoDB
+-- DEFAULT CHARACTER SET = utf8mb4
+-- COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -753,33 +768,23 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure completedSessionAddonDelete
+-- procedure completedSessionServiceDelete
 -- -----------------------------------------------------
 
 USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`completedSessionAddonDelete`;
+DROP procedure IF EXISTS `home_services`.`completedSessionServiceDelete`;
 SHOW WARNINGS;
 
 DELIMITER $$
 USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionAddonDelete`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionServiceDelete`(
 	IN _completed_session_id INT,
-	IN _service_id INT,
-	IN _addon_id INT
+	IN _service_subservice_id INT,
 )
 BEGIN
 	
-	IF (_addon_id IS NULL) THEN
-		DELETE FROM completed_session_service_addon 
-		WHERE completed_session_id = _completed_session_id AND service_id = _service_id;
-	
-	ELSE
-		DELETE FROM completed_session_service_addon
-		WHERE completed_session_id = _completed_session_id 
-			  AND service_id = _service_id 
-			  AND addon_id = _addon_id;
-	
-	END IF;
+	DELETE FROM completed_session_service 
+	WHERE completed_session_id = _completed_session_id AND service_subservice_id = _service_subservice_id;
 	
 END$$
 
@@ -818,24 +823,23 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure completedSessionServiceAddonInsert
+-- procedure completedSessionServiceInsert
 -- -----------------------------------------------------
 
 USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`completedSessionServiceAddonInsert`;
+DROP procedure IF EXISTS `home_services`.`completedSessionServiceInsert`;
 SHOW WARNINGS;
 
 DELIMITER $$
 USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionServiceAddonInsert`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionServiceInsert`(
 	IN _completed_session_id INT,
-	IN _service_id INT,
-	IN _addon_id INT
+	IN _service_subservice_id INT
 )
 BEGIN
 	
-	INSERT INTO completed_session_service_addon (completed_session_id, service_id, addon_id)
-	VALUES (_completed_session_id, _service_id, addon_id); 
+	INSERT INTO completed_session_service (completed_session_id, service_subservice_id)
+	VALUES (_completed_session_id, _service_subservice_id); 
 	
 END$$
 
@@ -898,116 +902,116 @@ SHOW WARNINGS;
 -- procedure managementDomainInsert
 -- -----------------------------------------------------
 
-USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`managementDomainInsert`;
-SHOW WARNINGS;
+-- USE `home_services`;
+-- DROP procedure IF EXISTS `home_services`.`managementDomainInsert`;
+-- SHOW WARNINGS;
 
-DELIMITER $$
-USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `managementDomainInsert`(
-	OUT _id INT,
-	IN _management_domain_type VARCHAR(50), -- service, addon or promo
-	IN _name VARCHAR(50),
-	IN _description VARCHAR(50)
-)
-BEGIN
+-- DELIMITER $$
+-- USE `home_services`$$
+-- CREATE DEFINER=`root`@`localhost` PROCEDURE `managementDomainInsert`(
+-- 	OUT _id INT,
+-- 	IN _management_domain_type VARCHAR(50), -- service, addon or promo
+-- 	IN _name VARCHAR(50),
+-- 	IN _description VARCHAR(50)
+-- )
+-- BEGIN
 	
-	SET @statement = CONCAT('INSERT INTO ', _management_domain_type, ' (name, description, created_date) VALUES (''',
-							_name, ''', ''', _description, ''', NOW());');
+-- 	SET @statement = CONCAT('INSERT INTO ', _management_domain_type, ' (name, description, created_date) VALUES (''',
+-- 							_name, ''', ''', _description, ''', NOW());');
 
-	PREPARE query FROM @statement;
-	EXECUTE query;
-	DEALLOCATE PREPARE query;
+-- 	PREPARE query FROM @statement;
+-- 	EXECUTE query;
+-- 	DEALLOCATE PREPARE query;
 
-	SELECT LAST_INSERT_ID() INTO _id;
+-- 	SELECT LAST_INSERT_ID() INTO _id;
 	
-END$$
+-- END$$
 
-DELIMITER ;
-SHOW WARNINGS;
+-- DELIMITER ;
+-- SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- procedure managementDomainRateInsert
 -- -----------------------------------------------------
 
-USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`managementDomainRateInsert`;
-SHOW WARNINGS;
+-- USE `home_services`;
+-- DROP procedure IF EXISTS `home_services`.`managementDomainRateInsert`;
+-- SHOW WARNINGS;
 
-DELIMITER $$
-USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `managementDomainRateInsert`(
-	OUT _id INT,
-	IN _domain_id INT,
-	IN _management_domain_type VARCHAR(50), -- service, addon or promo
-	IN _rate VARCHAR(50),
-	IN _operator SMALLINT,
-	IN _by_percentage TINYINT
-)
-BEGIN
+-- DELIMITER $$
+-- USE `home_services`$$
+-- CREATE DEFINER=`root`@`localhost` PROCEDURE `managementDomainRateInsert`(
+-- 	OUT _id INT,
+-- 	IN _domain_id INT,
+-- 	IN _management_domain_type VARCHAR(50), -- service, addon or promo
+-- 	IN _rate VARCHAR(50),
+-- 	IN _operator SMALLINT,
+-- 	IN _by_percentage TINYINT
+-- )
+-- BEGIN
 			
-	IF (UPPER(_management_domain_type) LIKE UPPER('promo')) THEN
+-- 	IF (UPPER(_management_domain_type) LIKE UPPER('promo')) THEN
 		
-		-- PAG MAY NAUNA NA, UPDATE END DATE TO TODAY.
-		UPDATE promo_rate 
-		SET end_date = CONCAT('', CURDATE(), '') 
-		WHERE end_date IS NULL;
+-- 		-- PAG MAY NAUNA NA, UPDATE END DATE TO TODAY.
+-- 		UPDATE promo_rate 
+-- 		SET end_date = CONCAT('', CURDATE(), '') 
+-- 		WHERE end_date IS NULL;
 		
-		INSERT INTO promo_rate (promo_id, set_date, rate, operator, by_percentage) 
-		VALUES (_domain_id, CONCAT('',CURDATE(), ''), _rate, _operator, _by_percentage);
+-- 		INSERT INTO promo_rate (promo_id, set_date, rate, operator, by_percentage) 
+-- 		VALUES (_domain_id, CONCAT('',CURDATE(), ''), _rate, _operator, _by_percentage);
 	
-	ELSE
+-- 	ELSE
 	
-		SET @statementUpdate = CONCAT('UPDATE ', _management_domain_type, '_rate SET end_date=''', 
-										CURDATE(), ''' WHERE end_date IS NULL;');
+-- 		SET @statementUpdate = CONCAT('UPDATE ', _management_domain_type, '_rate SET end_date=''', 
+-- 										CURDATE(), ''' WHERE end_date IS NULL;');
 	
-		PREPARE queryUpdate FROM @statementUpdate;
-		EXECUTE queryUpdate;
-		DEALLOCATE PREPARE queryUpdate;
+-- 		PREPARE queryUpdate FROM @statementUpdate;
+-- 		EXECUTE queryUpdate;
+-- 		DEALLOCATE PREPARE queryUpdate;
 		
-		SET @statementInsert = CONCAT('INSERT INTO ', _management_domain_type, '_rate (', _management_domain_type,
-							'_id, set_date, rate) VALUES (', _domain_id, ', ''', CURDATE(), ''', ', _rate, ');');
+-- 		SET @statementInsert = CONCAT('INSERT INTO ', _management_domain_type, '_rate (', _management_domain_type,
+-- 							'_id, set_date, rate) VALUES (', _domain_id, ', ''', CURDATE(), ''', ', _rate, ');');
 
-		PREPARE queryInsert FROM @statementInsert;
-		EXECUTE queryInsert;
-		DEALLOCATE PREPARE queryInsert;
+-- 		PREPARE queryInsert FROM @statementInsert;
+-- 		EXECUTE queryInsert;
+-- 		DEALLOCATE PREPARE queryInsert;
 		
-	END IF;
+-- 	END IF;
 	
-END$$
+-- END$$
 
-DELIMITER ;
-SHOW WARNINGS;
+-- DELIMITER ;
+-- SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- procedure managementDomainUpdate
 -- -----------------------------------------------------
 
-USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`managementDomainUpdate`;
-SHOW WARNINGS;
+-- USE `home_services`;
+-- DROP procedure IF EXISTS `home_services`.`managementDomainUpdate`;
+-- SHOW WARNINGS;
 
-DELIMITER $$
-USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `managementDomainUpdate`(
-	IN _id INT,
-	IN _management_domain_type VARCHAR(50), -- service, addon or promo
-	IN _name VARCHAR(50),
-	IN _description VARCHAR(50)
-)
-BEGIN
+-- DELIMITER $$
+-- USE `home_services`$$
+-- CREATE DEFINER=`root`@`localhost` PROCEDURE `managementDomainUpdate`(
+-- 	IN _id INT,
+-- 	IN _management_domain_type VARCHAR(50), -- service, addon or promo
+-- 	IN _name VARCHAR(50),
+-- 	IN _description VARCHAR(50)
+-- )
+-- BEGIN
 	
-	SET @statement = CONCAT('UPDATE ', _management_domain_type, ' SET name=''',
-							_name, ''', description=''', _description, ''', last_updated_date = NOW() WHERE id=', _id);
+-- 	SET @statement = CONCAT('UPDATE ', _management_domain_type, ' SET name=''',
+-- 							_name, ''', description=''', _description, ''', last_updated_date = NOW() WHERE id=', _id);
 	
-	PREPARE query FROM @statement;
-	EXECUTE query;
-	DEALLOCATE PREPARE query;
+-- 	PREPARE query FROM @statement;
+-- 	EXECUTE query;
+-- 	DEALLOCATE PREPARE query;
 	
-END$$
+-- END$$
 
-DELIMITER ;
-SHOW WARNINGS;
+-- DELIMITER ;
+-- SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- procedure promoApply
@@ -1073,6 +1077,64 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure promoInsert
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`promoInsert`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `promoInsert`(
+	OUT _id INT,
+	IN _name VARCHAR(50),
+	IN _description VARCHAR(50),
+)
+BEGIN
+
+  INSERT INTO `promo` (`name`, `description`, `created_date`) 
+  VALUES (_name, _description, NOW());
+
+	SELECT LAST_INSERT_ID() INTO _id;
+	
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure promoRateInsert
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`promoRateInsert`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `promoRateInsert`(
+	OUT _id INT,
+	IN _promo_id INT,
+	IN _rate VARCHAR(50),
+	IN _operator SMALLINT,
+	IN _by_percentage TINYINT
+)
+BEGIN
+			
+	UPDATE promo_rate 
+	SET end_date = CONCAT('', CURDATE(), '') 
+	WHERE end_date IS NULL;
+		
+	INSERT INTO promo_rate (promo_id, set_date, rate, operator, by_percentage) 
+	VALUES (_promo_id, CONCAT('',CURDATE(), ''), _rate, _operator, _by_percentage);
+	
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure promoUpdate
 -- -----------------------------------------------------
 
@@ -1083,6 +1145,35 @@ SHOW WARNINGS;
 DELIMITER $$
 USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `promoUpdate`(
+	in _id INT,
+	IN _name VARCHAR(50),
+	IN _description VARCHAR(50)
+)
+BEGIN
+	
+	UPDATE `promo`
+	SET
+		`name` = _name,
+		`description` = _description,
+		last_updated_date = NOW()
+	WHERE id = _id;
+	
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure promoDomainUpdate
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`promoDomainUpdate`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `promoDomainUpdate`(
 	IN _id INT,
 	IN _promo_domain VARCHAR(50), -- service, addon or promo
 	IN _start_date DATE,
@@ -1103,33 +1194,23 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure reservationAddonDelete
+-- procedure reservationServiceDelete
 -- -----------------------------------------------------
 
 USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`reservationAddonDelete`;
+DROP procedure IF EXISTS `home_services`.`reservationServiceDelete`;
 SHOW WARNINGS;
 
 DELIMITER $$
 USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `reservationAddonDelete`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `reservationServiceDelete`(
 	IN _reservation_id INT,
-	IN _service_id INT,
-	IN _addon_id INT
+	IN _service_subservice_id INT
 )
 BEGIN
-	
-	IF (_addon_id IS NULL) THEN
-		DELETE FROM reservation_service_addon 
-		WHERE reservation_id = _reservation_id AND service_id = _service_id;
-	
-	ELSE
-		DELETE FROM reservation_service_addon
-		WHERE reservation_id = _reservation_id 
-			  AND service_id = _service_id 
-			  AND addon_id = _addon_id;
-	
-	END IF;
+
+	DELETE FROM reservation_service 
+	WHERE reservation_id = _reservation_id AND service_subservice_id = _service_subservice_id;
 	
 END$$
 
@@ -1137,24 +1218,23 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure reservationAddonInsert
+-- procedure reservationServiceInsert
 -- -----------------------------------------------------
 
 USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`reservationAddonInsert`;
+DROP procedure IF EXISTS `home_services`.`reservationServiceInsert`;
 SHOW WARNINGS;
 
 DELIMITER $$
 USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `reservationAddonInsert`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `reservationServiceInsert`(
 	IN _reservation_id INT,
-	IN _service_id INT,
-	IN _addon_id INT
+	IN _service_subservice_id INT
 )
 BEGIN
 	
-	INSERT INTO reservation_service_addon (reservation_id, service_id, addon_id)
-	VALUES (_reservation_id, _service_id, addon_id); 
+	INSERT INTO reservation_service (reservation_id, service_subservice_id)
+	VALUES (_reservation_id, _service_subservice_id); 
 	
 END$$
 
@@ -1227,28 +1307,143 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure serviceAddonDelete
+-- procedure serviceInsert
 -- -----------------------------------------------------
 
 USE `home_services`;
-DROP procedure IF EXISTS `home_services`.`serviceAddonDelete`;
+DROP procedure IF EXISTS `home_services`.`serviceInsert`;
 SHOW WARNINGS;
 
 DELIMITER $$
 USE `home_services`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceAddonDelete`(
-	IN _service_id INT,
-	IN _addon_id INT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceInsert`(
+	OUT _id INT,
+	IN _name VARCHAR(50),
+	IN _description VARCHAR(50),
+  IN _is_subservice TINYINT(3)
 )
 BEGIN
-			
-	DELETE FROM service_addon
-	WHERE service_id = _service_id AND addon_id = _addon_id;
+
+  INSERT INTO `service` (`name`, `description`, `is_subservice`,`created_date`) 
+  VALUES (_name, _description, _is_subservice, NOW());
+
+	SELECT LAST_INSERT_ID() INTO _id;
 	
 END$$
 
 DELIMITER ;
 SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure serviceUpdate
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`serviceUpdate`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceUpdate`(
+	in _id INT,
+	IN _name VARCHAR(50),
+	IN _description VARCHAR(50)
+)
+BEGIN
+	
+	UPDATE `service`
+	SET
+		`name` = _name,
+		`description` = _description,
+		last_updated_date = NOW()
+	WHERE id = _id;
+	
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure serviceSubserviceInsert
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`serviceSubserviceInsert`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceSubserviceInsert`(
+	OUT _id INT,
+	IN _parent_service_id INT,
+	IN _subservice_id INT
+)
+BEGIN
+
+  INSERT INTO `service_subservice` (parent_service_id, subservice_id, `applied_date`) 
+  VALUES (_parent_service_id, _subservice_id, NOW());
+
+	SELECT LAST_INSERT_ID() INTO _id;
+	
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure serviceRateInsert
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`serviceRateInsert`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceRateInsert`(
+	OUT _id INT,
+	IN _service_id INT,
+	IN _rate DECIMAL(10,2),
+)
+BEGIN
+	
+  UPDATE service_rate
+  SET end_date = CONCAT('', CURDATE(), '') 
+  WHERE end_date IS NULL;
+
+  INSERT INTO service_rate (service_id, set_date, rate) 
+  VALUES (_service_id, CONCAT('', CURDATE(), ''), _rate); 
+
+	SELECT LAST_INSERT_ID() INTO _id;
+  
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure serviceAddonDelete
+-- -----------------------------------------------------
+
+-- USE `home_services`;
+-- DROP procedure IF EXISTS `home_services`.`serviceAddonDelete`;
+-- SHOW WARNINGS;
+
+-- DELIMITER $$
+-- USE `home_services`$$
+-- CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceAddonDelete`(
+-- 	IN _service_id INT,
+-- 	IN _addon_id INT
+-- )
+-- BEGIN
+			
+-- 	DELETE FROM service_addon
+-- 	WHERE service_id = _service_id AND addon_id = _addon_id;
+	
+-- END$$
+
+-- DELIMITER ;
+-- SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- procedure userAccessLevelUpdate
