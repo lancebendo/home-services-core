@@ -1,5 +1,4 @@
 import mysql from 'mysql';
-import boom from 'boom';
 import { Promise } from 'bluebird';
 
 /*
@@ -15,7 +14,7 @@ import { Promise } from 'bluebird';
 // return queryWrapper(insertQuery(sdfwwfw), connection);
 
 
-export const connectWrapper2 = ({
+const connectWrapper = ({
   isReadOnlyConnection = true,
   isTransaction = false,
   multipleStatements = false,
@@ -32,85 +31,87 @@ export const connectWrapper2 = ({
   // bind error handler
   connection.on('error', (err) => {
     if (isTransaction) connection.rollback();
-    reject(err, connection);
+    reject({ connection, error: err });
   });
 
   connection.connect((err) => {
     if (err) {
       if (isTransaction) connection.rollback();
-      reject(err, connection);
-    } else resolve(connection);
+      reject({ connection, error: err });
+    } else resolve({ connection });
   });
 });
 
-const connectWrapper = (
-  errHandler,
-  query,
-  {
-    isReadOnlyConnection = true,
-    isAutoEnd = true,
-    isTransaction = false,
-    multipleStatements = false,
-  } = {},
-) => {
-  // create connection via env
-  const connection = mysql.createConnection({
-    host: process.env.MYSQL_HOST || 'localhost',
-    user: isReadOnlyConnection ? process.env.MYSQL_READONLY || 'readonly_hs_user' : process.env.MYSQL_WRITER || 'writer_hs_user',
-    password: process.env.MYSQL_PASSWORD || 'password',
-    database: process.env.MYSQL_DATABASE || 'home_services',
-    multipleStatements,
-  });
+// const connectWrapper = (
+//   errHandler,
+//   query,
+//   {
+//     isReadOnlyConnection = true,
+//     isAutoEnd = true,
+//     isTransaction = false,
+//     multipleStatements = false,
+//   } = {},
+// ) => {
+//   // create connection via env
+//   const connection = mysql.createConnection({
+//     host: process.env.MYSQL_HOST || 'localhost',
+//     user: isReadOnlyConnection ? process.env.MYSQL_READONLY ||
+//    'readonly_hs_user' : process.env.MYSQL_WRITER || 'writer_hs_user',
+//     password: process.env.MYSQL_PASSWORD || 'password',
+//     database: process.env.MYSQL_DATABASE || 'home_services',
+//     multipleStatements,
+//   });
 
-  // error handlers
-  const connectionError = err => errHandler(boom.badGateway('Cannot cannot to the Database', err));
-  const queryError = err => errHandler(boom.internal('Database Query Error', err));
-  const defaultError = err => errHandler(boom.badRequest('Error on database request', err));
+//   // error handlers
+//   const connectionError = err => errHandler
+//  (boom.badGateway('Cannot cannot to the Database', err));
+//   const queryError = err => errHandler(boom.internal('Database Query Error', err));
+//   const defaultError = err => errHandler(boom.badRequest('Error on database request', err));
 
-  // bind error handler
-  connection.on('error', (err) => {
-    if (isTransaction) connection.rollback();
-    defaultError(err);
-  });
+//   // bind error handler
+//   connection.on('error', (err) => {
+//     if (isTransaction) connection.rollback();
+//     defaultError(err);
+//   });
 
-  connection.connect((err) => {
-    if (err) {
-      if (isTransaction) connection.rollback();
-      connectionError(err);
-    }
-  });
+//   connection.connect((err) => {
+//     if (err) {
+//       if (isTransaction) connection.rollback();
+//       connectionError(err);
+//     }
+//   });
 
-  query(
-    connection,
-    queryError,
-    { isAutoEnd, isTransaction },
-    (connectionToEnd) => {
-      if (isAutoEnd) {
-        if (isTransaction) {
-          connectionToEnd.commit(null, (err) => {
-            if (err) connection.rollback();
+//   query(
+//     connection,
+//     queryError,
+//     { isAutoEnd, isTransaction },
+//     (connectionToEnd) => {
+//       if (isAutoEnd) {
+//         if (isTransaction) {
+//           connectionToEnd.commit(null, (err) => {
+//             if (err) connection.rollback();
 
-            connectionToEnd.end((_err) => {
-              if (_err) {
-                console.log(_err);
-                console.log('Unable to close the connection to the database');
-              }
-            });
-          });
-        } else {
-          connectionToEnd.end((err) => {
-            if (err) {
-              console.log(err);
-              console.log('Unable to close the connection to the database');
-            }
-          });
-        }
-      }
-    },
-  );
+//             connectionToEnd.end((_err) => {
+//               if (_err) {
+//                 console.log(_err);
+//                 console.log('Unable to close the connection to the database');
+//               }
+//             });
+//           });
+//         } else {
+//           connectionToEnd.end((err) => {
+//             if (err) {
+//               console.log(err);
+//               console.log('Unable to close the connection to the database');
+//             }
+//           });
+//         }
+//       }
+//     },
+//   );
 
 
-  return connection;
-};
+//   return connection;
+// };
 
 export default connectWrapper;

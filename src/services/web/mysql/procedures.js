@@ -3,8 +3,26 @@
 // /////////////////////////////////////////////
 
 
-export const addressDomainParamValues = (
-  queryNumber,
+export const addressInsert = (
+  province,
+  city,
+  barangay,
+  roomNumber,
+  bldgNumber,
+  zip,
+  landmark,
+) => ` CALL addressInsert(
+    @new_address_id, 
+    ${province}, 
+    ${city}, 
+    ${barangay}, 
+    ${roomNumber}, 
+    ${bldgNumber}, 
+    ${zip}, 
+    ${landmark}
+    ); `;
+
+export const addressUpdate = (
   id,
   province,
   city,
@@ -13,68 +31,34 @@ export const addressDomainParamValues = (
   bldgNumber,
   zip,
   landmark,
-) => `SET 
-    @addressId_${queryNumber} = ${id}, 
-    @province_${queryNumber} = '${province}', 
-    @city_${queryNumber} = '${city}', 
-    @barangay_${queryNumber} = '${barangay}', 
-    @roomNumber_${queryNumber} = '${roomNumber}', 
-    @bldgNumber_${queryNumber} = '${bldgNumber}', 
-    @zip_${queryNumber} = '${zip}', 
-    @landmark_${queryNumber} = '${landmark}'
-    ;`;
-
-export const addressInsert = queryNumber => ` CALL addressInsert(
-    @addressId_${queryNumber}, 
-    @province_${queryNumber}, 
-    @city_${queryNumber}, 
-    @barangay_${queryNumber}, 
-    @roomNumber_${queryNumber}, 
-    @bldgNumber_${queryNumber}, 
-    @zip_${queryNumber}, 
-    @landmark_${queryNumber}
-    ); `;
-
-export const addressUpdate = queryNumber => ` CALL addressUpdate(
-    @addressId_${queryNumber}, 
-    @province_${queryNumber}, 
-    @city_${queryNumber}, 
-    @barangay_${queryNumber}, 
-    @roomNumber_${queryNumber}, 
-    @bldgNumber_${queryNumber}, 
-    @zip_${queryNumber}, 
-    @landmark_${queryNumber}
+) => ` CALL addressUpdate(
+    ${id}, 
+    ${province}, 
+    ${city}, 
+    ${barangay}, 
+    ${roomNumber}, 
+    ${bldgNumber}, 
+    ${zip}, 
+    ${landmark}
     ); `;
 
 
-// ////////////////////////////////////////////////////////////
-
-
-export const completedSessionAddonParamValues = (
-  queryNumber,
+export const completedSessionServiceDelete = (
   id,
-  serviceId,
-  addonId,
-) => `SET 
-      @completedSessionId_${queryNumber} = ${id}, 
-      @serviceId_${queryNumber} = ${serviceId}, 
-      @addonId_${queryNumber} = ${addonId}
-      ;`;
+  serviceSubserviceId,
+) => ` CALL completedSessionServiceDelete(
+  ${id}, 
+  ${serviceSubserviceId}
+  ); `;
 
-export const completedSessionAddonDelete = queryNumber => ` CALL completedSessionAddonDelete(
-    @completedSessionId_${queryNumber}, 
-    @serviceId_${queryNumber}, 
-    @addonId_${queryNumber}
+
+export const completedSessionServiceInsert = (
+  id,
+  serviceSubserviceId,
+) => ` CALL completedSessionServiceInsert(
+    ${id}, 
+    ${serviceSubserviceId}
     ); `;
-
-export const completedSessionServiceAddonInsert = queryNumber => ` CALL completedSessionServiceAddonInsert(
-    @completedSessionId_${queryNumber}, 
-    @serviceId_${queryNumber},
-    @addonId_${queryNumber}
-    ); `;
-
-
-// ////////////////////////////////////////////////////////
 
 
 export const completedSessionParamValues = (
@@ -92,12 +76,17 @@ export const completedSessionParamValues = (
       @completedSessionNote_${queryNumber} = '${completedSessionNote}'
       ;`;
 
-export const completedSessionInsert = queryNumber => ` CALL completedSessionInsert(
-    @completedSessionId_${queryNumber}, 
-    @reservationId_${queryNumber},
-    @recurrencyNumber_${queryNumber}, 
-    @completedSessionDate_${queryNumber},
-    @completedSessionNote_${queryNumber}
+export const completedSessionInsert = (
+  reservationId,
+  recurrencyNumber,
+  completedSessionDate,
+  completedSessionNote,
+) => ` CALL completedSessionInsert(
+    @new_completed_session_id, 
+    ${reservationId},
+    ${recurrencyNumber}, 
+    ${completedSessionDate},
+    ${completedSessionNote}
     ); `;
 
 

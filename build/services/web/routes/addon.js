@@ -51,16 +51,33 @@ router.get('/:id(\\d+)', (req, res, next) => {
 }); // POST /addon (create new addon. ADMIN ONLY)
 
 router.post('/', (req, res, next) => {
-  const queryString = `${(0, _procedures.managementDomainParamValues)(1, 0, 'addon', req.body.name, req.body.description)} 
-  ${(0, _procedures.managementDomainInsert)(1)}`;
-  (0, _mysql.connectWrapper)(next, (0, _mysql.queryWrapper)(queryString, () => (0, _mysql.queryWrapper)('SELECT LAST_INSERT_ID() id', idResult => {
+  const {
+    name,
+    description,
+    is_subservice: isSubservice
+  } = req.body;
+  (0, _mysql.connectWrapper2)({
+    isReadOnlyConnection: false,
+    isTransaction: true
+  }).then(({
+    connection
+  }) => (0, _mysql.queryWrapper2)(connection, 'CALL serviceInsert(@new_id, ?, ?, ?)', [name, description, isSubservice === 'true' ? 1 : 0])).then(({
+    connection
+  }) => (0, _mysql.queryWrapper2)(connection, 'SELECT * FROM service WHERE id = LAST_INSERT_ID()')).then(({
+    connection,
+    result
+  }) => {
+    connection.end();
     res.status(201).json({
       status: 'success',
-      data: idResult[0]
+      data: result[0]
     });
-  })), {
-    isReadOnlyConnection: false,
-    multipleStatements: true
+  }).catch(({
+    connection,
+    error
+  }) => {
+    connection.rollback();
+    next(error);
   });
 }); // PUT /addon/{id} (update addon. ADMIN ONLY)
 

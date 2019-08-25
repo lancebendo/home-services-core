@@ -95,7 +95,7 @@ app.use(_bodyParser.default.urlencoded({
   extended: false
 })); // routes setup
 
-app.use('/addon', _routes.addon);
+app.use('/service', _routes.service);
 app.use((0, _urlNotFoundHandler.default)());
 app.use((0, _errorHandler.default)()); // graceful shutdown function
 // start app

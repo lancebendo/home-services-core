@@ -3,74 +3,49 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.userUpdate = exports.userInsert = exports.userDomainParamValues = exports.userProviderAssignmentInsert = exports.userProviderAssignmentDelete = exports.userProviderAssignmentParamValues = exports.userAddressInsertOrUpdate = exports.userAddressDelete = exports.userAddressParamValues = exports.userAccessLevelUpdate = exports.userAccessLevelParamValues = exports.serviceAddonDelete = exports.serviceAddonParamValues = exports.reservationUpdate = exports.reservationInsert = exports.reservationParamValues = exports.reservationAddonInsert = exports.reservationAddonDelete = exports.reservationAddonParamValues = exports.promoUpdate = exports.promoUpdateParamValues = exports.promoDelete = exports.promoDeleteParamValues = exports.promoApply = exports.promoApplyParamValues = exports.managementDomainRateInsert = exports.managementDomainRateParamValues = exports.managementDomainUpdate = exports.managementDomainInsert = exports.managementDomainParamValues = exports.isActiveUpdate = exports.isActiveParamValues = exports.completedSessionUpdateNote = exports.completedSessionNoteParamValues = exports.completedSessionInsert = exports.completedSessionParamValues = exports.completedSessionServiceAddonInsert = exports.completedSessionAddonDelete = exports.completedSessionAddonParamValues = exports.addressUpdate = exports.addressInsert = exports.addressDomainParamValues = void 0;
+exports.userUpdate = exports.userInsert = exports.userDomainParamValues = exports.userProviderAssignmentInsert = exports.userProviderAssignmentDelete = exports.userProviderAssignmentParamValues = exports.userAddressInsertOrUpdate = exports.userAddressDelete = exports.userAddressParamValues = exports.userAccessLevelUpdate = exports.userAccessLevelParamValues = exports.serviceAddonDelete = exports.serviceAddonParamValues = exports.reservationUpdate = exports.reservationInsert = exports.reservationParamValues = exports.reservationAddonInsert = exports.reservationAddonDelete = exports.reservationAddonParamValues = exports.promoUpdate = exports.promoUpdateParamValues = exports.promoDelete = exports.promoDeleteParamValues = exports.promoApply = exports.promoApplyParamValues = exports.managementDomainRateInsert = exports.managementDomainRateParamValues = exports.managementDomainUpdate = exports.managementDomainInsert = exports.managementDomainParamValues = exports.isActiveUpdate = exports.isActiveParamValues = exports.completedSessionUpdateNote = exports.completedSessionNoteParamValues = exports.completedSessionInsert = exports.completedSessionParamValues = exports.completedSessionServiceInsert = exports.completedSessionServiceDelete = exports.addressUpdate = exports.addressInsert = void 0;
 
 /* eslint-disable no-tabs prefer-default-export */
 // /////////////////////////////////////////////
-const addressDomainParamValues = (queryNumber, id, province, city, barangay, roomNumber, bldgNumber, zip, landmark) => `SET 
-    @addressId_${queryNumber} = ${id}, 
-    @province_${queryNumber} = '${province}', 
-    @city_${queryNumber} = '${city}', 
-    @barangay_${queryNumber} = '${barangay}', 
-    @roomNumber_${queryNumber} = '${roomNumber}', 
-    @bldgNumber_${queryNumber} = '${bldgNumber}', 
-    @zip_${queryNumber} = '${zip}', 
-    @landmark_${queryNumber} = '${landmark}'
-    ;`;
-
-exports.addressDomainParamValues = addressDomainParamValues;
-
-const addressInsert = queryNumber => ` CALL addressInsert(
-    @addressId_${queryNumber}, 
-    @province_${queryNumber}, 
-    @city_${queryNumber}, 
-    @barangay_${queryNumber}, 
-    @roomNumber_${queryNumber}, 
-    @bldgNumber_${queryNumber}, 
-    @zip_${queryNumber}, 
-    @landmark_${queryNumber}
+const addressInsert = (province, city, barangay, roomNumber, bldgNumber, zip, landmark) => ` CALL addressInsert(
+    @new_address_id, 
+    ${province}, 
+    ${city}, 
+    ${barangay}, 
+    ${roomNumber}, 
+    ${bldgNumber}, 
+    ${zip}, 
+    ${landmark}
     ); `;
 
 exports.addressInsert = addressInsert;
 
-const addressUpdate = queryNumber => ` CALL addressUpdate(
-    @addressId_${queryNumber}, 
-    @province_${queryNumber}, 
-    @city_${queryNumber}, 
-    @barangay_${queryNumber}, 
-    @roomNumber_${queryNumber}, 
-    @bldgNumber_${queryNumber}, 
-    @zip_${queryNumber}, 
-    @landmark_${queryNumber}
-    ); `; // ////////////////////////////////////////////////////////////
-
+const addressUpdate = (id, province, city, barangay, roomNumber, bldgNumber, zip, landmark) => ` CALL addressUpdate(
+    ${id}, 
+    ${province}, 
+    ${city}, 
+    ${barangay}, 
+    ${roomNumber}, 
+    ${bldgNumber}, 
+    ${zip}, 
+    ${landmark}
+    ); `;
 
 exports.addressUpdate = addressUpdate;
 
-const completedSessionAddonParamValues = (queryNumber, id, serviceId, addonId) => `SET 
-      @completedSessionId_${queryNumber} = ${id}, 
-      @serviceId_${queryNumber} = ${serviceId}, 
-      @addonId_${queryNumber} = ${addonId}
-      ;`;
+const completedSessionServiceDelete = (id, serviceSubserviceId) => ` CALL completedSessionServiceDelete(
+  ${id}, 
+  ${serviceSubserviceId}
+  ); `;
 
-exports.completedSessionAddonParamValues = completedSessionAddonParamValues;
+exports.completedSessionServiceDelete = completedSessionServiceDelete;
 
-const completedSessionAddonDelete = queryNumber => ` CALL completedSessionAddonDelete(
-    @completedSessionId_${queryNumber}, 
-    @serviceId_${queryNumber}, 
-    @addonId_${queryNumber}
+const completedSessionServiceInsert = (id, serviceSubserviceId) => ` CALL completedSessionServiceInsert(
+    ${id}, 
+    ${serviceSubserviceId}
     ); `;
 
-exports.completedSessionAddonDelete = completedSessionAddonDelete;
-
-const completedSessionServiceAddonInsert = queryNumber => ` CALL completedSessionServiceAddonInsert(
-    @completedSessionId_${queryNumber}, 
-    @serviceId_${queryNumber},
-    @addonId_${queryNumber}
-    ); `; // ////////////////////////////////////////////////////////
-
-
-exports.completedSessionServiceAddonInsert = completedSessionServiceAddonInsert;
+exports.completedSessionServiceInsert = completedSessionServiceInsert;
 
 const completedSessionParamValues = (queryNumber, id, reservationId, recurrencyNumber, completedSessionDate, completedSessionNote) => `SET 
       @completedSessionId_${queryNumber} = ${id}, 
@@ -82,12 +57,12 @@ const completedSessionParamValues = (queryNumber, id, reservationId, recurrencyN
 
 exports.completedSessionParamValues = completedSessionParamValues;
 
-const completedSessionInsert = queryNumber => ` CALL completedSessionInsert(
-    @completedSessionId_${queryNumber}, 
-    @reservationId_${queryNumber},
-    @recurrencyNumber_${queryNumber}, 
-    @completedSessionDate_${queryNumber},
-    @completedSessionNote_${queryNumber}
+const completedSessionInsert = (reservationId, recurrencyNumber, completedSessionDate, completedSessionNote) => ` CALL completedSessionInsert(
+    @new_completed_session_id, 
+    ${reservationId},
+    ${recurrencyNumber}, 
+    ${completedSessionDate},
+    ${completedSessionNote}
     ); `; // ////////////////////////////////////////////////////
 
 

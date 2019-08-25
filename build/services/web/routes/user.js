@@ -23,27 +23,11 @@ const router = _express.default.Router(); // GET /user?{filter} (get users by fi
   IS_ACTIVE = true or false */
 
 
-router.get('/', (req, res, next) => {
-  const response = {
-    status: 'failed',
-    data: []
-  };
+router.get('/', (req, res) => {
   const queryString = `SELECT * FROM ADDON 
                     ${(0, _helpers.getWhere)(req.query)} 
                     ORDER BY CREATED_DATE DESC`;
-
-  try {
-    (0, _mysql.dbConnect)(connection => {
-      connection.query(queryString, (err, results) => {
-        if (err) throw err;
-        response.data = results;
-      });
-    }, true, true);
-  } catch (err) {
-    next(err);
-  }
-
-  res.status(200).json(response);
+  res.status(200).json(queryString);
 }); // GET /user/{id} (get user by id. doable to ADMIN or the user itself.)
 
 router.get('/:id', (req, res, next) => {

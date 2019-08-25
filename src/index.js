@@ -92,7 +92,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 // routes
-import { addon } from './services/web/routes';
+import { service } from './services/web/routes';
 import errorHandler from './services/web/middlewares/errorHandler';
 import urlNotFoundHandler from './services/web/middlewares/urlNotFoundHandler';
 // setup database
@@ -115,7 +115,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes setup
-app.use('/addon', addon);
+app.use('/service', service);
 
 app.use(urlNotFoundHandler());
 app.use(errorHandler());

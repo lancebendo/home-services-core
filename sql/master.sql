@@ -15,8 +15,8 @@ DROP USER IF EXISTS 'writer_hs_user'@'%';
 CREATE USER 'writer_hs_user'@'%' 
 IDENTIFIED BY 'password';
 
-GRANT INSERT, 
-UPDATE, DELETE, 
+GRANT SELECT, INSERT, 
+UPDATE, 
 EXECUTE ON home_services.*
  TO 'writer_hs_user'@'%' 
  WITH GRANT OPTION;
@@ -779,7 +779,7 @@ DELIMITER $$
 USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionServiceDelete`(
 	IN _completed_session_id INT,
-	IN _service_subservice_id INT,
+	IN _service_subservice_id INT
 )
 BEGIN
 	
@@ -1089,7 +1089,7 @@ USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `promoInsert`(
 	OUT _id INT,
 	IN _name VARCHAR(50),
-	IN _description VARCHAR(50),
+	IN _description VARCHAR(50)
 )
 BEGIN
 
@@ -1403,7 +1403,7 @@ USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceRateInsert`(
 	OUT _id INT,
 	IN _service_id INT,
-	IN _rate DECIMAL(10,2),
+	IN _rate DECIMAL(10,2)
 )
 BEGIN
 	

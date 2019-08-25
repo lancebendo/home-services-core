@@ -1,10 +1,11 @@
 import express from 'express';
 import boom from 'boom';
 
-import { connectWrapper, queryWrapper } from '../mysql';
+import {
+  connectWrapper, connectWrapper2, queryWrapper, queryWrapper2,
+} from '../mysql';
 import {
   managementDomainParamValues,
-  managementDomainInsert,
   managementDomainUpdate,
   isActiveParamValues,
   isActiveUpdate,
@@ -34,12 +35,22 @@ router.get('/:id(\\d+)', (req, res, next) => {
 
 // POST /addon (create new addon. ADMIN ONLY)
 router.post('/', (req, res, next) => {
-  const queryString = `${managementDomainParamValues(1, 0, 'addon', req.body.name, req.body.description)} 
-  ${managementDomainInsert(1)}`;
-
-  connectWrapper(next, queryWrapper(queryString, () => queryWrapper('SELECT LAST_INSERT_ID() id', (idResult) => {
-    res.status(201).json({ status: 'success', data: idResult[0] });
-  })), { isReadOnlyConnection: false, multipleStatements: true });
+  const { name, description, is_subservice: isSubservice } = req.body;
+  connectWrapper2({ isReadOnlyConnection: false, isTransaction: true })
+    .then(({ connection }) => queryWrapper2(
+      connection,
+      'CALL serviceInsert(@new_id, ?, ?, ?)',
+      [name, description, isSubservice === 'true' ? 1 : 0],
+    ))
+    .then(({ connection }) => queryWrapper2(connection, 'SELECT * FROM service WHERE id = LAST_INSERT_ID()'))
+    .then(({ connection, result }) => {
+      connection.end();
+      res.status(201).json({ status: 'success', data: result[0] });
+    })
+    .catch(({ connection, error }) => {
+      connection.rollback();
+      next(error);
+    });
 });
 
 // PUT /addon/{id} (update addon. ADMIN ONLY)
