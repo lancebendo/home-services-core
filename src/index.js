@@ -92,7 +92,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 // routes
-import { service } from './services/web/routes';
+import routes from './services/web/routes';
 import errorHandler from './services/web/middlewares/errorHandler';
 import urlNotFoundHandler from './services/web/middlewares/urlNotFoundHandler';
 // setup database
@@ -111,11 +111,17 @@ import urlNotFoundHandler from './services/web/middlewares/urlNotFoundHandler';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 // not sure kung false dapat yung extended.
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 // routes setup
-app.use('/service', service);
+routes.forEach((route) => {
+  console.log(`Loading Route: ${route.baseUrl}`);
+  app.use(route.baseUrl, route.controller);
+});
+
 
 app.use(urlNotFoundHandler());
 app.use(errorHandler());

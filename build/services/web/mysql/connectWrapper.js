@@ -36,19 +36,19 @@ const connectWrapper = ({
   }); // bind error handler
 
 
-  connection.on('error', err => {
+  connection.on('error', error => {
     if (isTransaction) connection.rollback();
     reject({
       connection,
-      error: err
+      error
     });
   });
-  connection.connect(err => {
-    if (err) {
+  connection.connect(error => {
+    if (error) {
       if (isTransaction) connection.rollback();
       reject({
         connection,
-        error: err
+        error
       });
     } else resolve({
       connection

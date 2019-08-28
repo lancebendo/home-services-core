@@ -6,8 +6,8 @@ const queryWrapper = (
   queryString,
   params = [],
 ) => new Promise((resolve, reject) => {
-  connection.query(queryString, params, (err, result) => {
-    if (err) reject({ connection, error: err });
+  connection.query(queryString, params, (error, result) => {
+    if (error) reject({ connection, error });
     else resolve({ connection, result });
   });
 });
@@ -27,7 +27,8 @@ const queryWrapper = (
 //       errHandler(err);
 //     } else {
 //       const nextQuery = callback(results);
-//       if (nextQuery) nextQuery(connection, errHandler, { isTransaction, isAutoEnd }, endConnection);
+//       if (nextQuery) nextQuery(connection, errHandler,
+//      { isTransaction, isAutoEnd }, endConnection);
 //       else endConnection(connection);
 //     }
 //   });

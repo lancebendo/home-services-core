@@ -1,46 +1,10 @@
-import express from 'express';
+import { createCrudApi } from './shared';
 
-import { queryWrapper } from '../mysql';
-import { getWhere } from '../helpers';
-
-const router = express.Router();
-
-// GET /user?{filter} (get users by filter. ADMIN ONLY)
-/* {FILTERS ON GET}
-  CREATED_DATE = gte or lte
-  FIRSTNAME = like or wildcard
-  LASTNAME = like or wildcard
-  EMAIL = like or wildcard
-  IS_ACTIVE = true or false */
-router.get('/', (req, res) => {
-  const queryString = `SELECT * FROM ADDON 
-                    ${getWhere(req.query)} 
-                    ORDER BY CREATED_DATE DESC`;
-
-
-  res.status(200).json(queryString);
+const router = createCrudApi({
+  table: 'user',
+  createProcedure: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
+  updateProcedure: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
 });
-
-// GET /user/{id} (get user by id. doable to ADMIN or the user itself.)
-router.get('/:id', (req, res, next) => {
-  next();
-});
-
-// POST /user (create new user. doable to ADMIN or un-authenticated user.)
-router.post('/', (req, res, next) => {
-  next();
-});
-
-// PUT /user/{id} (update user. doable to ADMIN or the user itself.)
-router.put('/:id', (req, res, next) => {
-  next();
-});
-
-// DELETE /user/{id} (disable user. ADMIN ONLY)
-router.delete('/:id', (req, res, next) => {
-  next();
-});
-
 
 //  ADDRESS  /////////////////////////////////////
 
@@ -55,32 +19,32 @@ router.delete('/:id', (req, res, next) => {
   ZIP = like or wildcard
   LANDMARK = like or wildcard
   IS_ACTIVE = true or false */
-router.get('/:id/address', (req, res, next) => {
+router.get('/:id(\\d+)/address', (req, res, next) => {
   next();
 });
 
 // GET /user/{id}/address/{id} (get user's address by id. doable to ADMIN or the user itself.)
-router.get('/:id/address/:id', (req, res, next) => {
+router.get('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 });
 
 // POST /user/{id}/address (create new user address. doable to ADMIN or the user itself.)
-router.post('/:id/address/', (req, res, next) => {
+router.post('/:id(\\d+)/address', (req, res, next) => {
   next();
 });
 
 // PUT /user/{id}/address/{id} (update user address. doable to ADMIN or the user itself.)
-router.put('/:id/address/:addressId/', (req, res, next) => {
+router.put('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 });
 
 // PATCH /user/{id}/address/{id}
-router.patch('/:id/address/:addressId/', (req, res, next) => {
+router.patch('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 });
 
 // DELETE /user/{id}/address/{id} (disable user address. doable to ADMIN or the user itself.)
-router.delete('/:id/address/:addressId/', (req, res, next) => {
+router.delete('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 });
 
@@ -89,24 +53,24 @@ router.delete('/:id/address/:addressId/', (req, res, next) => {
 
 /* GET /user/{id}/reservation/{filter} (get reservations of a user.
                                 doable to ADMIN or the user itself.) */
-router.get('/:id/reservation', (req, res, next) => {
+router.get('/:id(\\d+)/reservation', (req, res, next) => {
   next();
 });
 
 /* GET /user/{id}/reservation/{id} (get a reservation of a
                     user by it's id. doable to ADMIN or the user itself.) */
-router.get('/:id/reservation/:reservationId', (req, res, next) => {
+router.get('/:userId(\\d+)/reservation/:reservationId(\\d+)', (req, res, next) => {
   next();
 });
 
 
 // COMPLETED SESSION ////////////////////////////////////////
 
-router.get('/:id/completed', (req, res, next) => {
+router.get('/:id(\\d+)/completed', (req, res, next) => {
   next();
 });
 
-router.get('/:id/completed/:completedId', (req, res, next) => {
+router.get('/:userId(\\d+)/completed/:completedId(\\d+)', (req, res, next) => {
   next();
 });
 

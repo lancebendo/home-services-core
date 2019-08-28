@@ -8,10 +8,10 @@ exports.default = void 0;
 var _bluebird = require("bluebird");
 
 const queryWrapper = (connection, queryString, params = []) => new _bluebird.Promise((resolve, reject) => {
-  connection.query(queryString, params, (err, result) => {
-    if (err) reject({
+  connection.query(queryString, params, (error, result) => {
+    if (error) reject({
       connection,
-      error: err
+      error
     });else resolve({
       connection,
       result
@@ -32,7 +32,8 @@ const queryWrapper = (connection, queryString, params = []) => new _bluebird.Pro
 //       errHandler(err);
 //     } else {
 //       const nextQuery = callback(results);
-//       if (nextQuery) nextQuery(connection, errHandler, { isTransaction, isAutoEnd }, endConnection);
+//       if (nextQuery) nextQuery(connection, errHandler,
+//      { isTransaction, isAutoEnd }, endConnection);
 //       else endConnection(connection);
 //     }
 //   });

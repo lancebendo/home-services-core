@@ -3,12 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "addon", {
-  enumerable: true,
-  get: function () {
-    return _addon.default;
-  }
-});
 Object.defineProperty(exports, "completed", {
   enumerable: true,
   get: function () {
@@ -39,8 +33,6 @@ Object.defineProperty(exports, "user", {
     return _user.default;
   }
 });
-
-var _addon = _interopRequireDefault(require("./addon"));
 
 var _completed = _interopRequireDefault(require("./completed"));
 

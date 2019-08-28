@@ -96,6 +96,7 @@ app.use(_bodyParser.default.urlencoded({
 })); // routes setup
 
 app.use('/service', _routes.service);
+app.use('/promo', _routes.promo);
 app.use((0, _urlNotFoundHandler.default)());
 app.use((0, _errorHandler.default)()); // graceful shutdown function
 // start app

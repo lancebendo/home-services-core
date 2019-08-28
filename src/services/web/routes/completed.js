@@ -1,20 +1,17 @@
 import express from 'express';
 
+import { getByMultipleApi, getByIdApi, deleteApi } from './shared';
+
+
 const router = express.Router();
 
 // GET /completed?{filter} (get reservations by filter. ADMIN ONLY.)
-router.get('/', (req, res, next) => {
-  next();
-});
+router.get('/', getByMultipleApi('completed_session'));
 
 // GET /completed/{id} (get reservation by id. ADMIN ONLY.)
-router.get('/:id', (req, res, next) => {
-  next();
-});
+router.get('/:id(\\d+)', getByIdApi('completed_session'));
 
 // DELETE /completed/{id} (disable completed session. ADMIN ONLY)
-router.delete('/:id/', (req, res, next) => {
-  next();
-});
+router.delete('/:id(\\d+)', deleteApi('completed_session'));
 
 export default router;

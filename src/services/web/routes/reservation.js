@@ -1,36 +1,28 @@
-import express from 'express';
+import { createCrudApi } from './shared';
 
-const router = express.Router();
-
-// GET /reservation?{filter} (get reservations by filter. ADMIN ONLY.)
-router.get('/', (req, res, next) => {
-  next();
+const router = createCrudApi({
+  table: 'reservation',
+  createProcedure: 'CALL reservationInsert(@new_id, ?, ?, ?, ?, ?)',
+  updateProcedure: 'CALL reservationUpdate(?, ?, ?, ?, ?)',
 });
 
-// GET /reservation/{id} (get reservation by id. ADMIN ONLY.)
-router.get('/:id', (req, res, next) => {
-  next();
-});
-
-// POST /reservation (create new reservation. doable to ADMIN or the user itself.)
-router.post('/', (req, res, next) => {
-  next();
-});
-
-// PUT /reservation/{id} (update reservation. ADMIN ONLY)
-router.put('/:id/', (req, res, next) => {
-  next();
-});
 
 /* PATCH /reservation/{id} (make a completed session out of
     this reservation. ADMIN ONLY or provider) */
-router.patch('/:id/', (req, res, next) => {
+router.patch('/:id(\\d+)', (req, res, next) => {
   next();
 });
 
-// DELETE /reservation/{id} (disable reservation. ADMIN ONLY)
-router.delete('/:id/', (req, res, next) => {
-  next();
-});
+
+// //////////////// RESERVATION SERVICES ////////////////////
+router.get('/:id(\\d+)/services');
+router.post('/:id(\\d+)/services');
+router.delete('/:id(\\d+)/services');
+
+
+// //////////////// RESERVATION USER ASSIGNMENT ////////////////////
+router.get('/:id(\\d+)/service-provider');
+router.post('/:id(\\d+)/service-provider');
+router.delete('/:id(\\d+)/service-provider');
 
 export default router;
