@@ -7,15 +7,28 @@ exports.default = void 0;
 
 var _bluebird = require("bluebird");
 
-const queryWrapper = (connection, queryString, params = []) => new _bluebird.Promise((resolve, reject) => {
+const queryWrapper = ({
+  queryString,
+  params = [],
+  isFinalQuery = false
+}) => ({
+  connection,
+  resultHandler,
+  errorHandler
+}) => new _bluebird.Promise((resolve, reject) => {
   connection.query(queryString, params, (error, result) => {
-    if (error) reject({
-      connection,
-      error
-    });else resolve({
-      connection,
-      result
-    });
+    if (error) {
+      errorHandler();
+      reject(error);
+    } else {
+      if (isFinalQuery) resultHandler();
+      resolve({
+        connection,
+        result,
+        resultHandler,
+        errorHandler
+      });
+    }
   });
 }); // const queryWrapper = (
 //   queryString,

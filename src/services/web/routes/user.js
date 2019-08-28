@@ -1,4 +1,6 @@
 import { createCrudApi } from './shared';
+// import { getWhere } from '../helpers';
+import { connectWrapper, queryWrapper } from '../mysql';
 
 const router = createCrudApi({
   table: 'user',
@@ -6,22 +8,15 @@ const router = createCrudApi({
   updateProcedure: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
 });
 
+// ACCESS LEVEL ////////////////////////////////////
+router.patch('/:id(\\id+)', (req, res, next) => {
+  next();
+});
+
 //  ADDRESS  /////////////////////////////////////
 
 // GET /user/{id}/address/{filter or no filter}
-/* {FILTERS ON GET}
-  CREATED_DATE = gte or lte
-  PROVINCE = like or wildcard
-  CITY = like or wildcard
-  BARANGAY = like or wildcard
-  ROOM NUMBER = like or wildcard
-  BLDG NUMBER = like or wildcard
-  ZIP = like or wildcard
-  LANDMARK = like or wildcard
-  IS_ACTIVE = true or false */
-router.get('/:id(\\d+)/address', (req, res, next) => {
-  next();
-});
+router.get('/:id(\\d+)/address');
 
 // GET /user/{id}/address/{id} (get user's address by id. doable to ADMIN or the user itself.)
 router.get('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
@@ -30,12 +25,58 @@ router.get('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
 
 // POST /user/{id}/address (create new user address. doable to ADMIN or the user itself.)
 router.post('/:id(\\d+)/address', (req, res, next) => {
-  next();
+  const { id } = req.params;
+  const {
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark,
+    is_default: isDefault,
+  } = req.body;
+
+  connectWrapper({ isReadOnlyConnection: false, isTransaction: true, multipleStatements: true })
+    .then(queryWrapper({
+      queryString: 'CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?)',
+      params: [province, city, barangay, roomNumber, bldgNumber, zip, landmark],
+    }))
+    .then(queryWrapper({
+      queryString: `SELECT * FROM address WHERE id = LAST_INSERT_ID() LIMIT 1; 
+      CALL userAddressInsertOrUpdate(?, LAST_INSERT_ID(), ?)`,
+      params: [id, isDefault && isDefault !== 'false' ? 1 : 0],
+      isFinalQuery: true,
+    }))
+    .then(({ result }) => res.status(201).json({ status: 'success', data: result[0][0] }))
+    .catch(next);
 });
 
 // PUT /user/{id}/address/{id} (update user address. doable to ADMIN or the user itself.)
 router.put('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
-  next();
+  const { userId, addressId } = req.params;
+  const {
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark,
+    is_default: isDefault,
+  } = req.body;
+
+  connectWrapper({ isReadOnlyConnection: false, isTransaction: true, multipleStatements: true })
+    .then(queryWrapper({
+      queryString: 'CALL addressUpdate(?, ?, ?, ?, ?, ?, ?, ?)',
+      params: [addressId, province, city, barangay, roomNumber, bldgNumber, zip, landmark],
+    }))
+    .then(queryWrapper({
+      queryString: 'SELECT * FROM address where id = ? LIMIT 1; CALL userAddressInsertOrUpdate(?, ?, ?)',
+      params: [addressId, userId, addressId, isDefault && isDefault !== 'false' ? 1 : 0],
+    }))
+    .then(({ result }) => res.status(201).json({ status: 'success', data: result[0][0] }))
+    .catch(next);
 });
 
 // PATCH /user/{id}/address/{id}

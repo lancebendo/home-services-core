@@ -9,25 +9,26 @@ const router = createCrudApi({
   updateProcedure: 'CALL serviceUpdate(?, ?, ?)',
 });
 
+router.get('/:id(\\d+)/rates');
+router.post('/:id(\\d+)/rates');
+
+
 // PATCH (pano yung add as service addon of gantong service)
-router.patch('/:serviceId(\\d+)/addon/:addonId(\\d+)', (req, res, next) => {
-  const { serviceId, addonId } = req.params;
+router.patch('/:serviceId(\\d+)/subservice/:subserviceId(\\d+)', (req, res, next) => {
+  const { serviceId, subserviceId } = req.params;
 
   connectWrapper({ isReadOnlyConnection: false, isTransaction: true })
     .then(({ connection }) => queryWrapper(
       connection,
       'CALL serviceSubserviceInsert(@newServiceSubserviceId, ?, ?)',
-      [serviceId, addonId],
+      [serviceId, subserviceId],
     ))
     .then(({ connection }) => queryWrapper(connection, 'SELECT LAST_INSERT_ID()'))
     .then(({ connection, result }) => {
       connection.end();
       res.status(201).json({ status: 'success', data: result[0] });
     })
-    .catch(({ connection, error }) => {
-      connection.rollback();
-      next(error);
-    });
+    .catch(next);
 });
 
 export default router;

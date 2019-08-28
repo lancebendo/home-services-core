@@ -5,100 +5,120 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _express = _interopRequireDefault(require("express"));
+var _shared = require("./shared");
 
 var _mysql = require("../mysql");
 
-var _helpers = require("../helpers");
+// import { getWhere } from '../helpers';
+const router = (0, _shared.createCrudApi)({
+  table: 'user',
+  createProcedure: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
+  updateProcedure: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)'
+}); // ACCESS LEVEL ////////////////////////////////////
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const router = _express.default.Router(); // GET /user?{filter} (get users by filter. ADMIN ONLY)
-
-/* {FILTERS ON GET}
-  CREATED_DATE = gte or lte
-  FIRSTNAME = like or wildcard
-  LASTNAME = like or wildcard
-  EMAIL = like or wildcard
-  IS_ACTIVE = true or false */
-
-
-router.get('/', (req, res) => {
-  const queryString = `SELECT * FROM ADDON 
-                    ${(0, _helpers.getWhere)(req.query)} 
-                    ORDER BY CREATED_DATE DESC`;
-  res.status(200).json(queryString);
-}); // GET /user/{id} (get user by id. doable to ADMIN or the user itself.)
-
-router.get('/:id', (req, res, next) => {
-  next();
-}); // POST /user (create new user. doable to ADMIN or un-authenticated user.)
-
-router.post('/', (req, res, next) => {
-  next();
-}); // PUT /user/{id} (update user. doable to ADMIN or the user itself.)
-
-router.put('/:id', (req, res, next) => {
-  next();
-}); // DELETE /user/{id} (disable user. ADMIN ONLY)
-
-router.delete('/:id', (req, res, next) => {
+router.patch('/:id(\\id+)', (req, res, next) => {
   next();
 }); //  ADDRESS  /////////////////////////////////////
 // GET /user/{id}/address/{filter or no filter}
 
-/* {FILTERS ON GET}
-  CREATED_DATE = gte or lte
-  PROVINCE = like or wildcard
-  CITY = like or wildcard
-  BARANGAY = like or wildcard
-  ROOM NUMBER = like or wildcard
-  BLDG NUMBER = like or wildcard
-  ZIP = like or wildcard
-  LANDMARK = like or wildcard
-  IS_ACTIVE = true or false */
+router.get('/:id(\\d+)/address'); // GET /user/{id}/address/{id} (get user's address by id. doable to ADMIN or the user itself.)
 
-router.get('/:id/address', (req, res, next) => {
-  next();
-}); // GET /user/{id}/address/{id} (get user's address by id. doable to ADMIN or the user itself.)
-
-router.get('/:id/address/:id', (req, res, next) => {
+router.get('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 }); // POST /user/{id}/address (create new user address. doable to ADMIN or the user itself.)
 
-router.post('/:id/address/', (req, res, next) => {
-  next();
+router.post('/:id(\\d+)/address', (req, res, next) => {
+  const {
+    id
+  } = req.params;
+  const {
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark,
+    is_default: isDefault
+  } = req.body;
+  (0, _mysql.connectWrapper)({
+    isReadOnlyConnection: false,
+    isTransaction: true,
+    multipleStatements: true
+  }).then((0, _mysql.queryWrapper)({
+    queryString: 'CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?)',
+    params: [province, city, barangay, roomNumber, bldgNumber, zip, landmark]
+  })).then((0, _mysql.queryWrapper)({
+    queryString: `SELECT * FROM address WHERE id = LAST_INSERT_ID() LIMIT 1; 
+      CALL userAddressInsertOrUpdate(?, LAST_INSERT_ID(), ?)`,
+    params: [id, isDefault && isDefault !== 'false' ? 1 : 0],
+    isFinalQuery: true
+  })).then(({
+    result
+  }) => res.status(201).json({
+    status: 'success',
+    data: result[0][0]
+  })).catch(next);
 }); // PUT /user/{id}/address/{id} (update user address. doable to ADMIN or the user itself.)
 
-router.put('/:id/address/:addressId/', (req, res, next) => {
-  next();
+router.put('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
+  const {
+    userId,
+    addressId
+  } = req.params;
+  const {
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark,
+    is_default: isDefault
+  } = req.body;
+  (0, _mysql.connectWrapper)({
+    isReadOnlyConnection: false,
+    isTransaction: true,
+    multipleStatements: true
+  }).then((0, _mysql.queryWrapper)({
+    queryString: 'CALL addressUpdate(?, ?, ?, ?, ?, ?, ?, ?)',
+    params: [addressId, province, city, barangay, roomNumber, bldgNumber, zip, landmark]
+  })).then((0, _mysql.queryWrapper)({
+    queryString: 'SELECT * FROM address where id = ? LIMIT 1; CALL userAddressInsertOrUpdate(?, ?, ?)',
+    params: [addressId, userId, addressId, isDefault && isDefault !== 'false' ? 1 : 0]
+  })).then(({
+    result
+  }) => res.status(201).json({
+    status: 'success',
+    data: result[0][0]
+  })).catch(next);
 }); // PATCH /user/{id}/address/{id}
 
-router.patch('/:id/address/:addressId/', (req, res, next) => {
+router.patch('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 }); // DELETE /user/{id}/address/{id} (disable user address. doable to ADMIN or the user itself.)
 
-router.delete('/:id/address/:addressId/', (req, res, next) => {
+router.delete('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
   next();
 }); // RESERVATIONS /////////////////////////////////////////////
 
 /* GET /user/{id}/reservation/{filter} (get reservations of a user.
                                 doable to ADMIN or the user itself.) */
 
-router.get('/:id/reservation', (req, res, next) => {
+router.get('/:id(\\d+)/reservation', (req, res, next) => {
   next();
 });
 /* GET /user/{id}/reservation/{id} (get a reservation of a
                     user by it's id. doable to ADMIN or the user itself.) */
 
-router.get('/:id/reservation/:reservationId', (req, res, next) => {
+router.get('/:userId(\\d+)/reservation/:reservationId(\\d+)', (req, res, next) => {
   next();
 }); // COMPLETED SESSION ////////////////////////////////////////
 
-router.get('/:id/completed', (req, res, next) => {
+router.get('/:id(\\d+)/completed', (req, res, next) => {
   next();
 });
-router.get('/:id/completed/:completedId', (req, res, next) => {
+router.get('/:userId(\\d+)/completed/:completedId(\\d+)', (req, res, next) => {
   next();
 });
 var _default = router;

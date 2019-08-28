@@ -11,9 +11,13 @@ import { boomify, isBoom } from 'boom';
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = () => (err, req, res, next) => {
-  console.log(err);
   let _err = err;
   if (!isBoom(_err)) _err = boomify(err);
+
+  // eslint-disable-next-line no-console
+  console.log(_err);
+
+  // IF SERVER ERROR OR INTERNAL ERROR, WRITE THE _err.Error content to a log file.
 
   // if (process.env.NODE_ENV === 'production') {
   //   if (err.isServer) logger.error(err.message);

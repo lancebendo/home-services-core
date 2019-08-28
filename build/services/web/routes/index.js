@@ -33,6 +33,7 @@ Object.defineProperty(exports, "user", {
     return _user.default;
   }
 });
+exports.default = void 0;
 
 var _completed = _interopRequireDefault(require("./completed"));
 
@@ -45,3 +46,21 @@ var _service = _interopRequireDefault(require("./service"));
 var _user = _interopRequireDefault(require("./user"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = [{
+  controller: _completed.default,
+  baseUrl: '/completed'
+}, {
+  controller: _promo.default,
+  baseUrl: '/promo'
+}, {
+  controller: _reservation.default,
+  baseUrl: '/reservation'
+}, {
+  controller: _service.default,
+  baseUrl: '/service'
+}, {
+  controller: _user.default,
+  baseUrl: '/user'
+}];
+exports.default = _default;

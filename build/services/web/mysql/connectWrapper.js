@@ -11,6 +11,8 @@ var _bluebird = require("bluebird");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable no-console */
+
 /*
 
   accept a logic function to be executed in the middle.
@@ -25,7 +27,7 @@ const connectWrapper = ({
   isReadOnlyConnection = true,
   isTransaction = false,
   multipleStatements = false
-}) => new _bluebird.Promise((resolve, reject) => {
+}) => {
   // create connection via env
   const connection = _mysql.default.createConnection({
     host: process.env.MYSQL_HOST || 'localhost',
@@ -33,28 +35,64 @@ const connectWrapper = ({
     password: process.env.MYSQL_PASSWORD || 'password',
     database: process.env.MYSQL_DATABASE || 'home_services',
     multipleStatements
-  }); // bind error handler
-
-
-  connection.on('error', error => {
-    if (isTransaction) connection.rollback();
-    reject({
-      connection,
-      error
-    });
   });
-  connection.connect(error => {
-    if (error) {
-      if (isTransaction) connection.rollback();
-      reject({
+
+  return new _bluebird.Promise((resolve, reject) => {
+    // bind error handler
+    connection.on('error', error => {
+      if (isTransaction) {
+        console.log('Rolling back');
+        connection.rollback(_error => {
+          if (_error) reject(_error);
+          reject(error);
+        });
+      }
+
+      reject(error);
+    });
+
+    const errorHandler = () => {
+      if (isTransaction) {
+        console.log('Rolling back');
+        connection.rollback(__error => {
+          if (__error) reject(__error);else connection.end();
+        });
+      } else connection.end();
+    };
+
+    const resultHandler = () => {
+      if (isTransaction) {
+        console.log('Committing');
+        connection.commit(_error => {
+          if (_error) {
+            console.log('Rolling back');
+            connection.rollback(__error => {
+              if (__error) reject(__error);else connection.end();
+            });
+            reject(_error);
+          } else connection.end();
+        });
+      } else connection.end();
+    };
+
+    connection.connect(error => {
+      if (error) reject(error);else if (isTransaction) {
+        connection.beginTransaction(_error => {
+          if (_error) reject(_error);
+          resolve({
+            connection,
+            resultHandler,
+            errorHandler
+          });
+        });
+      } else resolve({
         connection,
-        error
+        resultHandler,
+        errorHandler
       });
-    } else resolve({
-      connection
     });
   });
-}); // const connectWrapper = (
+}; // const connectWrapper = (
 //   errHandler,
 //   query,
 //   {

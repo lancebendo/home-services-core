@@ -5,23 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _createCrudApi = _interopRequireDefault(require("./shared/createCrudApi"));
+var _shared = require("./shared");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const router = (0, _createCrudApi.default)({
+const router = (0, _shared.createCrudApi)({
   table: 'promo',
-  createProcedure: 'promoInsert(@new_id, ?, ?)',
-  getCreateFields: ({
-    name,
-    description
-  }) => [name, description],
-  updateProcedure: 'promoUpdate(?, ?, ?)',
-  getUpdateFields: ({
-    id,
-    name,
-    description
-  }) => [id, name, description]
-});
+  createProcedure: 'CALL promoInsert(@new_id, ?, ?)',
+  updateProcedure: 'CALL promoUpdate(?, ?, ?)'
+}); // may patch pa to. apply or remove to a user or service
+
 var _default = router;
 exports.default = _default;

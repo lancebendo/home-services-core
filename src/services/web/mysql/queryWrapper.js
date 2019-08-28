@@ -1,37 +1,21 @@
 import { Promise } from 'bluebird';
 
-
-const queryWrapper = (
-  connection,
+const queryWrapper = ({
   queryString,
   params = [],
-) => new Promise((resolve, reject) => {
+  isFinalQuery = false,
+}) => ({ connection, resultHandler, errorHandler }) => new Promise((resolve, reject) => {
   connection.query(queryString, params, (error, result) => {
-    if (error) reject({ connection, error });
-    else resolve({ connection, result });
+    if (error) {
+      errorHandler();
+      reject(error);
+    } else {
+      if (isFinalQuery) resultHandler();
+      resolve({
+        connection, result, resultHandler, errorHandler,
+      });
+    }
   });
 });
-
-// const queryWrapper = (
-//   queryString,
-//   callback,
-// ) => (
-//   connection,
-//   errHandler,
-//   { isAutoEnd, isTransaction },
-//   endConnection,
-// ) => {
-//   connection.query(queryString, (err, results) => {
-//     if (err) {
-//       if (isTransaction) connection.rollback();
-//       errHandler(err);
-//     } else {
-//       const nextQuery = callback(results);
-//       if (nextQuery) nextQuery(connection, errHandler,
-//      { isTransaction, isAutoEnd }, endConnection);
-//       else endConnection(connection);
-//     }
-//   });
-// };
 
 export default queryWrapper;

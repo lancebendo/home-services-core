@@ -5,37 +5,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _express = _interopRequireDefault(require("express"));
+var _shared = require("./shared");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const router = _express.default.Router(); // GET /reservation?{filter} (get reservations by filter. ADMIN ONLY.)
-
-
-router.get('/', (req, res, next) => {
-  next();
-}); // GET /reservation/{id} (get reservation by id. ADMIN ONLY.)
-
-router.get('/:id', (req, res, next) => {
-  next();
-}); // POST /reservation (create new reservation. doable to ADMIN or the user itself.)
-
-router.post('/', (req, res, next) => {
-  next();
-}); // PUT /reservation/{id} (update reservation. ADMIN ONLY)
-
-router.put('/:id/', (req, res, next) => {
-  next();
+const router = (0, _shared.createCrudApi)({
+  table: 'reservation',
+  createProcedure: 'CALL reservationInsert(@new_id, ?, ?, ?, ?, ?)',
+  updateProcedure: 'CALL reservationUpdate(?, ?, ?, ?, ?)'
 });
 /* PATCH /reservation/{id} (make a completed session out of
     this reservation. ADMIN ONLY or provider) */
 
-router.patch('/:id/', (req, res, next) => {
+router.patch('/:id(\\d+)', (req, res, next) => {
   next();
-}); // DELETE /reservation/{id} (disable reservation. ADMIN ONLY)
+}); // //////////////// RESERVATION SERVICES ////////////////////
 
-router.delete('/:id/', (req, res, next) => {
-  next();
-});
+router.get('/:id(\\d+)/services');
+router.post('/:id(\\d+)/services');
+router.delete('/:id(\\d+)/services'); // //////////////// RESERVATION USER ASSIGNMENT ////////////////////
+
+router.get('/:id(\\d+)/service-provider');
+router.post('/:id(\\d+)/service-provider');
+router.delete('/:id(\\d+)/service-provider');
 var _default = router;
 exports.default = _default;
