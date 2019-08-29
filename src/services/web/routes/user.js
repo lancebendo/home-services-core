@@ -2,10 +2,28 @@ import { createCrudApi } from './shared';
 // import { getWhere } from '../helpers';
 import { connectWrapper, queryWrapper } from '../mysql';
 
+
 const router = createCrudApi({
   table: 'user',
   createProcedure: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
+  getCreateFields: ({
+    firstname,
+    lastname,
+    date_of_birth: dateOfBirth,
+    gender,
+    email,
+    contact_number: contactNumber,
+  }) => [firstname, lastname, dateOfBirth, gender, email, contactNumber],
   updateProcedure: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
+  getUpdateFields: ({
+    id,
+    firstname,
+    lastname,
+    date_of_birth: dateOfBirth,
+    gender,
+    email,
+    contact_number: contactNumber,
+  }) => [id, firstname, lastname, dateOfBirth, gender, email, contactNumber],
 });
 
 // ACCESS LEVEL ////////////////////////////////////
@@ -48,7 +66,7 @@ router.post('/:id(\\d+)/address', (req, res, next) => {
       params: [id, isDefault && isDefault !== 'false' ? 1 : 0],
       isFinalQuery: true,
     }))
-    .then(({ result }) => res.status(201).json({ status: 'success', data: result[0][0] }))
+    .then(({ result }) => res.status(201).json({ status: 'success', data: result }))
     .catch(next);
 });
 
@@ -74,8 +92,9 @@ router.put('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
     .then(queryWrapper({
       queryString: 'SELECT * FROM address where id = ? LIMIT 1; CALL userAddressInsertOrUpdate(?, ?, ?)',
       params: [addressId, userId, addressId, isDefault && isDefault !== 'false' ? 1 : 0],
+      isFinalQuery: true,
     }))
-    .then(({ result }) => res.status(201).json({ status: 'success', data: result[0][0] }))
+    .then(({ result }) => res.status(201).json({ status: 'success', data: result }))
     .catch(next);
 });
 

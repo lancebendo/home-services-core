@@ -48,7 +48,7 @@ const getByIdApi = table => (req, res, next) => {
     result
   }) => res.status(200).json({
     status: 'success',
-    data: result[0] || null
+    data: result || null
   })).catch(next);
 };
 
@@ -68,7 +68,7 @@ const createApi = (table, createProcedure, getCreateFields) => (req, res, next) 
     result
   }) => res.status(201).json({
     status: 'success',
-    data: result[0]
+    data: result
   })).catch(next);
 };
 
@@ -95,7 +95,7 @@ const updateApi = (table, updateProcedure, getUpdateFields) => (req, res, next) 
     result
   }) => res.status(201).json({
     status: 'success',
-    data: result[0]
+    data: result
   })).catch(next);
 };
 

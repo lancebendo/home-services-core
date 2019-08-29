@@ -1,11 +1,17 @@
 import express from 'express';
 
 import {
-  getByMultipleApi, getByIdApi, createApi, updateApi, deleteApi,
+  getRecords, createApi, updateApi, deleteApi,
 } from './helpers';
 
 const createCrudApi = ({
   table,
+  getMultipleQueryHandler,
+  getMultipleResultHandler = result => result,
+  // isMultipleStatementMultipleQuery = false,
+  getByIdQueryHandler,
+  getByIdResultHandler = result => result,
+  // isMultipleStatementByIdQuery = false,
   createProcedure,
   updateProcedure,
   getCreateFields = fields => Object.keys(fields).map(field => fields[field]),
@@ -18,9 +24,9 @@ const createCrudApi = ({
 }) => {
   const router = express.Router();
 
-  router.get('/', ...getMultipleMiddlewares, getByMultipleApi(table));
+  router.get('/', ...getMultipleMiddlewares, getRecords(getMultipleQueryHandler, true, getMultipleResultHandler));
 
-  router.get('/:id(\\d+)', ...getByIdMiddlewares, getByIdApi(table));
+  router.get('/:id(\\d+)', ...getByIdMiddlewares, getRecords(getByIdQueryHandler, true, getByIdResultHandler));
 
   if (createProcedure) {
     router.post('/', ...createMiddlewares, createApi(table, createProcedure, getCreateFields));

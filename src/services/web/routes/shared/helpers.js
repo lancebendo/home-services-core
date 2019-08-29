@@ -15,7 +15,22 @@ export const getByIdApi = table => (req, res, next) => {
 
   connectWrapper({ isReadOnlyConnection: true })
     .then(queryWrapper({ queryString, isFinalQuery: true }))
-    .then(({ result }) => res.status(200).json({ status: 'success', data: result[0] || null }))
+    .then(({ result }) => res.status(200).json({ status: 'success', data: result || null }))
+    .catch(next);
+};
+
+export const getRecords = (
+  query,
+  isMultipleStatement,
+  resultHandler,
+) => (req, res, next) => {
+  let finalQuery = '';
+  if (typeof query !== 'string') finalQuery = query({ ...req.params, ...req.query });
+  else finalQuery = query;
+
+  connectWrapper({ isReadOnlyConnection: true, multipleStatements: isMultipleStatement })
+    .then(queryWrapper({ finalQuery, isFinalQuery: true, resultHandler }))
+    .then(({ result }) => res.status(200).json({ status: 'success', data: result || null }))
     .catch(next);
 };
 
@@ -26,7 +41,7 @@ export const createApi = (table, createProcedure, getCreateFields) => (req, res,
       params: getCreateFields(req.body),
     }))
     .then(queryWrapper({ queryString: `SELECT * FROM ${table} WHERE id = LAST_INSERT_ID()`, isFinalQuery: true }))
-    .then(({ result }) => res.status(201).json({ status: 'success', data: result[0] }))
+    .then(({ result }) => res.status(201).json({ status: 'success', data: result }))
     .catch(next);
 };
 
@@ -39,7 +54,7 @@ export const updateApi = (table, updateProcedure, getUpdateFields) => (req, res,
       params: getUpdateFields({ id, ...req.body }),
     }))
     .then(queryWrapper({ queryString: `SELECT * FROM ${table} ${getWhere({ id })}`, isFinalQuery: true }))
-    .then(({ result }) => res.status(201).json({ status: 'success', data: result[0] }))
+    .then(({ result }) => res.status(201).json({ status: 'success', data: result }))
     .catch(next);
 };
 

@@ -4,15 +4,19 @@ const queryWrapper = ({
   queryString,
   params = [],
   isFinalQuery = false,
-}) => ({ connection, resultHandler, errorHandler }) => new Promise((resolve, reject) => {
-  connection.query(queryString, params, (error, result) => {
+  resultHandler = result => result,
+}) => ({
+  connection, result: lastResult = {}, successHandler, errorHandler,
+}) => new Promise((resolve, reject) => {
+  connection.query(queryString, params, (error, queryResult) => {
     if (error) {
       errorHandler();
       reject(error);
     } else {
-      if (isFinalQuery) resultHandler();
+      if (isFinalQuery) successHandler();
+      const finalResult = resultHandler(queryResult);
       resolve({
-        connection, result, resultHandler, errorHandler,
+        connection, result: { ...lastResult, ...finalResult }, successHandler, errorHandler,
       });
     }
   });

@@ -52,7 +52,7 @@ const connectWrapper = ({
       } else connection.end();
     };
 
-    const resultHandler = () => {
+    const successHandler = () => {
       if (isTransaction) {
         console.log('Committing');
         connection.commit((_error) => {
@@ -73,9 +73,9 @@ const connectWrapper = ({
       else if (isTransaction) {
         connection.beginTransaction((_error) => {
           if (_error) reject(_error);
-          resolve({ connection, resultHandler, errorHandler });
+          resolve({ connection, successHandler, errorHandler });
         });
-      } else resolve({ connection, resultHandler, errorHandler });
+      } else resolve({ connection, successHandler, errorHandler });
     });
   });
 };
