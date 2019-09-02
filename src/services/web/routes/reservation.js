@@ -1,9 +1,13 @@
-import { createCrudApi } from './shared';
+import { getDomainRouter } from 'express-mysql-helpers';
 
-const router = createCrudApi({
-  table: 'reservation',
-  createProcedure: 'CALL reservationInsert(@new_id, ?, ?, ?, ?, ?)',
-  updateProcedure: 'CALL reservationUpdate(?, ?, ?, ?, ?)',
+const router = getDomainRouter({
+  viewTable: 'reservation',
+  createProcedure: {
+    query: 'CALL reservationInsert(@new_id, ?, ?, ?, ?, ?)',
+  },
+  updateProcedure: {
+    query: 'CALL reservationUpdate(?, ?, ?, ?, ?)',
+  },
 });
 
 

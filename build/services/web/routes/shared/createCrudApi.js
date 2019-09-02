@@ -7,12 +7,18 @@ exports.default = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var _helpers = require("./helpers");
+var _expressMysqlHelpers = require("express-mysql-helpers");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const createCrudApi = ({
   table,
+  getMultipleQueryHandler,
+  getMultipleResultHandler = result => result,
+  // isMultipleStatementMultipleQuery = false,
+  getByIdQueryHandler,
+  getByIdResultHandler = result => result,
+  // isMultipleStatementByIdQuery = false,
   createProcedure,
   updateProcedure,
   getCreateFields = fields => Object.keys(fields).map(field => fields[field]),
@@ -25,18 +31,18 @@ const createCrudApi = ({
 }) => {
   const router = _express.default.Router();
 
-  router.get('/', ...getMultipleMiddlewares, (0, _helpers.getByMultipleApi)(table));
-  router.get('/:id(\\d+)', ...getByIdMiddlewares, (0, _helpers.getByIdApi)(table));
+  router.get('/', ...getMultipleMiddlewares, (0, _expressMysqlHelpers.getApi)(getMultipleQueryHandler, true, getMultipleResultHandler));
+  router.get('/:id(\\d+)', ...getByIdMiddlewares, (0, _expressMysqlHelpers.getApi)(getByIdQueryHandler, true, getByIdResultHandler));
 
   if (createProcedure) {
-    router.post('/', ...createMiddlewares, (0, _helpers.createApi)(table, createProcedure, getCreateFields));
+    router.post('/', ...createMiddlewares, (0, _expressMysqlHelpers.procedureApi)(table, createProcedure, getCreateFields));
   }
 
   if (updateProcedure) {
-    router.put('/:id(\\d+)', ...updateMiddlewares, (0, _helpers.updateApi)(table, updateProcedure, getUpdateFields));
+    router.put('/:id(\\d+)', ...updateMiddlewares, (0, _expressMysqlHelpers.procedureApi)(table, updateProcedure, getUpdateFields));
   }
 
-  router.delete('/:id(\\d+)', ...deleteMiddlewares, (0, _helpers.deleteApi)(table));
+  router.delete('/:id(\\d+)', ...deleteMiddlewares, (0, _expressMysqlHelpers.procedureApi)(table));
   return router;
 };
 

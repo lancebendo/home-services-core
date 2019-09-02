@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteApi = exports.updateApi = exports.createApi = exports.getByIdApi = exports.getByMultipleApi = void 0;
+exports.deleteApi = exports.updateApi = exports.createApi = exports.getApi = exports.getByIdApi = exports.getByMultipleApi = void 0;
 
 var _mysql = require("../../mysql");
 
@@ -51,8 +51,36 @@ const getByIdApi = table => (req, res, next) => {
     data: result || null
   })).catch(next);
 };
+/* getApi => for fetching data from the database.
+  query: can be a string of query or function that will accept the query parameters as args
+        and return a string of query
+  isMultipleStatement: boolean. true if it is a multiple statement query
+  resultHandler: function that will accept a result from mysqljs query as args and return
+        a processed result object.
+*/
+
 
 exports.getByIdApi = getByIdApi;
+
+const getApi = (query, isMultipleStatement, resultHandler) => (req, res, next) => {
+  let finalQuery = '';
+  if (typeof query !== 'string') finalQuery = query(_objectSpread({}, req.params, {}, req.query));else finalQuery = query;
+  (0, _mysql.connectWrapper)({
+    isReadOnlyConnection: true,
+    multipleStatements: isMultipleStatement
+  }).then((0, _mysql.queryWrapper)({
+    finalQuery,
+    isFinalQuery: true,
+    resultHandler
+  })).then(({
+    result
+  }) => res.status(200).json({
+    status: 'success',
+    data: result || null
+  })).catch(next);
+};
+
+exports.getApi = getApi;
 
 const createApi = (table, createProcedure, getCreateFields) => (req, res, next) => {
   (0, _mysql.connectWrapper)({

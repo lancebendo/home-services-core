@@ -1,12 +1,25 @@
-import { createCrudApi } from './shared';
+import { getDomainRouter, connectWrapper, queryWrapper } from 'express-mysql-helpers';
 
-import { connectWrapper, queryWrapper } from '../mysql';
 
-const router = createCrudApi({
-  table: 'service',
-  createProcedure: 'CALL serviceInsert(@new_id, ?, ?, ?)',
-  getCreateFields: ({ name, description, is_subservice: isSubservice }) => [name, description, isSubservice === 'true' ? 1 : 0],
-  updateProcedure: 'CALL serviceUpdate(?, ?, ?)',
+const router = getDomainRouter({
+  viewTable: 'service',
+  createProcedure: {
+    query: 'CALL serviceInsert(@new_id, ?, ?, ?)',
+    paramsHandler: ({ name, description, is_subservice: isSubservice }) => [
+      name,
+      description,
+      isSubservice === 'true' ? 1 : 0,
+    ],
+  },
+  updateProcedure: {
+    query: 'CALL serviceUpdate(?, ?, ?)',
+    paramsHandler: ({ id, name, description }) => [id, name, description],
+  },
+  deleteProcedure: {
+    query: 'CALL isActiveUpdate(?, ?, ?)',
+    paramsHandler: ({ id }) => ['service', id, 0],
+  },
+  // middlewares here.
 });
 
 router.get('/:id(\\d+)/rates');

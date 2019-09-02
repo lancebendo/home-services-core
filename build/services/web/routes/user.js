@@ -5,32 +5,35 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _shared = require("./shared");
-
-var _mysql = require("../mysql");
+var _expressMysqlHelpers = require("express-mysql-helpers");
 
 // import { getWhere } from '../helpers';
-const router = (0, _shared.createCrudApi)({
-  table: 'user',
-  createProcedure: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
-  getCreateFields: ({
-    firstname,
-    lastname,
-    date_of_birth: dateOfBirth,
-    gender,
-    email,
-    contact_number: contactNumber
-  }) => [firstname, lastname, dateOfBirth, gender, email, contactNumber],
-  updateProcedure: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
-  getUpdateFields: ({
-    id,
-    firstname,
-    lastname,
-    date_of_birth: dateOfBirth,
-    gender,
-    email,
-    contact_number: contactNumber
-  }) => [id, firstname, lastname, dateOfBirth, gender, email, contactNumber]
+const router = (0, _expressMysqlHelpers.getDomainRouter)({
+  viewTable: 'user',
+  getMultipleResultHandler: result => JSON.parse(JSON.stringify(result)),
+  createProcedure: {
+    query: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
+    paramsHandler: ({
+      firstname,
+      lastname,
+      date_of_birth: dateOfBirth,
+      gender,
+      email,
+      contact_number: contactNumber
+    }) => [firstname, lastname, dateOfBirth, gender, email, contactNumber]
+  },
+  updateProcedure: {
+    query: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
+    paramsHandler: ({
+      id,
+      firstname,
+      lastname,
+      date_of_birth: dateOfBirth,
+      gender,
+      email,
+      contact_number: contactNumber
+    }) => [id, firstname, lastname, dateOfBirth, gender, email, contactNumber]
+  }
 }); // ACCESS LEVEL ////////////////////////////////////
 
 router.patch('/:id(\\id+)', (req, res, next) => {
@@ -58,14 +61,14 @@ router.post('/:id(\\d+)/address', (req, res, next) => {
     landmark,
     is_default: isDefault
   } = req.body;
-  (0, _mysql.connectWrapper)({
+  (0, _expressMysqlHelpers.connectWrapper)({
     isReadOnlyConnection: false,
     isTransaction: true,
     multipleStatements: true
-  }).then((0, _mysql.queryWrapper)({
+  }).then((0, _expressMysqlHelpers.queryWrapper)({
     queryString: 'CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?)',
     params: [province, city, barangay, roomNumber, bldgNumber, zip, landmark]
-  })).then((0, _mysql.queryWrapper)({
+  })).then((0, _expressMysqlHelpers.queryWrapper)({
     queryString: `SELECT * FROM address WHERE id = LAST_INSERT_ID() LIMIT 1; 
       CALL userAddressInsertOrUpdate(?, LAST_INSERT_ID(), ?)`,
     params: [id, isDefault && isDefault !== 'false' ? 1 : 0],
@@ -93,14 +96,14 @@ router.put('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
     landmark,
     is_default: isDefault
   } = req.body;
-  (0, _mysql.connectWrapper)({
+  (0, _expressMysqlHelpers.connectWrapper)({
     isReadOnlyConnection: false,
     isTransaction: true,
     multipleStatements: true
-  }).then((0, _mysql.queryWrapper)({
+  }).then((0, _expressMysqlHelpers.queryWrapper)({
     queryString: 'CALL addressUpdate(?, ?, ?, ?, ?, ?, ?, ?)',
     params: [addressId, province, city, barangay, roomNumber, bldgNumber, zip, landmark]
-  })).then((0, _mysql.queryWrapper)({
+  })).then((0, _expressMysqlHelpers.queryWrapper)({
     queryString: 'SELECT * FROM address where id = ? LIMIT 1; CALL userAddressInsertOrUpdate(?, ?, ?)',
     params: [addressId, userId, addressId, isDefault && isDefault !== 'false' ? 1 : 0],
     isFinalQuery: true

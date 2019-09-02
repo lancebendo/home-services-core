@@ -27,6 +27,5 @@ app.use(errorHandler());
 
 // graceful shutdown function
 
-
 // start app
 app.listen(PORT, () => console.log(`Listening to PORT #: ${PORT}.`));

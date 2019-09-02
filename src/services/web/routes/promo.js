@@ -1,9 +1,14 @@
-import { createCrudApi } from './shared';
+import { getDomainRouter } from 'express-mysql-helpers';
 
-const router = createCrudApi({
-  table: 'promo',
-  createProcedure: 'CALL promoInsert(@new_id, ?, ?)',
-  updateProcedure: 'CALL promoUpdate(?, ?, ?)',
+
+const router = getDomainRouter({
+  viewTable: 'promo',
+  createProcedure: {
+    query: 'CALL promoInsert(@new_id, ?, ?)',
+  },
+  updateProcedure: {
+    query: 'CALL promoUpdate(?, ?, ?)',
+  },
 });
 
 // may patch pa to. apply or remove to a user or service

@@ -90,6 +90,7 @@
 // setup dependencies
 import express from 'express';
 import bodyParser from 'body-parser';
+import './config';
 
 // routes
 import routes from './services/web/routes';

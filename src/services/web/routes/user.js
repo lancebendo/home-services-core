@@ -1,29 +1,32 @@
-import { createCrudApi } from './shared';
+import { getDomainRouter, connectWrapper, queryWrapper } from 'express-mysql-helpers';
 // import { getWhere } from '../helpers';
-import { connectWrapper, queryWrapper } from '../mysql';
 
 
-const router = createCrudApi({
-  table: 'user',
-  createProcedure: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
-  getCreateFields: ({
-    firstname,
-    lastname,
-    date_of_birth: dateOfBirth,
-    gender,
-    email,
-    contact_number: contactNumber,
-  }) => [firstname, lastname, dateOfBirth, gender, email, contactNumber],
-  updateProcedure: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
-  getUpdateFields: ({
-    id,
-    firstname,
-    lastname,
-    date_of_birth: dateOfBirth,
-    gender,
-    email,
-    contact_number: contactNumber,
-  }) => [id, firstname, lastname, dateOfBirth, gender, email, contactNumber],
+const router = getDomainRouter({
+  viewTable: 'user',
+  createProcedure: {
+    query: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
+    paramsHandler: ({
+      firstname,
+      lastname,
+      date_of_birth: dateOfBirth,
+      gender,
+      email,
+      contact_number: contactNumber,
+    }) => [firstname, lastname, dateOfBirth, gender, email, contactNumber],
+  },
+  updateProcedure: {
+    query: 'CALL userUpdate(?, ?, ?, ?, ?, ?, ?)',
+    paramsHandler: ({
+      id,
+      firstname,
+      lastname,
+      date_of_birth: dateOfBirth,
+      gender,
+      email,
+      contact_number: contactNumber,
+    }) => [id, firstname, lastname, dateOfBirth, gender, email, contactNumber],
+  },
 });
 
 // ACCESS LEVEL ////////////////////////////////////

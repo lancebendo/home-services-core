@@ -4,6 +4,8 @@ var _express = _interopRequireDefault(require("express"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 
+require("./config");
+
 var _routes = _interopRequireDefault(require("./services/web/routes"));
 
 var _errorHandler = _interopRequireDefault(require("./services/web/middlewares/errorHandler"));

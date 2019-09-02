@@ -5,12 +5,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _shared = require("./shared");
+var _expressMysqlHelpers = require("express-mysql-helpers");
 
-const router = (0, _shared.createCrudApi)({
-  table: 'promo',
-  createProcedure: 'CALL promoInsert(@new_id, ?, ?)',
-  updateProcedure: 'CALL promoUpdate(?, ?, ?)'
+const router = (0, _expressMysqlHelpers.getDomainRouter)({
+  viewTable: 'promo',
+  createProcedure: {
+    query: 'CALL promoInsert(@new_id, ?, ?)'
+  },
+  updateProcedure: {
+    query: 'CALL promoUpdate(?, ?, ?)'
+  }
 }); // may patch pa to. apply or remove to a user or service
 
 var _default = router;
