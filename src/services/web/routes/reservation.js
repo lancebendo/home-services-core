@@ -19,14 +19,18 @@ router.patch('/:id(\\d+)', (req, res, next) => {
 
 
 // //////////////// RESERVATION SERVICES ////////////////////
+// reservationServiceInsert
+// reservationServiceDelete
+
 router.get('/:id(\\d+)/services');
 router.post('/:id(\\d+)/services');
 router.delete('/:id(\\d+)/services');
 
 
 // //////////////// RESERVATION USER ASSIGNMENT ////////////////////
+// getters only
 router.get('/:id(\\d+)/service-provider');
-router.post('/:id(\\d+)/service-provider');
-router.delete('/:id(\\d+)/service-provider');
+// router.post('/:id(\\d+)/service-provider'); dapat sa user route tong mga operation na to
+// router.delete('/:id(\\d+)/service-provider'); pati ito.
 
 export default router;

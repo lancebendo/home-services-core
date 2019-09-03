@@ -4,6 +4,7 @@ import express from 'express';
 
 
 const router = express.Router();
+// GET LANG LAHAT DITO.
 
 // GET /completed?{filter} (get reservations by filter. ADMIN ONLY.)
 // router.get('/', getByMultipleApi('completed_session'));

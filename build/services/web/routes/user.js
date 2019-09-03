@@ -10,7 +10,6 @@ var _expressMysqlHelpers = require("express-mysql-helpers");
 // import { getWhere } from '../helpers';
 const router = (0, _expressMysqlHelpers.getDomainRouter)({
   viewTable: 'user',
-  getMultipleResultHandler: result => JSON.parse(JSON.stringify(result)),
   createProcedure: {
     query: 'CALL userInsert(@new_id, ?, ?, ?, ?, ?, ?)',
     paramsHandler: ({

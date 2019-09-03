@@ -44,4 +44,9 @@ router.patch('/:serviceId(\\d+)/subservice/:subserviceId(\\d+)', (req, res, next
     .catch(next);
 });
 
+// serviceRateInsert
+
+// serviceSubserviceInsert
+
+
 export default router;
