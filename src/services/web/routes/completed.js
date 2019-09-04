@@ -7,12 +7,10 @@ const router = express.Router();
 // GET LANG LAHAT DITO.
 
 // GET /completed?{filter} (get reservations by filter. ADMIN ONLY.)
-// router.get('/', getByMultipleApi('completed_session'));
+router.get('/');
 
 // GET /completed/{id} (get reservation by id. ADMIN ONLY.)
-// router.get('/:id(\\d+)', getByIdApi('completed_session'));
+router.get('/:id(\\d+)');
 
-// DELETE /completed/{id} (disable completed session. ADMIN ONLY)
-// router.delete('/:id(\\d+)', deleteApi('completed_session'));
 
 export default router;

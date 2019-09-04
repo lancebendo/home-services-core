@@ -1391,6 +1391,30 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure serviceSubserviceDelete
+-- -----------------------------------------------------
+
+USE `home_services`;
+DROP procedure IF EXISTS `home_services`.`serviceSubserviceDelete`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `home_services`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceSubserviceDelete`(
+	IN _parent_service_id INT,
+	IN _subservice_id INT
+)
+BEGIN
+
+  DELETE FROM `service_subservice` 
+  WHERE parent_service_id = _parent_service_id AND subservice_id = _subservice_id;
+
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure serviceRateInsert
 -- -----------------------------------------------------
 

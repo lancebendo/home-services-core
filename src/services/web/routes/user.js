@@ -1,4 +1,4 @@
-import { getDomainRouter } from 'express-mysql-helpers';
+import { getDomainRouter, procedureApi } from 'express-mysql-helpers';
 // import { getWhere } from '../helpers';
 
 
@@ -34,42 +34,75 @@ const router = getDomainRouter({
 });
 
 // ACCESS LEVEL ////////////////////////////////////
-// userAccessLevelUpdate hindi dapat patch to
+// userAccessLevelUpdate
+router.patch('/:id(\\d+)');
 
 
 //  ADDRESS  /////////////////////////////////////
-// userAddressInsertOrUpdate
-// userAddressDelete
 // addressInsert
+router.post('/:id(\\d+)/address', procedureApi({
+  query: `CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?); 
+  SELECT * FROM address where id = LAST_INSERT_ID(); 
+  CALL userAddressInsertOrUpdate(?, LAST_INSERT_(), ?);`,
+  paramsHandler: ({
+    id,
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark,
+    is_default: isDefault,
+  }) => [province, city, barangay, roomNumber, bldgNumber, zip, landmark, id, isDefault ? 1 : 0],
+  resultHandler: result => result[1],
+  responseCode: 201,
+}));
+
 // addressUpdate
+router.put('/:userId(\\d+)/address/:addressId(\\d+)', procedureApi({
+  query: `CALL addressUpdate(?, ?, ?, ?, ?, ?, ?, ?); 
+  SELECT * FROM address where id = ?`,
+  paramsHandler: ({
+    userId,
+    addressId,
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark,
+  }) => [
+    userId,
+    addressId,
+    province,
+    city,
+    barangay,
+    roomNumber,
+    bldgNumber,
+    zip,
+    landmark,
+    addressId],
+  resultHandler: result => result[1],
+}));
 
-
-// RESERVATIONS /////////////////////////////////////////////
-
-/* GET /user/{id}/reservation/{filter} (get reservations of a user.
-                                doable to ADMIN or the user itself.) */
-router.get('/:id(\\d+)/reservation', (req, res, next) => {
-  next();
-});
-
-/* GET /user/{id}/reservation/{id} (get a reservation of a
-                    user by it's id. doable to ADMIN or the user itself.) */
-router.get('/:userId(\\d+)/reservation/:reservationId(\\d+)', (req, res, next) => {
-  next();
-});
-
-
-// COMPLETED SESSION ////////////////////////////////////////
-
-router.get('/:id(\\d+)/completed', (req, res, next) => {
-  next();
-});
-
-router.get('/:userId(\\d+)/completed/:completedId(\\d+)', (req, res, next) => {
-  next();
-});
+// userAddressDelete
+router.delete('/:userId(\\d+)/address/:addressId(\\d+)', procedureApi({
+  query: 'CALL userAddressDelete(?, ?)',
+  paramsHandler: ({ userId, addressId }) => [userId, addressId],
+}));
+// userAddressInsertOrUpdate
+router.patch('/:userId(\\d+)/address/:addressId(\\d+)', procedureApi({
+  query: 'CALL userAddressInsertOrUpdate(?, ?, ?)',
+  paramsHandler: ({
+    userId, addressId, is_default: isDefault,
+  }) => [userId, addressId, isDefault ? 1 : 0],
+}));
 
 
 // ASSIGNMENT //////////////////////////////////////////
+// get assigned reservations
+router.get('/:id/reservations');
 
 export default router;
