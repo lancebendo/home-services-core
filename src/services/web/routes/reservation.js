@@ -32,8 +32,15 @@ const router = getDomainRouter({
 // get all
 // reservationServiceInsert
 // reservationServiceDelete
-router.get('/:id(\\d+)/services');
-router.post('/:id(\\d+)/services', procedureApi({
+router.get('/:id(\\d+)/service', procedureApi({
+  query: `SELECT service.* FROM service 
+  INNER JOIN reservation_service 
+  ON reservation_service.service_id = service.id
+  WHERE reservation_service.reservation_id = ?`,
+  paramsHandler: ({ id }) => [id],
+}));
+
+router.post('/:id(\\d+)/service', procedureApi({
   query: 'CALL reservationServiceInsert(?, ?)',
   paramsHandler: ({ id, service_subservice_id: serviceSubserviceId }) => [id, serviceSubserviceId],
 }));
@@ -47,7 +54,13 @@ router.delete('/:id(\\d+)/services', procedureApi({
 // get all
 // userProviderAssignmentInsert
 // userProviderAssignmentDelete
-router.get('/:id(\\d+)/service-provider');
+router.get('/:id(\\d+)/service-provider', procedureApi({
+  query: `SELECT user.* FROM user 
+  INNER JOIN user_provider_assignment 
+  ON user_provider_assignment.user_provider_id = user.id 
+  WHERE user_provider_assignment.reservation_id = ?`,
+  paramsHandler: ({ id }) => [id],
+}));
 
 router.post('/:id(\\d+)/service-provider', procedureApi({
   query: 'CALL userProviderAssignmentInsert(?, ?, ?)',

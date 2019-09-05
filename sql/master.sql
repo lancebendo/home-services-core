@@ -338,17 +338,17 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `home_services`.`completed_session_service` (
   `completed_session_id` INT(11) NOT NULL,
-  `service_subservice_id` INT(11) NOT NULL,
-  PRIMARY KEY (`completed_session_id`, `service_subservice_id`),
+  `service_id` INT(11) NOT NULL,
+  PRIMARY KEY (`completed_session_id`, `service_id`),
   INDEX `fkIdx_263` (`completed_session_id` ASC) VISIBLE,
-  INDEX `fkIdx_267` (`service_subservice_id` ASC) VISIBLE,
+  INDEX `fkIdx_267` (`service_id` ASC) VISIBLE,
   CONSTRAINT `FK_completed_session_completed_session_service`
     FOREIGN KEY (`completed_session_id`)
     REFERENCES `home_services`.`completed_session` (`id`)
     ON DELETE CASCADE,
   CONSTRAINT `FK_service_completed_session_service`
-    FOREIGN KEY (`service_subservice_id`)
-    REFERENCES `home_services`.`service_subservice` (`id`)
+    FOREIGN KEY (`service_id`)
+    REFERENCES `home_services`.`service` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -433,17 +433,17 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `home_services`.`reservation_service` (
   `reservation_id` INT(11) NOT NULL,
-  `service_subservice_id` INT(11) NOT NULL,
-  PRIMARY KEY (`reservation_id`, `service_subservice_id`),
+  `service_id` INT(11) NOT NULL,
+  PRIMARY KEY (`reservation_id`, `service_id`),
   INDEX `fkIdx_236` (`reservation_id` ASC) VISIBLE,
-  INDEX `fkIdx_240` (`service_subservice_id` ASC) VISIBLE,
-  CONSTRAINT `FK_reservation_service_addon`
+  INDEX `fkIdx_240` (`service_id` ASC) VISIBLE,
+  CONSTRAINT `FK_reservation_reservation_service`
     FOREIGN KEY (`reservation_id`)
     REFERENCES `home_services`.`reservation` (`id`)
     ON DELETE CASCADE,
-  CONSTRAINT `FK_reservation_service_subservice`
-    FOREIGN KEY (`service_subservice_id`)
-    REFERENCES `home_services`.`service_subservice` (`id`)
+  CONSTRAINT `FK_service_reservation_service`
+    FOREIGN KEY (`service_id`)
+    REFERENCES `home_services`.`service` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -779,12 +779,12 @@ DELIMITER $$
 USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionServiceDelete`(
 	IN _completed_session_id INT,
-	IN _service_subservice_id INT
+	IN _service_id INT
 )
 BEGIN
 	
 	DELETE FROM completed_session_service 
-	WHERE completed_session_id = _completed_session_id AND service_subservice_id = _service_subservice_id;
+	WHERE completed_session_id = _completed_session_id AND service_id = _service_id;
 	
 END$$
 
@@ -834,12 +834,12 @@ DELIMITER $$
 USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `completedSessionServiceInsert`(
 	IN _completed_session_id INT,
-	IN _service_subservice_id INT
+	IN _service_id INT
 )
 BEGIN
 	
-	INSERT INTO completed_session_service (completed_session_id, service_subservice_id)
-	VALUES (_completed_session_id, _service_subservice_id); 
+	INSERT INTO completed_session_service (completed_session_id, service_id)
+	VALUES (_completed_session_id, _service_id); 
 	
 END$$
 
@@ -1205,12 +1205,12 @@ DELIMITER $$
 USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `reservationServiceDelete`(
 	IN _reservation_id INT,
-	IN _service_subservice_id INT
+	IN _service_id INT
 )
 BEGIN
 
 	DELETE FROM reservation_service 
-	WHERE reservation_id = _reservation_id AND service_subservice_id = _service_subservice_id;
+	WHERE reservation_id = _reservation_id AND service_id = _service_id;
 	
 END$$
 
@@ -1229,12 +1229,12 @@ DELIMITER $$
 USE `home_services`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `reservationServiceInsert`(
 	IN _reservation_id INT,
-	IN _service_subservice_id INT
+	IN _service_id INT
 )
 BEGIN
 	
-	INSERT INTO reservation_service (reservation_id, service_subservice_id)
-	VALUES (_reservation_id, _service_subservice_id); 
+	INSERT INTO reservation_service (reservation_id, service_id)
+	VALUES (_reservation_id, _service_id); 
 	
 END$$
 

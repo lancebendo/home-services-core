@@ -20,12 +20,20 @@ const router = getDomainRouter({
 
 
 // update promo rate (promoRateInsert)
+router.get('/:id(\\d+)/rate', procedureApi({
+  query: 'SELECT * FROM promo_rate where promo_id = ?',
+  paramsHandler: ({ id }) => [id],
+}));
+router.get('/:id(\\d+)/rate/history', procedureApi({
+  query: 'SELECT * FROM promo_rate where last_date IS NULL AND promo_id = ? LIMIT 1',
+  paramsHandler: ({ id }) => [id],
+}));
 router.patch('/:id(\\d+)', procedureApi({
   query: 'CALL promoRateInsert(@new_id, ?, ?, ?, ?); SELECT * FROM promo_rate where id = LAST_INSERT_ID() LIMIT 1',
   paramsHandler: ({
     id, rate, operator, byPercentage,
-  }) => [id, rate, operator, byPercentage ? 1 : 0],
-  resultHandler: result => result[0],
+  }) => [id, rate, operator, byPercentage === 'true' ? 1 : 0],
+  resultHandler: result => result[1],
 }));
 
 
@@ -40,7 +48,7 @@ router.post('/:promoId(\\d+)/:domain(/^[A-Za-z]+$/)/:domainId(\\d+)', procedureA
   paramsHandler: ({
     domain, domainId, promoId, start_date: startDate, end_date: endDate,
   }) => [domain, domainId, promoId, startDate, endDate, domain],
-  resultHandler: result => result[0],
+  resultHandler: result => result[1],
   responseCode: 201,
 }));
 
@@ -49,7 +57,7 @@ router.put('/:id(\\d+)/:domain(/^[A-Za-z]+$/)', procedureApi({
   paramsHandler: ({
     id, domain, start_date: startDate, end_date: endDate,
   }) => [id, domain, startDate, endDate, domain, id],
-  resultHandler: result => result[0],
+  resultHandler: result => result[1],
 }));
 
 router.delete('/:id(\\d+)/:domain(/^[A-Za-z]+$/)', procedureApi({

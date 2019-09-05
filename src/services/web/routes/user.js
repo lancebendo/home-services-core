@@ -1,5 +1,6 @@
-import { getDomainRouter, procedureApi } from 'express-mysql-helpers';
-// import { getWhere } from '../helpers';
+import {
+  getDomainRouter, getApi, procedureApi, getWhere,
+} from 'express-mysql-helpers';
 
 
 const router = getDomainRouter({
@@ -35,15 +36,33 @@ const router = getDomainRouter({
 
 // ACCESS LEVEL ////////////////////////////////////
 // userAccessLevelUpdate
-router.patch('/:id(\\d+)');
+router.patch('/:id(\\d+)', procedureApi({
+  query: 'CALL userAccessLevelUpdate(?, ?, ?, ?); SELECT * FROM user_access_level WHERE user_id = ?',
+  paramsHandler: ({
+    id, is_basic: isBasic, is_provider: isProvider, is_admin: isAdmin,
+  }) => [id, isBasic === 'true' ? 1 : 0, isProvider === 'true' ? 1 : 0, isAdmin === 'true' ? 1 : 0, id],
+  resultHandler: result => result[1],
+}));
 
 
 //  ADDRESS  /////////////////////////////////////
+router.get('/:id(\\d+)/address', procedureApi({
+  query: `SELECT address.* FROM address 
+  INNER JOIN user_address ON address.id = user_address.address_id 
+  WHERE user_address.user_id = ?`,
+  paramsHandler: ({ id }) => [id],
+}));
+
+router.get('/:userId(\\d+)/address/:addressId(\\d+)', getApi({
+  query: ({ addressId }) => `SELECT * FROM address ${getWhere({ id: addressId })} LIMIT 1`,
+  resultHandler: result => result[0],
+}));
+
 // addressInsert
 router.post('/:id(\\d+)/address', procedureApi({
   query: `CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?); 
   SELECT * FROM address where id = LAST_INSERT_ID(); 
-  CALL userAddressInsertOrUpdate(?, LAST_INSERT_(), ?);`,
+  CALL userAddressInsertOrUpdate(?, LAST_INSERT_ID(), ?);`,
   paramsHandler: ({
     id,
     province,
@@ -97,12 +116,18 @@ router.patch('/:userId(\\d+)/address/:addressId(\\d+)', procedureApi({
   query: 'CALL userAddressInsertOrUpdate(?, ?, ?)',
   paramsHandler: ({
     userId, addressId, is_default: isDefault,
-  }) => [userId, addressId, isDefault ? 1 : 0],
+  }) => [userId, addressId, isDefault === 'true' ? 1 : 0],
 }));
 
 
 // ASSIGNMENT //////////////////////////////////////////
 // get assigned reservations
-router.get('/:id/reservations');
+router.get('/:id/reservation', procedureApi({
+  query: `SELECT reservation.* FROM reservations 
+  INNER JOIN user_provider_assignment 
+  ON reservation.id = user_provider_assignment.reservation_id 
+  WHERE user_provider_assignment.user_provider_id = ?`,
+  paramsHandler: ({ id }) => [id],
+}));
 
 export default router;
