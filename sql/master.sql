@@ -1432,8 +1432,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `serviceRateInsert`(
 BEGIN
 	
   UPDATE service_rate
-  SET end_date = CONCAT('', CURDATE(), '') 
-  WHERE end_date IS NULL;
+  SET last_date = CONCAT('', CURDATE(), '') 
+  WHERE last_date IS NULL;
 
   INSERT INTO service_rate (service_id, set_date, rate) 
   VALUES (_service_id, CONCAT('', CURDATE(), ''), _rate); 

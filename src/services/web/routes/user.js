@@ -46,6 +46,7 @@ router.patch('/:id(\\d+)', procedureApi({
 
 
 //  ADDRESS  /////////////////////////////////////
+// GET MANY
 router.get('/:id(\\d+)/address', procedureApi({
   query: `SELECT address.* FROM address 
   INNER JOIN user_address ON address.id = user_address.address_id 
@@ -53,6 +54,7 @@ router.get('/:id(\\d+)/address', procedureApi({
   paramsHandler: ({ id }) => [id],
 }));
 
+// GET BY ADDRESS ID
 router.get('/:userId(\\d+)/address/:addressId(\\d+)', getApi({
   query: ({ addressId }) => `SELECT * FROM address ${getWhere({ id: addressId })} LIMIT 1`,
   resultHandler: result => result[0],

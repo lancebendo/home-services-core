@@ -7,7 +7,6 @@ exports.default = void 0;
 
 var _expressMysqlHelpers = require("express-mysql-helpers");
 
-// import { getWhere } from '../helpers';
 const router = (0, _expressMysqlHelpers.getDomainRouter)({
   viewTable: 'user',
   createProcedure: {
@@ -32,25 +31,52 @@ const router = (0, _expressMysqlHelpers.getDomainRouter)({
       email,
       contact_number: contactNumber
     }) => [id, firstname, lastname, dateOfBirth, gender, email, contactNumber]
+  },
+  deleteProcedure: {
+    query: 'CALL isActiveUpdate(?, ?, ?)',
+    paramsHandler: ({
+      id
+    }) => ['user', id, 0]
   }
 }); // ACCESS LEVEL ////////////////////////////////////
+// userAccessLevelUpdate
 
-router.patch('/:id(\\id+)', (req, res, next) => {
-  next();
-}); //  ADDRESS  /////////////////////////////////////
-// GET /user/{id}/address/{filter or no filter}
+router.patch('/:id(\\d+)', (0, _expressMysqlHelpers.procedureApi)({
+  query: 'CALL userAccessLevelUpdate(?, ?, ?, ?); SELECT * FROM user_access_level WHERE user_id = ?',
+  paramsHandler: ({
+    id,
+    is_basic: isBasic,
+    is_provider: isProvider,
+    is_admin: isAdmin
+  }) => [id, isBasic === 'true' ? 1 : 0, isProvider === 'true' ? 1 : 0, isAdmin === 'true' ? 1 : 0, id],
+  resultHandler: result => result[1]
+})); //  ADDRESS  /////////////////////////////////////
+// GET MANY
 
-router.get('/:id(\\d+)/address'); // GET /user/{id}/address/{id} (get user's address by id. doable to ADMIN or the user itself.)
-
-router.get('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
-  next();
-}); // POST /user/{id}/address (create new user address. doable to ADMIN or the user itself.)
-
-router.post('/:id(\\d+)/address', (req, res, next) => {
-  const {
+router.get('/:id(\\d+)/address', (0, _expressMysqlHelpers.procedureApi)({
+  query: `SELECT address.* FROM address 
+  INNER JOIN user_address ON address.id = user_address.address_id 
+  WHERE user_address.user_id = ?`,
+  paramsHandler: ({
     id
-  } = req.params;
-  const {
+  }) => [id]
+})); // GET BY ADDRESS ID
+
+router.get('/:userId(\\d+)/address/:addressId(\\d+)', (0, _expressMysqlHelpers.getApi)({
+  query: ({
+    addressId
+  }) => `SELECT * FROM address ${(0, _expressMysqlHelpers.getWhere)({
+    id: addressId
+  })} LIMIT 1`,
+  resultHandler: result => result[0]
+})); // addressInsert
+
+router.post('/:id(\\d+)/address', (0, _expressMysqlHelpers.procedureApi)({
+  query: `CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?); 
+  SELECT * FROM address where id = LAST_INSERT_ID(); 
+  CALL userAddressInsertOrUpdate(?, LAST_INSERT_ID(), ?);`,
+  paramsHandler: ({
+    id,
     province,
     city,
     barangay,
@@ -59,87 +85,54 @@ router.post('/:id(\\d+)/address', (req, res, next) => {
     zip,
     landmark,
     is_default: isDefault
-  } = req.body;
-  (0, _expressMysqlHelpers.connectWrapper)({
-    isReadOnlyConnection: false,
-    isTransaction: true,
-    multipleStatements: true
-  }).then((0, _expressMysqlHelpers.queryWrapper)({
-    queryString: 'CALL addressInsert(@new_id, ?, ?, ?, ?, ?, ?, ?)',
-    params: [province, city, barangay, roomNumber, bldgNumber, zip, landmark]
-  })).then((0, _expressMysqlHelpers.queryWrapper)({
-    queryString: `SELECT * FROM address WHERE id = LAST_INSERT_ID() LIMIT 1; 
-      CALL userAddressInsertOrUpdate(?, LAST_INSERT_ID(), ?)`,
-    params: [id, isDefault && isDefault !== 'false' ? 1 : 0],
-    isFinalQuery: true
-  })).then(({
-    result
-  }) => res.status(201).json({
-    status: 'success',
-    data: result
-  })).catch(next);
-}); // PUT /user/{id}/address/{id} (update user address. doable to ADMIN or the user itself.)
+  }) => [province, city, barangay, roomNumber, bldgNumber, zip, landmark, id, isDefault ? 1 : 0],
+  resultHandler: result => result[1],
+  responseCode: 201
+})); // addressUpdate
 
-router.put('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
-  const {
+router.put('/:userId(\\d+)/address/:addressId(\\d+)', (0, _expressMysqlHelpers.procedureApi)({
+  query: `CALL addressUpdate(?, ?, ?, ?, ?, ?, ?, ?); 
+  SELECT * FROM address where id = ?`,
+  paramsHandler: ({
+    userId,
+    addressId,
+    province,
+    city,
+    barangay,
+    room_number: roomNumber,
+    bldg_number: bldgNumber,
+    zip,
+    landmark
+  }) => [userId, addressId, province, city, barangay, roomNumber, bldgNumber, zip, landmark, addressId],
+  resultHandler: result => result[1]
+})); // userAddressDelete
+
+router.delete('/:userId(\\d+)/address/:addressId(\\d+)', (0, _expressMysqlHelpers.procedureApi)({
+  query: 'CALL userAddressDelete(?, ?)',
+  paramsHandler: ({
     userId,
     addressId
-  } = req.params;
-  const {
-    province,
-    city,
-    barangay,
-    room_number: roomNumber,
-    bldg_number: bldgNumber,
-    zip,
-    landmark,
+  }) => [userId, addressId]
+})); // userAddressInsertOrUpdate
+
+router.patch('/:userId(\\d+)/address/:addressId(\\d+)', (0, _expressMysqlHelpers.procedureApi)({
+  query: 'CALL userAddressInsertOrUpdate(?, ?, ?)',
+  paramsHandler: ({
+    userId,
+    addressId,
     is_default: isDefault
-  } = req.body;
-  (0, _expressMysqlHelpers.connectWrapper)({
-    isReadOnlyConnection: false,
-    isTransaction: true,
-    multipleStatements: true
-  }).then((0, _expressMysqlHelpers.queryWrapper)({
-    queryString: 'CALL addressUpdate(?, ?, ?, ?, ?, ?, ?, ?)',
-    params: [addressId, province, city, barangay, roomNumber, bldgNumber, zip, landmark]
-  })).then((0, _expressMysqlHelpers.queryWrapper)({
-    queryString: 'SELECT * FROM address where id = ? LIMIT 1; CALL userAddressInsertOrUpdate(?, ?, ?)',
-    params: [addressId, userId, addressId, isDefault && isDefault !== 'false' ? 1 : 0],
-    isFinalQuery: true
-  })).then(({
-    result
-  }) => res.status(201).json({
-    status: 'success',
-    data: result
-  })).catch(next);
-}); // PATCH /user/{id}/address/{id}
+  }) => [userId, addressId, isDefault === 'true' ? 1 : 0]
+})); // ASSIGNMENT //////////////////////////////////////////
+// get assigned reservations
 
-router.patch('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
-  next();
-}); // DELETE /user/{id}/address/{id} (disable user address. doable to ADMIN or the user itself.)
-
-router.delete('/:userId(\\d+)/address/:addressId(\\d+)', (req, res, next) => {
-  next();
-}); // RESERVATIONS /////////////////////////////////////////////
-
-/* GET /user/{id}/reservation/{filter} (get reservations of a user.
-                                doable to ADMIN or the user itself.) */
-
-router.get('/:id(\\d+)/reservation', (req, res, next) => {
-  next();
-});
-/* GET /user/{id}/reservation/{id} (get a reservation of a
-                    user by it's id. doable to ADMIN or the user itself.) */
-
-router.get('/:userId(\\d+)/reservation/:reservationId(\\d+)', (req, res, next) => {
-  next();
-}); // COMPLETED SESSION ////////////////////////////////////////
-
-router.get('/:id(\\d+)/completed', (req, res, next) => {
-  next();
-});
-router.get('/:userId(\\d+)/completed/:completedId(\\d+)', (req, res, next) => {
-  next();
-});
+router.get('/:id/reservation', (0, _expressMysqlHelpers.procedureApi)({
+  query: `SELECT reservation.* FROM reservations 
+  INNER JOIN user_provider_assignment 
+  ON reservation.id = user_provider_assignment.reservation_id 
+  WHERE user_provider_assignment.user_provider_id = ?`,
+  paramsHandler: ({
+    id
+  }) => [id]
+}));
 var _default = router;
 exports.default = _default;

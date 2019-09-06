@@ -1,6 +1,6 @@
 import {
   getDomainRouter, procedureApi,
-} from 'express-mysql-helpers';
+} from '../helpers';
 
 
 const router = getDomainRouter({
@@ -54,7 +54,6 @@ router.get('/:serviceId(\\d+)/rate/history', procedureApi({
 router.get('/:serviceId(\\d+)/rate', procedureApi({
   query: 'SELECT * FROM service_rate where last_date IS NULL AND service_id = ?',
   paramsHandler: ({ serviceId }) => [serviceId],
-  resultHandler: ({ result }) => result[0],
 })); // one lang. yung active
 
 router.post('/:id(\\d+)/rate', procedureApi({
